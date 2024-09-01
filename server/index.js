@@ -6,7 +6,8 @@ import dotenv from "dotenv";
 
 // importing js files
 import dbConnect from "./database/dbConnect.js";
-import router from "./route/user.route.js";
+import userRouter from "./route/user.route.js";
+import newsRouter from "./route/news.route.js";
 dotenv.config();
 
 // Create express app
@@ -26,7 +27,8 @@ app.use(
 app.get("/", (req, res) => {
   res.send("<h1>Server is running</h1>");
 });
-app.use("/user", router);
+app.use("/user", userRouter);
+app.use("/news", newsRouter);
 
 // Database connection
 dbConnect()
