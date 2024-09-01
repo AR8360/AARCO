@@ -2,7 +2,7 @@ import React from 'react';
 
 const Header = () => {
   return (
-    <header className="bg-gradient-to-r from-blue-100 to-white text-blue-900 py-28 px-4 shadow-lg overflow-hidden">
+    <header id ="header" className="bg-gradient-to-r from-blue-100 to-white text-blue-900 py-28 px-4 shadow-lg overflow-hidden">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between">
         {/* Text Section */}
         <div className="text-center lg:text-left mb-8 lg:mb-0 lg:w-2/3">

@@ -35,11 +35,11 @@ const AboutAARCO = () => {
           </ul>
         </div>
         
-        <div className="text-center">
+        {/* <div className="text-center">
           <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg">
             Member Login
           </button>
-        </div>
+        </div> */}
       </div>
 
       <style jsx>{`

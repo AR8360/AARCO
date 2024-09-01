@@ -8,7 +8,7 @@ import NewsUpdates from './update';
 // Import the Navbar component
 import PresidentMessage from './presidentMessage';
 import Footer from './footer';
-import { Link } from 'react-router-dom'; // Make sure to have react-router-dom installed
+import RetiredCarousel from './retried';
 
 const Home = () => {
   return (
@@ -18,18 +18,14 @@ const Home = () => {
  <Header/>
       {/* Main Content */}
       <main className="container mx-auto px-4 py-6 pt-20"> {/* Add padding-top to account for fixed navbar */}
-      <PresidentMessage/>
+      <PresidentMessage id="president-message"/>
+        <Goals id="goals"/>
+        <AboutAARCO id="about-aarco"/>
+        <MemberCarousel id="member-carousel"/>
+        <NewsUpdates id="news-updates"/>
+        <RetiredCarousel id="retired-carousel"/>
         
-       <Goals/>
-       <AboutAARCO/>
-       <MemberCarousel/>
-       <NewsUpdates/>
-        
-        
-        <section id="retirements" className="my-6">
-          <h2 className="text-2xl font-semibold">Retirements</h2>
-          <p className="mt-2">Details on retirements...</p>
-        </section>
+   
         
         {/* About Section */}
         

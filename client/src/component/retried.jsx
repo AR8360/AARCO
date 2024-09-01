@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import defaultImg from '../images/default.jpeg';
+import { useNavigate } from 'react-router-dom';
 
-const MemberCarousel = () => {
-
-  const navigate = useNavigate();
-
+const RetiredCarousel = () => {
   const members = [
     { name: 'John Doe', role: 'Software Engineer', image: defaultImg },
     { name: 'Jane Smith', role: 'UX Designer', image: defaultImg },
@@ -17,10 +14,6 @@ const MemberCarousel = () => {
     { name: 'Lisa Taylor', role: 'Product Owner', image: defaultImg },
     // Add more members as needed
   ];
-
-  const handleSeeAllMembers = () => {
-    navigate('/members'); 
-  };
 
   const [startIndex, setStartIndex] = useState(0);
   const membersPerPage = 4;
@@ -36,12 +29,16 @@ const MemberCarousel = () => {
       (prevIndex - membersPerPage < 0) ? Math.max(members.length - membersPerPage, 0) : prevIndex - membersPerPage
     );
   };
+ const navigate = useNavigate();
+  const handleAllRetiredMembers = () => {
+    navigate('/retire'); 
+  }
 
   return (
-    <section id="member-carousel" className="py-12 bg-gray-100">
+    <section id="retired-carousel" className="py-12 bg-gray-100">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold mb-8 text-center text-gray-800 py-2 rounded-lg">
-          Our Members
+        <h2 className="text-4xl font-bold mb-8 text-center text-gray-800  py-2 rounded-lg">
+          Retired  Members
         </h2>
         
         <div className="relative">
@@ -74,12 +71,12 @@ const MemberCarousel = () => {
         </div>
       </div>
       <div className="text-center">
-          <button onClick = {handleSeeAllMembers} className=" my-10 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg">
-            See all Members
+          <button onClick={handleAllRetiredMembers} className=" my-10 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg">
+            See all Retired Members
           </button>
         </div>
     </section>
   );
 };
 
-export default MemberCarousel;
+export default RetiredCarousel;
