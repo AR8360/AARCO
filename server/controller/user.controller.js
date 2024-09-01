@@ -1,7 +1,8 @@
 import Member from "../model/member.model.js";
 import { generateOTP, sendOTPEmail } from "../services/otpService.js";
 import { addMinutes, isAfter } from "date-fns";
-const login = async (req, res) => {
+import { generateJWT } from "../utils/generatejwt.js";
+const loginorSinup = async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -36,26 +37,6 @@ const login = async (req, res) => {
     return res.json({ msg: "Internal server error", status: false });
   }
 };
-
-const signup = async (req, res) => {
-  try {
-    const { email } = req.body;
-
-    // Validate email input
-    if (!email) {
-      return res.status(400).json({ msg: "Email is required", status: false });
-    }
-
-    const user = await Member.create({ email });
-
-    // Successful response with user details
-    return res.status(200).json({ status: true, user });
-  } catch (error) {
-    console.error(`Signup error: ${error.message}`);
-    return res.status(500).json({ msg: "Internal server error" });
-  }
-};
-
 const verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
 
@@ -72,6 +53,14 @@ const verifyOTP = async (req, res) => {
     user.otpExpiry = null;
     await user.save();
 
+    const token = generateJWT(user);
+    res.cookie("token", token, {
+      httpOnly: true, // Helps prevent XSS attacks by not allowing JavaScript access to the cookie
+      secure: process.env.NODE_ENV === "production", // Send cookie only over HTTPS in production
+      sameSite: "strict", // Ensures the cookie is sent only for same-site requests
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 1 hour in milliseconds
+    });
+
     return res
       .status(200)
       .json({ msg: "OTP verified successfully. You are logged in!" });
@@ -81,4 +70,42 @@ const verifyOTP = async (req, res) => {
   }
 };
 
-export { login, signup, verifyOTP };
+const changeMemberStatusToAdmin = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Validate email input
+    if (!email) {
+      return res.status(400).json({ msg: "Email is required", status: false });
+    }
+
+    // Find the member by email
+    const member = await Member.findOne({ email });
+    if (!member) {
+      return res.status(404).json({ msg: "Member not found", status: false });
+    }
+
+    // Check if the member is already an admin
+    if (member.status === "admin") {
+      return res
+        .status(400)
+        .json({ msg: "User is already an admin", status: false });
+    }
+
+    // Change the status to admin
+    member.status = "admin";
+    await member.save();
+
+    return res.status(200).json({
+      msg: "Member status changed to admin successfully",
+      status: true,
+    });
+  } catch (error) {
+    console.error("Error changing member status:", error.message);
+    return res
+      .status(500)
+      .json({ msg: "Internal server error", status: false });
+  }
+};
+
+export { loginorSinup, verifyOTP, changeMemberStatusToAdmin };
