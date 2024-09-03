@@ -9,6 +9,7 @@ import dbConnect from "./database/dbConnect.js";
 import userRouter from "./route/user.route.js";
 import newsRouter from "./route/news.route.js";
 import committeeRouter from "./route/commitee.route.js";
+import { verifyToken } from "./utils/VerifyToken.js";
 dotenv.config();
 
 // Create express app
@@ -27,6 +28,9 @@ app.use(
 
 app.get("/", (req, res) => {
   res.send("<h1>Server is running</h1>");
+});
+app.use("/api/verify", verifyToken, (req, res) => {
+  res.json(req.user);
 });
 app.use("/user", userRouter);
 app.use("/news", newsRouter);
