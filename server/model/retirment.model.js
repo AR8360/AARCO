@@ -7,7 +7,7 @@ const RetirmentSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
+    default: "",
   },
   date: {
     type: String,
@@ -16,6 +16,11 @@ const RetirmentSchema = new mongoose.Schema({
   content: {
     type: String,
     default: "",
+  },
+  order: {
+    type: Number,
+    required: true,
+    default: 10,
   },
 });
 

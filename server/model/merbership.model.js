@@ -7,7 +7,16 @@ const memberShipSchema = new mongoose.Schema({
   },
   image: {
     type: String,
+    default: "",
+  },
+  email: {
+    type: String,
+    default: "",
+  },
+  order: {
+    type: Number,
     required: true,
+    default: 10,
   },
 });
 

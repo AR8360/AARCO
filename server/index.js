@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import dbConnect from "./database/dbConnect.js";
 import userRouter from "./route/user.route.js";
 import newsRouter from "./route/news.route.js";
+import committeeRouter from "./route/commitee.route.js";
 dotenv.config();
 
 // Create express app
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 });
 app.use("/user", userRouter);
 app.use("/news", newsRouter);
+app.use("/committee", committeeRouter);
 
 // Database connection
 dbConnect()
