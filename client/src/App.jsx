@@ -6,6 +6,7 @@ import RetireList from "./pages/retire";
 import News from "./pages/news";
 import Login from "./pages/login";
 import Admin from "./pages/admin";
+import Downloads from "./pages/downloads";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/retire" element={<RetireList />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/downloads" element={<Downloads />} />
       </Routes>
     </Router>
   );

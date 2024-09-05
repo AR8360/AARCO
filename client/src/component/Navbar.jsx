@@ -4,14 +4,18 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleLoginClick = () => {
     navigate('/login');
+  };
+
+  const handleDownloadClick = () => {
+    navigate('/downloads'); // Navigate to the downloads page
   };
 
   return (
@@ -19,7 +23,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-          <h1 className="text-4xl font-semibold">
+            <h1 className="text-4xl font-semibold">
               <ScrollLink
                 to="header"  // Replace this with the id of your top section
                 smooth={true}
@@ -68,12 +72,22 @@ const Navbar = () => {
             >
               Retirements
             </ScrollLink>
+
+            {/* Add Download Button */}
             <button
-      onClick={handleClick}
-      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
-    >
-      Login
-    </button>
+              onClick={handleDownloadClick}  // Navigate to Downloads page on click
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+            >
+              Downloads
+            </button>
+
+            {/* Login Button */}
+            <button
+              onClick={handleLoginClick}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+            >
+              Login
+            </button>
           </div>
           <div className="lg:hidden flex items-center">
             <button onClick={handleMenuToggle} className="mobile-menu-button">
@@ -84,6 +98,8 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
       <div className={`lg:hidden ${isMenuOpen ? 'block' : 'hidden'} font-bold bg-gray-800`}>
         <ScrollLink
           to="news-updates"
@@ -126,11 +142,17 @@ const Navbar = () => {
           Retirements
         </ScrollLink>
         <button
-      onClick={handleClick}
-      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
-    >
-      Login
-    </button>
+          onClick={handleLoginClick}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+        >
+          Login
+        </button>
+        <button
+          onClick={handleDownloadClick}  // Navigate to Downloads page on click
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+        >
+          Downloads
+        </button>
       </div>
     </nav>
   );
