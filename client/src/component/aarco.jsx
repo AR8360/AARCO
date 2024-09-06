@@ -7,39 +7,39 @@ const AboutAARCO = () => {
         <h2 className="text-4xl font-bold mb-8 text-blue-600 text-center font-serif">About AARCO</h2>
         
         <div className="mb-10">
-          <h3 className="text-2xl font-semibold mb-4 text-blue-500">Our Motto</h3>
-          <blockquote className="text-xl italic text-gray-700 border-l-4 border-blue-500 pl-4 py-2">
-            "Uniting Professionals, Advancing Industries, Shaping Futures"
-          </blockquote>
+          <h3 className="text-2xl font-semibold mb-4 text-blue-500">Who We Are</h3>
+          <p className="text-gray-700 leading-relaxed">
+            The Association of Atomic Energy Officers (AARCO) is a service association of scientific officers employed at the Indira Gandhi Center For Atomic Research. We are registered under the Registration of Service Association and broadly consist of all officer members of IGCAR, Department of Atomic Energy, Government of India.
+          </p>
         </div>
         
         <div className="mb-10">
-          <h3 className="text-2xl font-semibold mb-4 text-blue-500">Membership Rules</h3>
+          <h3 className="text-2xl font-semibold mb-4 text-blue-500">Our Structure</h3>
           <ul className="space-y-4 text-gray-700">
             <li className="flex items-start">
               <span className="arrow mr-2 mt-1 flex-shrink-0"></span>
-              <span>Open to professionals with at least 3 years of industry experience</span>
+              <span>AARCO's office bearers are elected by the General Body</span>
             </li>
             <li className="flex items-start">
               <span className="arrow mr-2 mt-1 flex-shrink-0"></span>
-              <span>Annual membership fee of $250, with discounts for early renewals</span>
+              <span>Elected members constitute the Central Executive of the Association</span>
             </li>
             <li className="flex items-start">
               <span className="arrow mr-2 mt-1 flex-shrink-0"></span>
-              <span>Commitment to attend at least 2 AARCO events per year</span>
+              <span>We operate according to the constitution of the Association</span>
             </li>
             <li className="flex items-start">
               <span className="arrow mr-2 mt-1 flex-shrink-0"></span>
-              <span>Adherence to AARCO's code of ethics and professional conduct</span>
+              <span>Our goal is to serve and represent the interests of atomic energy officers</span>
             </li>
           </ul>
         </div>
         
-        {/* <div className="text-center">
+        <div className="text-center">
           <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg">
-            Member Login
+            Learn More
           </button>
-        </div> */}
+        </div>
       </div>
 
       <style jsx>{`

@@ -1,13 +1,13 @@
 import React from 'react';
 import defaultimg from '../images/default.jpeg';
-
+import ig1 from "../images/gallery/1.jpg";
 const PresidentMessage = () => {
   return (
     <section id="president-message" className="mb-12 bg-white rounded-lg shadow-lg p-6 flex flex-col md:flex-row items-center">
       {/* Image Section */}
       <div className="md:w-1/2 mb-6 md:mb-0 flex justify-center">
         <img
-          src={defaultimg} 
+          src={ig1}
           alt="President Message"
           className="w-2/4 h-auto max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl object-cover rounded-lg border-4 border-blue-400 shadow-md"
         />
