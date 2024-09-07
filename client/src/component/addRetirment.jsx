@@ -9,16 +9,21 @@ const addRetirment = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  // Cloudinary configuration
+  const cloudinaryUploadUrl =
+    "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
+  const cloudinaryUploadPreset = "aarcodev";
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Basic validation
     const validationErrors = {};
     if (!name) validationErrors.name = "Name is required.";
-    if (!image) validationErrors.image = "Image is required.";
+    // if (!image) validationErrors.image = "Image is required.";
     if (!email) validationErrors.email = "Email is required.";
-    if (!order) validationErrors.order = "Order number is required.";
-    if (!content) validationErrors.content = "Content is required.";
+    // if (!order) validationErrors.order = "Order number is reqsuired.";
+    // if (!content) validationErrors.content = "Content is required.";
 
     // Check if there are any validation errors
     if (Object.keys(validationErrors).length > 0) {
@@ -26,27 +31,41 @@ const addRetirment = () => {
       return;
     }
 
-    // Placeholder for backend submission logic
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("image", image);
-    formData.append("email", email);
-    formData.append("order", order);
-    formData.append("content", content);
+    try {
+      // Upload image to Cloudinary
+      let imageUrl = null;
+      if (image) {
+        const formData = new FormData();
+        formData.append("file", image);
+        formData.append("upload_preset", cloudinaryUploadPreset);
 
-    // Simulating backend upload or sending data
-    console.log("Form Data:", formData);
+        const cloudinaryResponse = await axios.post(
+          cloudinaryUploadUrl,
+          formData
+        );
+        imageUrl = cloudinaryResponse.data.secure_url;
+      }
 
-    // Clear form fields and errors
-    setName("");
-    setImage(null);
-    setEmail("");
-    setOrder("");
-    setContent("");
-    setErrors({});
+      // Member data to be sent to the backend
+      const memberData = {
+        name,
+        imageUrl, // Use the Cloudinary image URL
+        email,
+        order,
+      };
+      const response = await axios.post(addMemberRoute, memberData, {
+        withCredentials: true,
+      });
 
-    // Redirect to another page (optional)
-    navigate("/retirement-list"); // Adjust the path as needed
+      if (response.data.status === false) {
+        console.log(response.data);
+      } else if (response.data.status === true) {
+        console.log(" gaya tel lene ", response.data);
+        navigate("/members");
+      }
+    } catch (error) {
+      console.log("error :", error.messages);
+    }
   };
 
   const handleImageChange = (e) => {

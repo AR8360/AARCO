@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-
+import { addNewsRoute } from "../utils/ApiRoutes";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const addNews = () => {
   const [title, setTitle] = useState("");
@@ -20,12 +21,18 @@ const addNews = () => {
     }
 
     console.log("Submitting News:", { title, content });
+    // Add logic to send the data to the backend
+    const response = axios.post(
+      addNewsRoute,
+      { title, content },
+      { withCredentials: true }
+    );
+    console.log(response.data);
 
+    // Clear the form
     setTitle("");
     setContent("");
     setErrors({});
-
-    navigate("/news-list"); // Adjust the path as needed
   };
 
   return (
