@@ -10,6 +10,7 @@ import Marquee from './marqueue'; // Import Marquee component
 import PresidentMessage from './presidentMessage';
 import Footer from './footer';
 import RetiredCarousel from './retried';
+import HomeImage from './homeimage';
 
 const Home = () => {
   return (
@@ -27,13 +28,14 @@ const Home = () => {
         <MemberCarousel id="member-carousel"/>
         <NewsUpdates id="news-updates"/>
         <RetiredCarousel id="retired-carousel"/>
+
         
-   
+        <HomeImage/>
         
         {/* About Section */}
         
       </main>
-
+   
       {/* Footer */}
      
       <Footer/>

@@ -7,6 +7,8 @@ import News from "./pages/news";
 import Login from "./pages/login";
 import Admin from "./pages/admin";
 import Downloads from "./pages/downloads";
+import Commitee from "./pages/commitee";
+import Gallery   from "./pages/gallery"
 
 const App = () => {
   return (
@@ -19,6 +21,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/downloads" element={<Downloads />} />
+        <Route path="/commitee" element={<Commitee />} />
+        <Route path="/gallery" element={<Gallery />} />
+
       </Routes>
     </Router>
   );

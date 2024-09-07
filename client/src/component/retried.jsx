@@ -1,82 +1,51 @@
-import React, { useState } from 'react';
-import defaultImg from '../images/default.jpeg';
+import React from 'react';
+import defaultImg from '../images/default.jpeg'; // Replace with the relevant image file
 import { useNavigate } from 'react-router-dom';
 
-const RetiredCarousel = () => {
-  const members = [
-    { name: 'John Doe', role: 'Software Engineer', image: defaultImg },
-    { name: 'Jane Smith', role: 'UX Designer', image: defaultImg },
-    { name: 'Mike Johnson', role: 'Project Manager', image: defaultImg },
-    { name: 'Emily Brown', role: 'Data Scientist', image: defaultImg },
-    { name: 'Chris Lee', role: 'Marketing Specialist', image: defaultImg },
-    { name: 'Sarah Wilson', role: 'HR Manager', image: defaultImg },
-    { name: 'David Chen', role: 'Financial Analyst', image: defaultImg },
-    { name: 'Lisa Taylor', role: 'Product Owner', image: defaultImg },
-    // Add more members as needed
-  ];
+const RetiredSection = () => {
+  const navigate = useNavigate();
 
-  const [startIndex, setStartIndex] = useState(0);
-  const membersPerPage = 4;
-
-  const nextMembers = () => {
-    setStartIndex((prevIndex) => 
-      (prevIndex + membersPerPage >= members.length) ? 0 : prevIndex + membersPerPage
-    );
-  };
-
-  const prevMembers = () => {
-    setStartIndex((prevIndex) => 
-      (prevIndex - membersPerPage < 0) ? Math.max(members.length - membersPerPage, 0) : prevIndex - membersPerPage
-    );
-  };
- const navigate = useNavigate();
   const handleAllRetiredMembers = () => {
     navigate('/retire'); 
-  }
+  };
 
   return (
-    <section id="retired-carousel" className="py-12 bg-gray-100">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold mb-8 text-center text-gray-800  py-2 rounded-lg">
-          Retired  Members
+    <section id="retired-section" className="mb-12 bg-white rounded-lg shadow-lg p-6 flex flex-col md:flex-row items-center">
+      {/* Image Section */}
+      <div className="md:w-1/2 mb-6 md:mb-0 flex flex-col items-center">
+        <img 
+          src={defaultImg} 
+          alt="Retired Members" 
+          className="w-2/4 h-auto max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl object-cover rounded-lg border-4 border-blue-400 shadow-md" 
+        />
+        {/* 'See All Retired Members' button */}
+        <button 
+          onClick={handleAllRetiredMembers} 
+          className="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+        >
+          See all Retired Members
+        </button>
+      </div>
+
+      {/* Text Section */}
+      <div className="md:w-1/2 pl-0 md:pl-6 flex flex-col justify-center">
+        <h2 className="text-3xl font-bold mb-4 text-blue-600">
+          Honoring Our Retired Members
         </h2>
-        
-        <div className="relative">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-            {members.slice(startIndex, startIndex + membersPerPage).map((member, index) => (
-              <div key={index} className="text-center">
-                <img 
-                  src={member.image} 
-                  alt={member.name} 
-                  className="w-32 h-32 object-cover rounded-full mx-auto mb-4 shadow-lg"
-                />
-                <p className="font-semibold">{member.name}</p>
-                <p className="text-gray-600">{member.role}</p>
-              </div>
-            ))}
-          </div>
-          
-          <button 
-            onClick={prevMembers} 
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 rounded-full shadow-lg hover:bg-blue-600 focus:outline-none"
-          >
-            &#8592;
-          </button>
-          <button 
-            onClick={nextMembers} 
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 rounded-full shadow-lg hover:bg-blue-600 focus:outline-none"
-          >
-            &#8594;
-          </button>
+        <div className="sliding-text">
+          <p className="text-lg mb-4 text-justify leading-relaxed">
+            The Association of Atomic Energy Officers celebrates the invaluable contributions of those who have dedicated their careers to advancing atomic energy research and innovation. Their efforts have played a vital role in shaping the industry, ensuring safety, and driving progress in the field.
+          </p>
+          <p className="text-lg mb-4 text-justify leading-relaxed">
+            We honor their expertise, commitment, and leadership, which have left an enduring legacy. These exceptional individuals exemplify the highest standards of professionalism and have made significant impacts through their work.
+          </p>
+          <p className="text-lg mb-4 text-justify leading-relaxed">
+            Join us in recognizing their achievements and exploring the stories of these remarkable professionals who have devoted their lives to the advancement of atomic energy.
+          </p>
         </div>
       </div>
-      <div className="text-center">
-          <button onClick={handleAllRetiredMembers} className=" my-10 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg">
-            See all Retired Members
-          </button>
-        </div>
     </section>
   );
 };
 
-export default RetiredCarousel;
+export default RetiredSection;
