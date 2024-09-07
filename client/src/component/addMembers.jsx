@@ -5,14 +5,15 @@ import { addMemberRoute } from "../utils/ApiRoutes"; // Adjust the path as neede
 
 const AddMembers = () => {
   const [name, setName] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [email, setEmail] = useState("");
   const [order, setOrder] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   // Cloudinary configuration
-  const cloudinaryUploadUrl = "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
+  const cloudinaryUploadUrl =
+    "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
   const cloudinaryUploadPreset = "aarcodev";
 
   const handleSubmit = async (e) => {
@@ -21,9 +22,9 @@ const AddMembers = () => {
     // Basic validation
     const validationErrors = {};
     if (!name) validationErrors.name = "Name is required.";
-    if (!image) validationErrors.image = "Image is required.";
+    // if (!image) validationErrors.image = "Image is required.";
     if (!email) validationErrors.email = "Email is required.";
-    if (!order) validationErrors.order = "Order number is required.";
+    // if (!order) validationErrors.order = "Order number is required.";
 
     // Check if there are any validation errors
     if (Object.keys(validationErrors).length > 0) {
@@ -34,39 +35,53 @@ const AddMembers = () => {
     try {
       // Upload image to Cloudinary
       let imageUrl = null;
-      if (image) {
+      if (image.length > 0) {
         const formData = new FormData();
         formData.append("file", image);
         formData.append("upload_preset", cloudinaryUploadPreset);
 
-        const cloudinaryResponse = await axios.post(cloudinaryUploadUrl, formData);
+        const cloudinaryResponse = await axios.post(
+          cloudinaryUploadUrl,
+          formData
+        );
         imageUrl = cloudinaryResponse.data.secure_url;
+        console.log("imageUrl", imageUrl);
       }
 
       // Member data to be sent to the backend
       const memberData = {
         name,
-        imageUrl, // Use the Cloudinary image URL
-        email,  
+        image: imageUrl || "", // Use the Cloudinary image URL
+        email,
         order,
       };
-      const response = await axios.post(addMemberRoute, memberData,{
-        withCredentials:true
+      const response = await axios.post(addMemberRoute, memberData, {
+        withCredentials: true,
       });
+      // console.log("response.data", response.data);
 
       if (response.data.status === false) {
-       console.log(response.data);
+        console.log(response.data);
       } else if (response.data.status === true) {
-       console.log(" gaya tel lene ", response.data);
-        navigate("/members");
+        console.log(memberData);
+
+        console.log(" gaya tel lene ", response.data);
+
+        //clear the form
+        setName("");
+        setImage("");
+        setEmail("");
+        setOrder("");
+        setErrors({});
       }
     } catch (error) {
-    
       console.log("error :", error.messages);
     }
   };
 
   const handleImageChange = (e) => {
+    console.log("e.target.files", e.target.files);
+
     const file = e.target.files[0];
     if (file) {
       setImage(file);
@@ -103,7 +118,9 @@ const AddMembers = () => {
             onChange={handleImageChange}
             className="w-full p-2 border rounded"
           />
-          {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
+          {errors.image && (
+            <p className="text-red-500 text-sm">{errors.image}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -118,7 +135,9 @@ const AddMembers = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter member's email"
           />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -133,7 +152,9 @@ const AddMembers = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter order number"
           />
-          {errors.order && <p className="text-red-500 text-sm">{errors.order}</p>}
+          {errors.order && (
+            <p className="text-red-500 text-sm">{errors.order}</p>
+          )}
         </div>
 
         <button

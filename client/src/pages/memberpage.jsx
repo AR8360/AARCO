@@ -69,7 +69,7 @@ const MemberList = () => {
   const handleBackClick = () => {
     navigate("/");
   };
-  const [admin, setAdmin] = useState(false);
+  const [admin, setAdmin] = useState(true);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -99,7 +99,7 @@ const MemberList = () => {
             key={index}
             className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
           >
-            <MdDelete className="absolute right-q" />
+            {/* <MdDelete className="absolute right-q" /> */}
             <div className="w-full h-48 overflow-hidden flex items-center justify-center">
               <img
                 src={member.image}
