@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const addRetirment = () => {
+import axios from "axios"; // Add the axios import for API calls
+import {addRetrimentRoute}  from "../utils/ApiRoutes"
+const AddRetirement = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [email, setEmail] = useState("");
@@ -14,57 +16,75 @@ const addRetirment = () => {
     "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
   const cloudinaryUploadPreset = "aarcodev";
 
+  const handleValidation = () => {
+    let tempErrors = {};
+    let isValid = true;
+
+    if (!name) {
+      tempErrors.name = "Name is required.";
+      isValid = false;
+    }
+
+    if (!email) {
+      tempErrors.email = "Email is required.";
+      isValid = false;
+    }
+
+    if (!order) {
+      tempErrors.order = "Order number is required.";
+      isValid = false;
+    } else if (isNaN(order)) {
+      tempErrors.order = "Order must be a valid number.";
+      isValid = false;
+    }
+
+    if (!content) {
+      tempErrors.content = "Content is required.";
+      isValid = false;
+    }
+
+    setErrors(tempErrors);
+    return isValid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
-    const validationErrors = {};
-    if (!name) validationErrors.name = "Name is required.";
-    // if (!image) validationErrors.image = "Image is required.";
-    if (!email) validationErrors.email = "Email is required.";
-    // if (!order) validationErrors.order = "Order number is reqsuired.";
-    // if (!content) validationErrors.content = "Content is required.";
+    if (handleValidation()) {
+      try {
+        // Upload image to Cloudinary
+        let imageUrl = null;
+        if (image) {
+          const formData = new FormData();
+          formData.append("file", image);
+          formData.append("upload_preset", cloudinaryUploadPreset);
 
-    // Check if there are any validation errors
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+          const cloudinaryResponse = await axios.post(cloudinaryUploadUrl, formData);
+          imageUrl = cloudinaryResponse.data.secure_url;
+        }
 
-    try {
-      // Upload image to Cloudinary
-      let imageUrl = null;
-      if (image) {
-        const formData = new FormData();
-        formData.append("file", image);
-        formData.append("upload_preset", cloudinaryUploadPreset);
+        // Data to be sent to backend
+        const memberData = {
+          name,
+          image: imageUrl || "",
+          email,
+          order: parseFloat(order), // Make sure order is a number
+          content,
+        };
 
-        const cloudinaryResponse = await axios.post(
-          cloudinaryUploadUrl,
-          formData
-        );
-        imageUrl = cloudinaryResponse.data.secure_url;
+        const response = await axios.post(addRetrimentRoute, memberData, {
+          withCredentials: true,
+        });
+
+        if (response.data.status === false) {
+          console.error("Error:", response.data.msg);
+        } else if (response.data.status === true) {
+          console.log("Member added successfully!", response.data);
+          navigate("/members"); // Redirect to members page
+        }
+      } catch (error) {
+        console.error("Error adding member:", error.message);
       }
-
-      // Member data to be sent to the backend
-      const memberData = {
-        name,
-        imageUrl, // Use the Cloudinary image URL
-        email,
-        order,
-      };
-      const response = await axios.post(addMemberRoute, memberData, {
-        withCredentials: true,
-      });
-
-      if (response.data.status === false) {
-        console.log(response.data);
-      } else if (response.data.status === true) {
-        console.log(" gaya tel lene ", response.data);
-        navigate("/members");
-      }
-    } catch (error) {
-      console.log("error :", error.messages);
     }
   };
 
@@ -138,7 +158,6 @@ const addRetirment = () => {
             onChange={(e) => setOrder(e.target.value)}
             className="w-full p-2 border rounded"
             placeholder="Enter order number"
-            step="0.01" // Allows decimal numbers
           />
           {errors.order && (
             <p className="text-red-500 text-sm">{errors.order}</p>
@@ -157,7 +176,7 @@ const addRetirment = () => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             className="w-full p-2 border rounded"
-            rows="6" // Keeps the textarea size constant
+            rows="6"
             placeholder="Enter content"
           />
           {errors.content && (
@@ -176,4 +195,4 @@ const addRetirment = () => {
   );
 };
 
-export default addRetirment;
+export default AddRetirement;
