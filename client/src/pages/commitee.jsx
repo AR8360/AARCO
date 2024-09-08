@@ -88,7 +88,7 @@ const Commitee = () => {
           className="text-5xl font-bold text-center text-blue-900"
           style={{ fontFamily: "Playfair Display, serif" }}
         >
-          Our Members
+          Our Commitee Members
         </h2>
       </div>
 
@@ -99,7 +99,7 @@ const Commitee = () => {
             key={index}
             className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
           >
-            <MdDelete className="absolute right-q" />
+            
             <div className="w-full h-48 overflow-hidden flex items-center justify-center">
               <img
                 src={member.image}

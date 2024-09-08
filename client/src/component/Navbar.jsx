@@ -63,7 +63,7 @@ const Navbar = ({ isLogin, admin }) => {
             About
           </ScrollLink>
           <ScrollLink
-            to="retired-carousel"
+            to="member-carousel"
             smooth={true}
             duration={500}
             offset={-70}
@@ -71,15 +71,12 @@ const Navbar = ({ isLogin, admin }) => {
           >
             Retirements
           </ScrollLink>
-          <ScrollLink
-            to="committee"
-            smooth={true}
-            duration={500}
-            offset={-70}
-            className="text-lg font-semibold hover:text-blue-600 transition duration-300 cursor-pointer"
-          >
-            Committee
-          </ScrollLink>
+          <div
+        onClick={handleCClick}
+        className="text-lg font-semibold hover:text-blue-600 transition duration-300 cursor-pointer"
+      >
+        Committee
+      </div>
           <button
             onClick={handleDownloadClick} // Navigate to Downloads page on click
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
@@ -168,28 +165,20 @@ const Navbar = ({ isLogin, admin }) => {
         >
           Retirements
         </ScrollLink>
-        <ScrollLink
-          to="committee"
-          smooth={true}
-          duration={500}
-          offset={-70}
-          className="block py-2 px-4 text-lg hover:bg-gray-200 cursor-pointer"
-          onClick={handleMenuToggle}
-        >
-          Committee
-        </ScrollLink>
-        <button
-          onClick={handleCClick}
-          className="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600 transition duration-300"
-        >
-          Login
-        </button>
         <button
           onClick={handleDownloadClick} // Navigate to Downloads page on click
           className="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600 transition duration-300"
         >
           Downloads
         </button>
+        <button
+          onClick={handleLoginClick}
+          className="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600 transition duration-300"
+        >
+          Login
+        </button>
+        
+       
       </div>
     </nav>
   );
