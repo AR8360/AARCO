@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import {addMemberRoute} from '../utils/ApiRoutes'
+import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { addMemberRoute } from "../utils/ApiRoutes";
 
-const cloudinaryUploadUrl = "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
+const cloudinaryUploadUrl =
+  "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
 const cloudinaryUploadPreset = "aarcodev";
 
 const AddMembers = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [order, setOrder] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [order, setOrder] = useState("");
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
 
@@ -27,19 +28,6 @@ const AddMembers = () => {
     if (!email) {
       tempErrors.email = "Email is required.";
       isValid = false;
-    } 
-
-    if (!order) {
-      tempErrors.order = "Order is required.";
-      isValid = false;
-    } else if (isNaN(order)) {
-      tempErrors.order = "Order must be a number.";
-      isValid = false;
-    }
-
-    if (!image) {
-      tempErrors.image = "Image is required.";
-      isValid = false;
     }
 
     setErrors(tempErrors);
@@ -50,15 +38,18 @@ const AddMembers = () => {
     event.preventDefault();
     if (handleValidation()) {
       try {
-        let imageUrl = null;
-        if (image) {
+        let imageUrl = "";
+        if (image.length > 0) {
           const formData = new FormData();
           formData.append("file", image);
           formData.append("upload_preset", cloudinaryUploadPreset);
-          const cloudinaryResponse = await axios.post(cloudinaryUploadUrl, formData);
-          console.log("respose111",cloudinaryResponse.data)
+          const cloudinaryResponse = await axios.post(
+            cloudinaryUploadUrl,
+            formData
+          );
+          console.log("respose111", cloudinaryResponse.data);
           imageUrl = cloudinaryResponse.data.secure_url;
-          console.log("this is url::",imageUrl)
+          console.log("this is url::", imageUrl);
         }
 
         const memberData = {
@@ -69,14 +60,16 @@ const AddMembers = () => {
         };
 
         // Replace 'addMemberRoute' with your actual API endpoint
-        const response = await axios.post(addMemberRoute, memberData);
+        const response = await axios.post(addMemberRoute, memberData, {
+          withCredentials: true,
+        });
+        console.log("response", response.data);
 
         if (response.data.status === true) {
           toast.success("Committee member added successfully!", {
             position: "bottom-right",
             autoClose: 5000,
           });
-          navigate("/members"); // Adjust this route as needed
         } else {
           toast.error(response.data.msg || "Failed to add member", {
             position: "bottom-right",
@@ -97,7 +90,9 @@ const AddMembers = () => {
       <h2 className="text-2xl font-bold mb-5">Add Committee Member</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="name" className="block mb-1">Name</label>
+          <label htmlFor="name" className="block mb-1">
+            Name
+          </label>
           <input
             type="text"
             id="name"
@@ -106,11 +101,15 @@ const AddMembers = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter member's name"
           />
-          {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+          {errors.name && (
+            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="image" className="block mb-1">Upload Image</label>
+          <label htmlFor="image" className="block mb-1">
+            Upload Image
+          </label>
           <input
             type="file"
             id="image"
@@ -118,11 +117,15 @@ const AddMembers = () => {
             className="w-full p-2 border rounded"
             accept="image/*"
           />
-          {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
+          {errors.image && (
+            <p className="text-red-500 text-sm mt-1">{errors.image}</p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="email" className="block mb-1">Email</label>
+          <label htmlFor="email" className="block mb-1">
+            Email
+          </label>
           <input
             type="email"
             id="email"
@@ -131,23 +134,32 @@ const AddMembers = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter member's email"
           />
-          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+          )}
         </div>
 
         <div>
-          <label htmlFor="order" className="block mb-1">Order</label>
+          <label htmlFor="order" className="block mb-1">
+            Order
+          </label>
           <input
             type="number"
             id="order"
             value={order}
             onChange={(e) => setOrder(e.target.value)}
             className="w-full p-2 border rounded"
-            placeholder="Enter order number"
+            placeholder="Enter order number default 10."
           />
-          {errors.order && <p className="text-red-500 text-sm mt-1">{errors.order}</p>}
+          {errors.order && (
+            <p className="text-red-500 text-sm mt-1">{errors.order}</p>
+          )}
         </div>
 
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+        >
           Submit
         </button>
       </form>

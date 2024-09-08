@@ -83,29 +83,25 @@ const changeMemberStatusToAdmin = async (req, res) => {
     // Find the member by email
     const member = await Member.findOne({ email });
     if (!member) {
-      return res.status(404).json({ msg: "Member not found", status: false });
+      return res.json({ msg: "Member not found", status: false });
     }
 
     // Check if the member is already an admin
     if (member.status === "admin") {
-      return res
-        .status(400)
-        .json({ msg: "User is already an admin", status: false });
+      return res.json({ msg: "User is already an admin", status: false });
     }
 
     // Change the status to admin
     member.status = "admin";
     await member.save();
 
-    return res.status(200).json({
+    return res.json({
       msg: "Member status changed to admin successfully",
       status: true,
     });
   } catch (error) {
     console.error("Error changing member status:", error.message);
-    return res
-      .status(500)
-      .json({ msg: "Internal server error", status: false });
+    return res.json({ msg: "Internal server error", status: false });
   }
 };
 

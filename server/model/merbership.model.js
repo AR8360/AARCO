@@ -9,6 +9,10 @@ const memberShipSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  contact: {
+    type: String,
+    default: "",
+  },
   email: {
     type: String,
     default: "",

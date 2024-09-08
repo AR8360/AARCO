@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Add the axios import for API calls
-import {addRetrimentRoute}  from "../utils/ApiRoutes"
+import { addRetrimentRoute } from "../utils/ApiRoutes";
 const AddRetirement = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [email, setEmail] = useState("");
+  const [contact, setContact] = useState("");
+  const [date, setDate] = useState("");
   const [order, setOrder] = useState("");
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState({});
@@ -30,16 +32,8 @@ const AddRetirement = () => {
       isValid = false;
     }
 
-    if (!order) {
-      tempErrors.order = "Order number is required.";
-      isValid = false;
-    } else if (isNaN(order)) {
-      tempErrors.order = "Order must be a valid number.";
-      isValid = false;
-    }
-
-    if (!content) {
-      tempErrors.content = "Content is required.";
+    if (!date) {
+      tempErrors.date = "Date is required.";
       isValid = false;
     }
 
@@ -53,28 +47,34 @@ const AddRetirement = () => {
     if (handleValidation()) {
       try {
         // Upload image to Cloudinary
-        let imageUrl = null;
-        if (image) {
+        let imageUrl = "";
+        if (image.length > 0) {
           const formData = new FormData();
           formData.append("file", image);
           formData.append("upload_preset", cloudinaryUploadPreset);
 
-          const cloudinaryResponse = await axios.post(cloudinaryUploadUrl, formData);
+          const cloudinaryResponse = await axios.post(
+            cloudinaryUploadUrl,
+            formData
+          );
           imageUrl = cloudinaryResponse.data.secure_url;
         }
 
         // Data to be sent to backend
         const memberData = {
           name,
-          image: imageUrl || "",
+          image: imageUrl,
           email,
-          order: parseFloat(order), // Make sure order is a number
+          date,
+          contact,
+          order,
           content,
         };
 
         const response = await axios.post(addRetrimentRoute, memberData, {
           withCredentials: true,
         });
+        console.log(response.data);
 
         if (response.data.status === false) {
           console.error("Error:", response.data.msg);
@@ -144,6 +144,39 @@ const AddRetirement = () => {
           />
           {errors.email && (
             <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="order" className="block text-gray-700 font-bold mb-2">
+            Contact
+          </label>
+          <input
+            type="number"
+            id="contact"
+            value={contact}
+            onChange={(e) => setOrder(e.target.value)}
+            className="w-full p-2 border rounded"
+            placeholder="Enter Contact number"
+          />
+          {errors.order && (
+            <p className="text-red-500 text-sm">{errors.contact}</p>
+          )}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="order" className="block text-gray-700 font-bold mb-2">
+            Date of Working
+          </label>
+          <input
+            type="number"
+            id="date"
+            value={date}
+            onChange={(e) => setOrder(e.target.value)}
+            className="w-full p-2 border rounded"
+            placeholder="dd/mm/yyyy- dd/mm/yyyy"
+          />
+          {errors.order && (
+            <p className="text-red-500 text-sm">{errors.date}</p>
           )}
         </div>
 

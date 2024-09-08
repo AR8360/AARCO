@@ -44,15 +44,13 @@ const Navbar = ({ isLogin, admin }) => {
             News & Updates
           </button>
 
-          <ScrollLink
-            to="member-carousel"
-            smooth={true}
-            duration={500}
-            offset={-70}
-            className="text-lg font-semibold hover:text-blue-600 transition duration-300 cursor-pointer"
+          <button
+            className="text-lg font-semibold  cursor-pointer"
+            onClick={() => navigate("/members")}
           >
             Members
-          </ScrollLink>
+          </button>
+
           <ScrollLink
             to="about-aarco"
             smooth={true}
@@ -128,26 +126,18 @@ const Navbar = ({ isLogin, admin }) => {
       <div
         className={`lg:hidden ${isMenuOpen ? "block" : "hidden"} bg-gray-100`}
       >
-        <ScrollLink
-          to="news-updates"
-          smooth={true}
-          duration={500}
-          offset={-70}
+        <button
           className="block py-2 px-4 text-lg hover:bg-gray-200 cursor-pointer"
-          onClick={handleMenuToggle}
+          onClick={handleNewsClick}
         >
           News & Updates
-        </ScrollLink>
-        <ScrollLink
-          to="member-carousel"
-          smooth={true}
-          duration={500}
-          offset={-70}
+        </button>
+        <button
           className="block py-2 px-4 text-lg hover:bg-gray-200 cursor-pointer"
-          onClick={handleMenuToggle}
+          onClick={() => navigate("/members")}
         >
           Members
-        </ScrollLink>
+        </button>
         <ScrollLink
           to="about-aarco"
           smooth={true}

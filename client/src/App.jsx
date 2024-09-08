@@ -27,7 +27,7 @@ const App = () => {
             />
           }
         />
-        <Route path="/members" element={<MemberList />} />
+        <Route path="/members" element={<MemberList isadmin={isadmin} />} />
         <Route path="/news" element={<News />} />
         <Route path="/retire" element={<RetireList />} />
         <Route

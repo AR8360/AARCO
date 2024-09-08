@@ -9,6 +9,10 @@ const RetirmentSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  contact: {
+    type: String,
+    default: "",
+  },
   date: {
     type: String,
     default: "",

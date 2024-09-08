@@ -4,6 +4,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import AddNews from "../component/addNews";
 import AddMembers from "../component/addMembers";
 import AddRetirment from "../component/addRetirment";
+import AddAdmin from "../component/addAdmin";
 const admin = ({ admin, isLogin }) => {
   const navigate = useNavigate();
 
@@ -31,6 +32,9 @@ const admin = ({ admin, isLogin }) => {
       </div>
       <div className="pt-6">
         <AddRetirment />
+      </div>
+      <div className="pt-6">
+        <AddAdmin />
       </div>
     </div>
   );
