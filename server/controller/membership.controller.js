@@ -3,6 +3,7 @@ import Membership from "../model/merbership.model.js";
 const addmember = async (req, res) => {
   try {
     const { name, image, email, order } = req.body;
+    console.log("this is the image",image);
 
     if (!name) {
       return res.status(400).json({ msg: "Name is required" });
