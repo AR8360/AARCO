@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import bodyParser from "body-parser";
 // importing js files
 import dbConnect from "./database/dbConnect.js";
 import userRouter from "./route/user.route.js";
@@ -15,7 +16,7 @@ dotenv.config();
 // Create express app
 const app = express();
 const port = process.env.PORT || 5000;
-
+app.use(bodyParser.urlencoded({ extended: false }));
 // Middleware
 app.use(express.json());
 app.use(cookieParser());

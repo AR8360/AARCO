@@ -1,101 +1,103 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { addMemberRoute } from "../utils/ApiRoutes"; // Adjust the path as needed
+import React, { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import {addMemberRoute} from '../utils/ApiRoutes'
+
+const cloudinaryUploadUrl = "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
+const cloudinaryUploadPreset = "aarcodev";
 
 const AddMembers = () => {
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
-  const [email, setEmail] = useState("");
-  const [order, setOrder] = useState("");
-  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [order, setOrder] = useState('');
+  const [image, setImage] = useState(null);
+  const [errors, setErrors] = useState({});
 
-  // Cloudinary configuration
-  const cloudinaryUploadUrl =
-    "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
-  const cloudinaryUploadPreset = "aarcodev";
+  const handleValidation = () => {
+    let tempErrors = {};
+    let isValid = true;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Basic validation
-    const validationErrors = {};
-    if (!name) validationErrors.name = "Name is required.";
-    // if (!image) validationErrors.image = "Image is required.";
-    if (!email) validationErrors.email = "Email is required.";
-    // if (!order) validationErrors.order = "Order number is required.";
-
-    // Check if there are any validation errors
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
+    if (name.length < 3) {
+      tempErrors.name = "Name should be at least 3 characters long.";
+      isValid = false;
     }
 
-    try {
-      // Upload image to Cloudinary
-      let imageUrl = null;
-      if (image.length > 0) {
-        const formData = new FormData();
-        formData.append("file", image);
-        formData.append("upload_preset", cloudinaryUploadPreset);
+    if (!email) {
+      tempErrors.email = "Email is required.";
+      isValid = false;
+    } 
 
-        const cloudinaryResponse = await axios.post(
-          cloudinaryUploadUrl,
-          formData
-        );
-        imageUrl = cloudinaryResponse.data.secure_url;
-        console.log("imageUrl", imageUrl);
-      }
-
-      // Member data to be sent to the backend
-      const memberData = {
-        name,
-        image: imageUrl || "", // Use the Cloudinary image URL
-        email,
-        order,
-      };
-      const response = await axios.post(addMemberRoute, memberData, {
-        withCredentials: true,
-      });
-      // console.log("response.data", response.data);
-
-      if (response.data.status === false) {
-        console.log(response.data);
-      } else if (response.data.status === true) {
-        console.log(memberData);
-
-        console.log(" gaya tel lene ", response.data);
-
-        //clear the form
-        setName("");
-        setImage("");
-        setEmail("");
-        setOrder("");
-        setErrors({});
-      }
-    } catch (error) {
-      console.log("error :", error.messages);
+    if (!order) {
+      tempErrors.order = "Order is required.";
+      isValid = false;
+    } else if (isNaN(order)) {
+      tempErrors.order = "Order must be a number.";
+      isValid = false;
     }
+
+    if (!image) {
+      tempErrors.image = "Image is required.";
+      isValid = false;
+    }
+
+    setErrors(tempErrors);
+    return isValid;
   };
 
-  const handleImageChange = (e) => {
-    console.log("e.target.files", e.target.files);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (handleValidation()) {
+      try {
+        let imageUrl = null;
+        if (image) {
+          const formData = new FormData();
+          formData.append("file", image);
+          formData.append("upload_preset", cloudinaryUploadPreset);
+          const cloudinaryResponse = await axios.post(cloudinaryUploadUrl, formData);
+          console.log("respose111",cloudinaryResponse.data)
+          imageUrl = cloudinaryResponse.data.secure_url;
+          console.log("this is url::",imageUrl)
+        }
 
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file);
+        const memberData = {
+          name,
+          email,
+          order: parseInt(order),
+          image: imageUrl || "",
+        };
+
+        // Replace 'addMemberRoute' with your actual API endpoint
+        const response = await axios.post(addMemberRoute, memberData);
+
+        if (response.data.status === true) {
+          toast.success("Committee member added successfully!", {
+            position: "bottom-right",
+            autoClose: 5000,
+          });
+          navigate("/members"); // Adjust this route as needed
+        } else {
+          toast.error(response.data.msg || "Failed to add member", {
+            position: "bottom-right",
+            autoClose: 5000,
+          });
+        }
+      } catch (error) {
+        toast.error("An error occurred. Please try again.", {
+          position: "bottom-right",
+          autoClose: 5000,
+        });
+      }
     }
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Add Committee Member</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
-            Name
-          </label>
+    <div className="max-w-md mx-auto mt-10">
+      <h2 className="text-2xl font-bold mb-5">Add Committee Member</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="name" className="block mb-1">Name</label>
           <input
             type="text"
             id="name"
@@ -104,29 +106,23 @@ const AddMembers = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter member's name"
           />
-          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+          {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="image" className="block text-gray-700 font-bold mb-2">
-            Upload Image
-          </label>
+        <div>
+          <label htmlFor="image" className="block mb-1">Upload Image</label>
           <input
             type="file"
             id="image"
-            accept="image/*"
-            onChange={handleImageChange}
+            onChange={(e) => setImage(e.target.files[0])}
             className="w-full p-2 border rounded"
+            accept="image/*"
           />
-          {errors.image && (
-            <p className="text-red-500 text-sm">{errors.image}</p>
-          )}
+          {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
-            Email
-          </label>
+        <div>
+          <label htmlFor="email" className="block mb-1">Email</label>
           <input
             type="email"
             id="email"
@@ -135,15 +131,11 @@ const AddMembers = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter member's email"
           />
-          {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email}</p>
-          )}
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="order" className="block text-gray-700 font-bold mb-2">
-            Order
-          </label>
+        <div>
+          <label htmlFor="order" className="block mb-1">Order</label>
           <input
             type="number"
             id="order"
@@ -152,15 +144,10 @@ const AddMembers = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter order number"
           />
-          {errors.order && (
-            <p className="text-red-500 text-sm">{errors.order}</p>
-          )}
+          {errors.order && <p className="text-red-500 text-sm mt-1">{errors.order}</p>}
         </div>
 
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
+        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
           Submit
         </button>
       </form>
