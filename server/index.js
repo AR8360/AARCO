@@ -9,6 +9,7 @@ import bodyParser from "body-parser";
 import dbConnect from "./database/dbConnect.js";
 import userRouter from "./route/user.route.js";
 import newsRouter from "./route/news.route.js";
+import galleryRouter from "./route/gallery.route.js";
 import committeeRouter from "./route/commitee.route.js";
 import { verifyToken } from "./utils/VerifyToken.js";
 dotenv.config();
@@ -36,6 +37,7 @@ app.use("/api/verify", verifyToken, (req, res) => {
 app.use("/user", userRouter);
 app.use("/news", newsRouter);
 app.use("/committee", committeeRouter);
+app.use("/gallery", galleryRouter);
 
 // Database connection
 dbConnect()

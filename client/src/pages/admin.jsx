@@ -5,6 +5,7 @@ import AddNews from "../component/addNews";
 import AddMembers from "../component/addMembers";
 import AddRetirment from "../component/addRetirment";
 import AddAdmin from "../component/addAdmin";
+import AddGalary from "../component/addGalary";
 const admin = ({ admin, isLogin }) => {
   const navigate = useNavigate();
 
@@ -35,6 +36,9 @@ const admin = ({ admin, isLogin }) => {
       </div>
       <div className="pt-6">
         <AddRetirment />
+      </div>
+      <div className="pt-6">
+        <AddGalary />
       </div>
     </div>
   );

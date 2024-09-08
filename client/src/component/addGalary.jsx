@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { addMemberRoute } from "../utils/ApiRoutes";
+import { useNavigate } from "react-router-dom";
+import { gallery } from "../utils/ApiRoutes";
 
 const cloudinaryUploadUrl =
   "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
 const cloudinaryUploadPreset = "aarcodev";
 
-const AddMembers = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [order, setOrder] = useState("");
-  const [image, setImage] = useState(null);
+const AddGalary = () => {
+  const [image, setImage] = useState("");
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
   const [errormsg, setErrormsg] = useState("");
@@ -27,17 +25,13 @@ const AddMembers = () => {
       setImage(null);
     }
   };
+
   const handleValidation = () => {
     let tempErrors = {};
     let isValid = true;
 
-    if (name.length < 3) {
-      tempErrors.name = "Name should be at least 3 characters long.";
-      isValid = false;
-    }
-
-    if (!email) {
-      tempErrors.email = "Email is required.";
+    if (!image) {
+      tempErrors.image = "Please enter a image";
       isValid = false;
     }
 
@@ -63,24 +57,17 @@ const AddMembers = () => {
           console.log("this is url::", imageUrl);
         }
 
-        const memberData = {
-          name,
-          email,
-          order: parseInt(order),
-          image: imageUrl || "",
-        };
-
-        // Replace 'addMemberRoute' with your actual API endpoint
-        const response = await axios.post(addMemberRoute, memberData, {
-          withCredentials: true,
-        });
+        const response = await axios.post(
+          gallery,
+          { image: imageUrl },
+          {
+            withCredentials: true,
+          }
+        );
         console.log("response", response.data);
 
         if (response.data.status === true) {
-          setName("");
-          setEmail("");
-          setOrder("");
-          setImage(null);
+          setImage("");
           setErrors({});
           setMessage("Committee member added successfully!");
           setTimeout(() => {
@@ -104,25 +91,8 @@ const AddMembers = () => {
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-5">Add Committee Member</h2>
+      <h2 className="text-2xl font-bold mb-5">Add Gallery Image</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="name" className="block mb-1">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border rounded"
-            placeholder="Enter member's name"
-          />
-          {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-          )}
-        </div>
-
         <div>
           <label htmlFor="image" className="block mb-1">
             Upload Image
@@ -139,39 +109,6 @@ const AddMembers = () => {
           )}
         </div>
 
-        <div>
-          <label htmlFor="email" className="block mb-1">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border rounded"
-            placeholder="Enter member's email"
-          />
-          {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="order" className="block mb-1">
-            Order
-          </label>
-          <input
-            type="number"
-            id="order"
-            value={order}
-            onChange={(e) => setOrder(e.target.value)}
-            className="w-full p-2 border rounded"
-            placeholder="Enter order number default 10."
-          />
-          {errors.order && (
-            <p className="text-red-500 text-sm mt-1">{errors.order}</p>
-          )}
-        </div>
         {message && <p className="text-green-500 text-sm mt-1">{message}</p>}
         {errormsg && <p className="text-red-500 text-sm mt-1">{errormsg}</p>}
 
@@ -186,4 +123,4 @@ const AddMembers = () => {
   );
 };
 
-export default AddMembers;
+export default AddGalary;

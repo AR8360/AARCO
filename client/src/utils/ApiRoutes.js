@@ -17,7 +17,10 @@ export const getMembersRoute = `${host}/committee/getmembers`;
 export const deleteMemberRoute = `${host}/committee/deletemember`;
 
 // retirment routes
-
 export const addRetrimentRoute = `${host}/committee/addretirment`;
 export const getRetrimentRoute = `${host}/committee/getretirments`;
 export const deleteRetrimentRoute = `${host}/committee/deleteretirment`;
+
+//gallery routes
+
+export const gallery = `${host}/gallery`;
