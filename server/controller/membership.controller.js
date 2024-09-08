@@ -3,20 +3,16 @@ import Membership from "../model/merbership.model.js";
 const addmember = async (req, res) => {
   try {
     const { name, image, email, order } = req.body;
-    console.log("this is the image",image);
 
     if (!name) {
       return res.json({ msg: "Name is required", status: false });
     }
-    // if (!image) {
-    //   return res.json({ msg: "Image is required", status: false });
-    // }
 
     const member = new Membership({
       name,
       image,
       email,
-      order,
+      order: order || 10,
     });
 
     await member.save();
@@ -45,21 +41,19 @@ const getMembers = async (req, res) => {
 
 const deleteMember = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { _id } = req.body;
 
-    if (!id) {
+    if (!_id) {
       return res.json({ msg: "Member not Found" });
     }
 
-    await Membership.findByIdAndDelete(id);
+    await Membership.findByIdAndDelete(_id);
 
-    return res.status(200).json({ msg: "Member deleted successfully" });
+    return res.json({ msg: "Member deleted successfully" });
   } catch (error) {
     console.error(`Delete member error: ${error.message}`);
 
-    return res
-      .status(500)
-      .json({ msg: "Internal server error", status: false });
+    return res.json({ msg: "Internal server error", status: false });
   }
 };
 

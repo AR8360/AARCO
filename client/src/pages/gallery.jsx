@@ -1,10 +1,12 @@
-import React from 'react';
+import React from "react";
 import ig1 from "../images/gallery/1.jpg";
 import ig2 from "../images/gallery/2.jpg";
 import ig3 from "../images/gallery/3.jpg";
 import ig4 from "../images/gallery/4.jpg";
 import ig5 from "../images/gallery/5.jpg";
 import ig6 from "../images/gallery/6.jpg";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 // List of images
 const images = [
@@ -17,24 +19,36 @@ const images = [
 ];
 
 const Gallery = () => {
+  const navigate = useNavigate();
   return (
-    <div className="w-full max-w-6xl mx-auto mt-12 px-4">
-      <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">Gallery</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className="relative overflow-hidden rounded-lg border border-gray-300 shadow-md transition-transform transform hover:scale-105"
-          >
-            <img
-              src={image.src}
-              alt={image.alt}
-              className="w-full h-80 object-cover"
-            />
-          </div>
-        ))}
+    <>
+      <div
+        className="bg-blue-900 inline-flex w-full items-center p-4 cursor-pointer"
+        onClick={() => navigate("/")}
+      >
+        <FaArrowLeft className="text-white text-2xl" />
+        <span className="ml-2 text-white text-lg hover:underline">Back</span>
       </div>
-    </div>
+      <div className="w-full max-w-6xl mx-auto mt-12 px-4">
+        <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">
+          Gallery
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className="relative overflow-hidden rounded-lg border border-gray-300 shadow-md transition-transform transform hover:scale-105"
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="w-full h-80 object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 

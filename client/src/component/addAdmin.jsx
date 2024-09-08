@@ -4,6 +4,7 @@ import axios from "axios";
 const AddAdmin = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async () => {
     if (email === "") {
@@ -20,7 +21,8 @@ const AddAdmin = () => {
         setError(res.data.msg);
       } else {
         setEmail("");
-        setError("Member status changed to admin successfully");
+        setError("");
+        setMessage("Member status changed to admin successfully");
       }
     } catch (error) {
       console.log(error);
@@ -51,6 +53,9 @@ const AddAdmin = () => {
             />
           </div>
           {error && <p className="text-red-500 text-xl italic">{error}</p>}
+          {message && (
+            <p className="text-green-500 text-xl italic">{message}</p>
+          )}
           <div className="mb-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

@@ -13,8 +13,10 @@ const AddMembers = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [order, setOrder] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
+  const [errormsg, setErrormsg] = useState("");
 
   const handleValidation = () => {
     let tempErrors = {};
@@ -66,21 +68,27 @@ const AddMembers = () => {
         console.log("response", response.data);
 
         if (response.data.status === true) {
-          toast.success("Committee member added successfully!", {
-            position: "bottom-right",
-            autoClose: 5000,
-          });
+          setName("");
+          setEmail("");
+          setOrder("");
+          setImage("");
+          setErrors({});
+          setMessage("Committee member added successfully!");
+          setTimeout(() => {
+            setMessage(""); // Clear the message after 2 seconds
+          }, 2000);
         } else {
-          toast.error(response.data.msg || "Failed to add member", {
-            position: "bottom-right",
-            autoClose: 5000,
-          });
+          setErrormsg(response.data.message);
+          setTimeout(() => {
+            setErrormsg(""); // Clear the message after 2 seconds
+          }, 2000);
         }
       } catch (error) {
-        toast.error("An error occurred. Please try again.", {
-          position: "bottom-right",
-          autoClose: 5000,
-        });
+        console.error("An error occurred:", error);
+        setErrormsg("An error occurred. Please try again.");
+        setTimeout(() => {
+          setErrormsg(""); // Clear the message after 2 seconds
+        }, 2000);
       }
     }
   };
@@ -155,6 +163,8 @@ const AddMembers = () => {
             <p className="text-red-500 text-sm mt-1">{errors.order}</p>
           )}
         </div>
+        {message && <p className="text-green-500 text-sm mt-1">{message}</p>}
+        {errormsg && <p className="text-red-500 text-sm mt-1">{errormsg}</p>}
 
         <button
           type="submit"

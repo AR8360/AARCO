@@ -4,20 +4,17 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ isLogin, admin }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const navigate = useNavigate();
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
   const handleLoginClick = () => {
     navigate("/login");
   };
   const handleNewsClick = () => {
     navigate("/news");
   };
-
   const handleDownloadClick = () => {
     navigate("/downloads"); // Navigate to the downloads page
   };
@@ -44,12 +41,12 @@ const Navbar = ({ isLogin, admin }) => {
             News & Updates
           </button>
 
-          <button
+          <div
             className="text-lg font-semibold  cursor-pointer"
             onClick={() => navigate("/members")}
           >
             Members
-          </button>
+          </div>
 
           <ScrollLink
             to="about-aarco"
@@ -70,32 +67,39 @@ const Navbar = ({ isLogin, admin }) => {
             Retirements
           </ScrollLink>
           <div
-        onClick={handleCClick}
-        className="text-lg font-semibold hover:text-blue-600 transition duration-300 cursor-pointer"
-      >
-        Committee
-      </div>
-          <button
+            onClick={handleCClick}
+            className="text-lg font-semibold hover:text-blue-600 transition duration-300 cursor-pointer"
+          >
+            Committee
+          </div>
+          <div
+            onClick={() => navigate("/gallery")}
+            className="text-lg font-semibold hover:text-blue-600 transition duration-300 cursor-pointer"
+          >
+            Gallery
+          </div>
+          <div
             onClick={handleDownloadClick} // Navigate to Downloads page on click
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
           >
             Downloads
-          </button>
+          </div>
+
           {!isLogin && (
-            <button
+            <div
               onClick={handleLoginClick}
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
             >
               Login
-            </button>
+            </div>
           )}
           {admin && (
-            <button
+            <div
               onClick={() => navigate("/admin")}
               className="text-xl font-semibold underline cursor-pointer"
             >
               admin
-            </button>
+            </div>
           )}
         </div>
         {/* Mobile Menu Toggle */}
@@ -167,8 +171,6 @@ const Navbar = ({ isLogin, admin }) => {
         >
           Login
         </button>
-        
-       
       </div>
     </nav>
   );

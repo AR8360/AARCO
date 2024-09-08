@@ -7,6 +7,8 @@ const addNews = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
+  const [errormsg, setErrormsg] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -22,17 +24,26 @@ const addNews = () => {
 
     console.log("Submitting News:", { title, content });
     // Add logic to send the data to the backend
-    const response = axios.post(
-      addNewsRoute,
-      { title, content },
-      { withCredentials: true }
-    );
-    console.log(response.data);
-
-    // Clear the form
-    setTitle("");
-    setContent("");
-    setErrors({});
+    try {
+      const response = axios.post(
+        addNewsRoute,
+        { title, content },
+        { withCredentials: true }
+      );
+      setTitle("");
+      setContent("");
+      setErrors({});
+      setMessage("News added successfully");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
+    } catch (error) {
+      console.error("Error adding news:", error);
+      setErrormsg("Error adding news. Please try again later.");
+      setTimeout(() => {
+        setErrormsg("");
+      }, 2000);
+    }
   };
 
   return (
@@ -80,6 +91,8 @@ const addNews = () => {
               <p className="text-red-500 text-sm">{errors.content}</p>
             )}
           </div>
+          {message && <p className="text-green-500 text-sm pb-2">{message}</p>}
+          {errormsg && <p className="text-red-500 text-sm pb-2">{errormsg}</p>}
 
           <button
             type="submit"

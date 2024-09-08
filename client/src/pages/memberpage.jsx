@@ -75,18 +75,16 @@ const MemberList = ({ isadmin }) => {
     try {
       const response = await axios.get(getMembersRoute);
       setMembers(response.data.members);
-      console.log(isadmin);
-
-      // console.log(response.data);
-
-      console.log(members1);
     } catch (error) {
       console.error(error);
     }
   };
-  const handledelete = async () => {
+  const handledelete = async (_id) => {
     try {
-      const response = await axios.post(deleteMemberRoute, { id: id });
+      const response = await axios.delete(deleteMemberRoute, {
+        data: { _id },
+        withCredentials: true,
+      });
       console.log(response.data);
       getMembers();
     } catch (error) {
@@ -122,7 +120,7 @@ const MemberList = ({ isadmin }) => {
       {/* Member Cards */}
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-center">
         {members1.length > 0 &&
-          members1.map((member1, index) => (
+          members1.map((member1) => (
             <div
               key={member1._id}
               className="bg-white relative rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"

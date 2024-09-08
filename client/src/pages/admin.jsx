@@ -25,6 +25,9 @@ const admin = ({ admin, isLogin }) => {
         <span className="ml-2 text-white text-lg hover:underline">Back</span>
       </div>
       <div className="pt-6">
+        <AddAdmin />
+      </div>
+      <div className="pt-6">
         <AddNews />
       </div>
       <div className="pt-6">
@@ -32,9 +35,6 @@ const admin = ({ admin, isLogin }) => {
       </div>
       <div className="pt-6">
         <AddRetirment />
-      </div>
-      <div className="pt-6">
-        <AddAdmin />
       </div>
     </div>
   );
