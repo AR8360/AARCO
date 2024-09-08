@@ -8,7 +8,7 @@ const loginorSinup = async (req, res) => {
 
     // Validate email input
     if (!email) {
-      return res.status(400).json({ msg: "Email is required", status: false });
+      return res.json({ msg: "Email is required", status: false });
     }
 
     const otp = generateOTP();
@@ -45,7 +45,7 @@ const verifyOTP = async (req, res) => {
 
     // Check if the user exists and if OTP matches and is not expired
     if (!user || user.otp !== otp || isAfter(new Date(), user.otpExpiry)) {
-      return res.status(400).json({ msg: "Invalid or expired OTP" });
+      return res.json({ msg: "Invalid or expired OTP", status: false });
     }
 
     // Clear OTP and expiration after successful verification
@@ -61,12 +61,13 @@ const verifyOTP = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 1 hour in milliseconds
     });
 
-    return res
-      .status(200)
-      .json({ msg: "OTP verified successfully. You are logged in!" });
+    return res.json({
+      msg: "OTP verified successfully. You are logged in!",
+      status: true,
+    });
   } catch (error) {
     console.error("OTP verification error:", error);
-    return res.status(500).json({ msg: "Internal server error" });
+    return res.json({ msg: "Internal server error", status: false });
   }
 };
 

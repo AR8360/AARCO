@@ -5,11 +5,11 @@ const addmember = async (req, res) => {
     const { name, image, email, order } = req.body;
 
     if (!name) {
-      return res.status(400).json({ msg: "Name is required" });
+      return res.json({ msg: "Name is required", status: false });
     }
-    if (!image) {
-      return res.status(400).json({ msg: "Image is required" });
-    }
+    // if (!image) {
+    //   return res.json({ msg: "Image is required", status: false });
+    // }
 
     const member = new Membership({
       name,
@@ -20,13 +20,11 @@ const addmember = async (req, res) => {
 
     await member.save();
 
-    return res.status(201).json({ msg: "Member added successfully" });
+    return res.json({ msg: "Member added successfully", status: true });
   } catch (error) {
     console.error(`Add member error: ${error.message}`);
 
-    return res
-      .status(500)
-      .json({ msg: "Internal server error", status: false });
+    return res.json({ msg: "Internal server error", status: false });
   }
 };
 
@@ -49,7 +47,7 @@ const deleteMember = async (req, res) => {
     const { id } = req.params;
 
     if (!id) {
-      return res.status(400).json({ msg: "Member not Found" });
+      return res.json({ msg: "Member not Found" });
     }
 
     await Membership.findByIdAndDelete(id);

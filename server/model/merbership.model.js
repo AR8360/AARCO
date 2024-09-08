@@ -13,9 +13,12 @@ const memberShipSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  contact: {
+    type: String,
+    default: "",
+  },
   order: {
     type: Number,
-    required: true,
     default: 10,
   },
 });
