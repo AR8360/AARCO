@@ -13,6 +13,10 @@ const RetirmentSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  email: {
+    type: String,
+    default: "",
+  },
   date: {
     type: String,
     default: "",

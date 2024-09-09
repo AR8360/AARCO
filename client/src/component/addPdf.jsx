@@ -20,8 +20,6 @@ const AddPdf = () => {
       return;
     }
 
-    console.log("Submitting Pdf:", { title, link });
-
     // Add logic to send the data to the backend
     try {
       const response = await axios.post(
@@ -29,7 +27,6 @@ const AddPdf = () => {
         { title: title, link: link },
         { withCredentials: true }
       );
-      console.log("Response:", response.data);
 
       setTitle("");
       setLink("");

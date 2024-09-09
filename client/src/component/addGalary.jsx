@@ -51,9 +51,7 @@ const AddGalary = () => {
             cloudinaryUploadUrl,
             formData
           );
-          console.log("respose111", cloudinaryResponse.data);
           imageUrl = cloudinaryResponse.data.secure_url;
-          console.log("this is url::", imageUrl);
         }
 
         const response = await axios.post(
@@ -63,7 +61,6 @@ const AddGalary = () => {
             withCredentials: true,
           }
         );
-        console.log("response", response.data);
 
         if (response.data.status === true) {
           setImage("");

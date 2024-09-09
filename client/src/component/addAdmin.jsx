@@ -16,7 +16,6 @@ const AddAdmin = () => {
     };
     try {
       const res = await axios.post(setAdmin, data, { withCredentials: true });
-      console.log(res.data);
       if (res.data.status === false) {
         setError(res.data.msg);
       } else {

@@ -25,7 +25,7 @@ router.delete("/deletemember", verifyToken, deleteMember);
 
 router.post("/addretirment", addRetirment);
 router.get("/getretirments", getRetirments);
-router.delete("/deleteretirment/:id", deleteRetirment);
+router.delete("/deleteretirment", deleteRetirment);
 
 router.get("/getcommittee", getCommittee);
 router.post("/createcommittee", verifyToken, createCommittee);

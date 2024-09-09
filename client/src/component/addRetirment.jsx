@@ -11,6 +11,8 @@ const AddRetirement = () => {
   const [order, setOrder] = useState("");
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
+  const [errormsg, setErrormsg] = useState("");
   const navigate = useNavigate();
 
   // Cloudinary configuration
@@ -32,11 +34,6 @@ const AddRetirement = () => {
       isValid = false;
     }
 
-    if (!date) {
-      tempErrors.date = "Date is required.";
-      isValid = false;
-    }
-
     setErrors(tempErrors);
     return isValid;
   };
@@ -48,11 +45,10 @@ const AddRetirement = () => {
       try {
         // Upload image to Cloudinary
         let imageUrl = "";
-        if (image.length > 0) {
+        if (image) {
           const formData = new FormData();
           formData.append("file", image);
           formData.append("upload_preset", cloudinaryUploadPreset);
-
           const cloudinaryResponse = await axios.post(
             cloudinaryUploadUrl,
             formData
@@ -63,7 +59,7 @@ const AddRetirement = () => {
         // Data to be sent to backend
         const memberData = {
           name,
-          image: imageUrl,
+          image: imageUrl || "",
           email,
           date,
           contact,
@@ -74,16 +70,30 @@ const AddRetirement = () => {
         const response = await axios.post(addRetrimentRoute, memberData, {
           withCredentials: true,
         });
-        console.log(response.data);
 
         if (response.data.status === false) {
-          console.error("Error:", response.data.msg);
+          setErrormsg("Error adding member.");
+          setTimeout(() => {
+            setErrormsg("");
+          }, 2000);
         } else if (response.data.status === true) {
-          console.log("Member added successfully!", response.data);
-          navigate("/members"); // Redirect to members page
+          setMessage("Member added successfully!");
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
+          setName("");
+          setImage("");
+          setEmail("");
+          setContact("");
+          setDate("");
+          setOrder("");
+          setContent("");
         }
       } catch (error) {
-        console.error("Error adding member:", error.message);
+        setErrormsg("Error adding member.");
+        setTimeout(() => {
+          setErrormsg("");
+        }, 2000);
       }
     }
   };
@@ -223,6 +233,8 @@ const AddRetirement = () => {
         >
           Submit
         </button>
+        {message && <p className="text-green-500 text-sm mt-2">{message}</p>}
+        {errormsg && <p className="text-red-500 text-sm mt-2">{errormsg}</p>}
       </form>
     </div>
   );

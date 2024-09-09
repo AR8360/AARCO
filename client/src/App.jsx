@@ -49,7 +49,7 @@ const App = () => {
         />
         <Route path="/members" element={<MemberList isadmin={isadmin} />} />
         <Route path="/news" element={<News isadmin={isadmin} />} />
-        <Route path="/retire" element={<RetireList />} />
+        <Route path="/retire" element={<RetireList isadmin={isadmin} />} />
         <Route
           path="/login"
           element={

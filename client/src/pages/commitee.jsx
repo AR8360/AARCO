@@ -22,8 +22,6 @@ const CommitteeList = ({ isAdmin }) => {
       if (response.data.status) {
         setMembers(response.data.committee);
       }
-
-      console.log(response.data);
     } catch (error) {
       console.error("Error fetching committee members:", error);
       setError("An error occurred while fetching the committee members.");

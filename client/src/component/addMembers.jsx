@@ -58,15 +58,13 @@ const AddMembers = () => {
             cloudinaryUploadUrl,
             formData
           );
-          console.log("respose111", cloudinaryResponse.data);
           imageUrl = cloudinaryResponse.data.secure_url;
-          console.log("this is url::", imageUrl);
         }
 
         const memberData = {
           name,
           email,
-          order: parseInt(order),
+          order: order,
           image: imageUrl || "",
         };
 

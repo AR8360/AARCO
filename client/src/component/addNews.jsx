@@ -22,7 +22,6 @@ const addNews = () => {
       return;
     }
 
-    console.log("Submitting News:", { title, content });
     // Add logic to send the data to the backend
     try {
       const response = axios.post(
