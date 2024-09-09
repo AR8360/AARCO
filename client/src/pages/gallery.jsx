@@ -58,7 +58,11 @@ const Gallery = ({ isadmin }) => {
         <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">
           Gallery
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div
+          className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ${
+            images.length === 0 ? `pb-80` : `pb-20`
+          }`}
+        >
           {images.length > 0 ? (
             images.map((image) => (
               <div
@@ -67,11 +71,14 @@ const Gallery = ({ isadmin }) => {
               >
                 {isadmin && (
                   <MdDelete
-                    className="text-red-600 absolute text-xl top-4 right-4 cursor-pointer"
+                    className="text-red-600 absolute text-xl top-4 right-4 cursor-pointer bg-white rounded-full"
                     onClick={() => handleDeleteImage(image._id)}
                   />
                 )}
-                <img src={image.image} className="w-full h-80 object-cover" />
+                <img
+                  src={image.image}
+                  className="w-full h-full object-cover rounded-lg"
+                />
               </div>
             ))
           ) : (

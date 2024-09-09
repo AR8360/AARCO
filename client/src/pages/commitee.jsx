@@ -81,7 +81,11 @@ const CommitteeList = ({ isAdmin }) => {
       {loading && <div className="text-center text-2xl">Loading...</div>}
 
       {/* Member Cards */}
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-8 text-center">
+      <div
+        className={`container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-8 text-center ${
+          members.length === 0 ? `pb-72` : `pb-14`
+        }`}
+      >
         {!loading && members.length > 0 ? (
           members.map((member) => (
             <div
