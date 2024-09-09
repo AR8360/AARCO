@@ -7,7 +7,7 @@ import News from "./pages/news";
 import Login from "./pages/login";
 import Admin from "./pages/admin";
 import Downloads from "./pages/downloads";
-import Commitee from "./pages/commitee";
+import CommitteeList from "./pages/commitee";
 import Gallery from "./pages/gallery";
 import { verify } from "./utils/ApiRoutes.js";
 import axios from "axios";
@@ -36,7 +36,17 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home admin={isadmin} isLogin={isLogin} />} />
+        <Route
+          path="/"
+          element={
+            <Home
+              admin={isadmin}
+              isLogin={isLogin}
+              setadmin={setadmin}
+              setIsLogin={setIsLogin}
+            />
+          }
+        />
         <Route path="/members" element={<MemberList isadmin={isadmin} />} />
         <Route path="/news" element={<News isadmin={isadmin} />} />
         <Route path="/retire" element={<RetireList />} />
@@ -55,8 +65,11 @@ const App = () => {
           path="/admin"
           element={<Admin admin={isadmin} isLogin={isLogin} />}
         />
-        <Route path="/downloads" element={<Downloads />} />
-        <Route path="/committee" element={<Commitee />} />
+        <Route path="/downloads" element={<Downloads isadmin={isadmin} />} />
+        <Route
+          path="/committee"
+          element={<CommitteeList isAdmin={isadmin} />}
+        />
         <Route path="/gallery" element={<Gallery isadmin={isadmin} />} />
       </Routes>
     </Router>

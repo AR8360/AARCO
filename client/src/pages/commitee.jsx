@@ -16,12 +16,13 @@ const CommitteeList = ({ isAdmin }) => {
   const fetchMembers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(getCommitteeRoute, { withCredentials: true });
-      if(response.data.status)
-      {
-        setMembers(response.data.committee)
+      const response = await axios.get(getCommitteeRoute, {
+        withCredentials: true,
+      });
+      if (response.data.status) {
+        setMembers(response.data.committee);
       }
-    
+
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching committee members:", error);
@@ -51,12 +52,10 @@ const CommitteeList = ({ isAdmin }) => {
     navigate("/");
   };
 
-  if (loading) {
-    return <div className="text-center mt-10 text-2xl">Loading...</div>;
-  }
-
   if (error) {
-    return <div className="text-center text-red-500 mt-10 text-2xl">{error}</div>;
+    return (
+      <div className="text-center text-red-500 mt-10 text-2xl">{error}</div>
+    );
   }
 
   return (
@@ -79,10 +78,11 @@ const CommitteeList = ({ isAdmin }) => {
           Our Committee Members
         </h2>
       </div>
+      {loading && <div className="text-center text-2xl">Loading...</div>}
 
       {/* Member Cards */}
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-center">
-        {members.length > 0 ? (
+        {!loading && members.length > 0 ? (
           members.map((member) => (
             <div
               key={member._id}
@@ -99,7 +99,6 @@ const CommitteeList = ({ isAdmin }) => {
                   <MdDelete
                     className="text-red-800 absolute text-xl top-4 right-4 cursor-pointer z-10"
                     onClick={() => handleDelete(member._id)}
-                    style={{ zIndex: 10 }}
                   />
                 </>
               )}
@@ -116,7 +115,9 @@ const CommitteeList = ({ isAdmin }) => {
                 </h3>
                 <h4 className="text-xl text-gray-600 mb-4">{member.email}</h4>
                 {member.contact && (
-                  <p className="text-gray-600 mb-2">Contact: {member.contact}</p>
+                  <p className="text-gray-600 mb-2">
+                    Contact: {member.contact}
+                  </p>
                 )}
               </div>
             </div>

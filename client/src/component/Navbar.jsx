@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link as ScrollLink } from "react-scroll";
 import { useNavigate } from "react-router-dom";
-import { Menu, X } from 'lucide-react'; // Optional for menu icons
+import { Menu, X } from "lucide-react"; // Optional for menu icons
+import { logoutRoute } from "../utils/ApiRoutes.js";
+import axios from "axios";
 
-const Navbar = ({ isLogin, admin }) => {
+const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -22,6 +24,23 @@ const Navbar = ({ isLogin, admin }) => {
   };
   const handleCClick = () => {
     navigate("/committee");
+  };
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(
+        logoutRoute,
+        {},
+        { withCredentials: true }
+      );
+
+      if (response.data.status) {
+        setIsLogin(false);
+        setadmin(false);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("Error during logout:", error);
+    }
   };
 
   return (
@@ -80,7 +99,7 @@ const Navbar = ({ isLogin, admin }) => {
 
           <div
             onClick={handleDownloadClick}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+            className="bg-blue-500 text-white cursor-pointer px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
           >
             Downloads
           </div>
@@ -104,7 +123,10 @@ const Navbar = ({ isLogin, admin }) => {
           )}
 
           {isLogin && (
-            <div className="text-lg cursor-pointer" onClick={() => {/* Add logout logic */}}>
+            <div
+              className="text-lg cursor-pointer"
+              onClick={() => handleLogout()}
+            >
               Logout
             </div>
           )}
@@ -113,7 +135,11 @@ const Navbar = ({ isLogin, admin }) => {
         {/* Mobile Menu Toggle */}
         <div className="lg:hidden flex items-center">
           <button onClick={handleMenuToggle} className="text-2xl">
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
@@ -195,6 +221,7 @@ const Navbar = ({ isLogin, admin }) => {
     </div>
   )}
 </div>
+
     </nav>
   );
 };

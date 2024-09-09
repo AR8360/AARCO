@@ -59,7 +59,7 @@ const AboutAARCO = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap");
 
         h2 {

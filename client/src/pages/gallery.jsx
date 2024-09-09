@@ -10,9 +10,11 @@ const Gallery = ({ isadmin }) => {
   const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handlegetImages = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(gallery);
 
       if (response.data.status) {
@@ -20,6 +22,8 @@ const Gallery = ({ isadmin }) => {
       }
     } catch (error) {
       console.error("Error fetching images:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -50,7 +54,7 @@ const Gallery = ({ isadmin }) => {
         <FaArrowLeft className="text-white text-2xl" />
         <span className="ml-2 text-white text-lg hover:underline">Back</span>
       </div>
-      <div className="w-full max-w-6xl mx-auto mt-12 px-4">
+      <div className="w-full max-w-6xl mx-auto mt-12 px-4 ">
         <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">
           Gallery
         </h2>
