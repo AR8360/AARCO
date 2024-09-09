@@ -52,10 +52,6 @@ const CommitteeList = ({ isAdmin }) => {
     navigate("/");
   };
 
-  if (loading) {
-    return <div className="text-center mt-10 text-2xl">Loading...</div>;
-  }
-
   if (error) {
     return (
       <div className="text-center text-red-500 mt-10 text-2xl">{error}</div>
@@ -82,10 +78,11 @@ const CommitteeList = ({ isAdmin }) => {
           Our Committee Members
         </h2>
       </div>
+      {loading && <div className="text-center text-2xl">Loading...</div>}
 
       {/* Member Cards */}
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-center">
-        {members.length > 0 ? (
+        {!loading && members.length > 0 ? (
           members.map((member) => (
             <div
               key={member._id}
