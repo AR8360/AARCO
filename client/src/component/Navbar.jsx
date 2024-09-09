@@ -77,15 +77,12 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
           >
             About
           </ScrollLink>
-          <ScrollLink
-            to="retired-carousel"
-            smooth={true}
-            duration={500}
-            offset={-70}
-            className="text-lg font-semibold hover:text-blue-600 transition duration-300 cursor-pointer"
-          >
-            Retirements
-          </ScrollLink>
+          <div
+    onClick={() => navigate("/retire")}
+    className="block py-2 px-4 font-semibold text-lg cursor-pointer"
+  >
+    Retirement
+  </div>
 
           <div
             onClick={handleCClick}
@@ -148,88 +145,83 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
       </div>
 
       {/* Mobile Menu */}
-      <div
-        className={`lg:hidden ${isMenuOpen ? "block" : "hidden"} bg-gray-100`}
-      >
-        <button
-          className="block py-2 px-4 text-lg cursor-pointer"
-          onClick={handleNewsClick}
-        >
-          News & Updates
-        </button>
-        <div
-          className="block py-2 px-4 text-lg cursor-pointer"
-          onClick={() => navigate("/members")}
-        >
-          Members
-        </div>
-        <ScrollLink
-          to="about-aarco"
-          smooth={true}
-          duration={500}
-          offset={-70}
-          className="block py-2 px-4 text-lg cursor-pointer"
-          onClick={handleMenuToggle}
-        >
-          About
-        </ScrollLink>
-        <ScrollLink
-          to="retired-carousel"
-          smooth={true}
-          duration={500}
-          offset={-70}
-          className="block py-2 px-4 text-lg cursor-pointer"
-          onClick={handleMenuToggle}
-        >
-          Retirements
-        </ScrollLink>
-        <div
-          onClick={handleCClick}
-          className="block py-2 px-4 text-lg cursor-pointer"
-        >
-          Committee
-        </div>
-        <div
-          onClick={() => navigate("/gallery")}
-          className="block py-2 px-4 text-lg cursor-pointer"
-        >
-          Gallery
-        </div>
-        <div
-          onClick={handleDownloadClick}
-          className="block py-2 px-4 cursor-pointer bg-blue-500 text-white w-full"
-        >
-          Downloads
-        </div>
+      <div className={`lg:hidden ${isMenuOpen ? "block" : "hidden"} bg-gray-100`}>
+  <button
+    className="block py-2 px-4 text-lg cursor-pointer"
+    onClick={handleNewsClick}
+  >
+    News & Updates
+  </button>
+  <div
+    className="block py-2 px-4 text-lg cursor-pointer"
+    onClick={() => navigate("/members")}
+  >
+    Members
+  </div>
+  <ScrollLink
+    to="about-aarco"
+    smooth={true}
+    duration={500}
+    offset={-70}
+    className="block py-2 px-4 text-lg cursor-pointer"
+    onClick={handleMenuToggle}
+  >
+    About
+  </ScrollLink>
+  <div
+    onClick={() => navigate("/retire")}
+    className="block py-2 px-4 text-lg cursor-pointer"
+  >
+    Retirement
+  </div>
+  <div
+    onClick={handleCClick}
+    className="block py-2 px-4 text-lg cursor-pointer"
+  >
+    Committee
+  </div>
+  <div
+    onClick={() => navigate("/gallery")}
+    className="block py-2 px-4 text-lg cursor-pointer"
+  >
+    Gallery
+  </div>
+  <div
+    onClick={handleDownloadClick}
+    className="block py-2 px-4 bg-blue-500 text-white w-full"
+  >
+    Downloads
+  </div>
 
-        {/* Conditionally render Login for mobile */}
-        {!isLogin && !admin && (
-          <div
-            onClick={handleLoginClick}
-            className="block py-2 px-4 bg-blue-500 text-white w-full"
-          >
-            Login
-          </div>
-        )}
+  {/* Conditionally render Login for mobile */}
+  {!isLogin && !admin && (
+    <div
+      onClick={handleLoginClick}
+      className="block py-2 px-4 bg-blue-500 text-white w-full"
+    >
+      Login
+    </div>
+  )}
 
-        {admin && (
-          <div
-            onClick={() => navigate("/admin")}
-            className="block py-2 px-4 text-lg font-semibold underline cursor-pointer"
-          >
-            Admin
-          </div>
-        )}
+  {admin && (
+    <div
+      onClick={() => navigate("/admin")}
+      className="block py-2 px-4 text-lg font-semibold underline cursor-pointer"
+    >
+      Admin
+    </div>
+  )}
 
-        {isLogin && (
-          <div
-            className="block py-2 px-4 text-lg cursor-pointer"
-            onClick={() => handleLogout()}
-          >
-            Logout
-          </div>
-        )}
-      </div>
+  {isLogin && (
+    <div
+      className="block py-2 px-4 text-lg cursor-pointer"
+      onClick={() => {/* Add logout logic */}}
+    >
+      Logout
+    </div>
+  )}
+</div>
+
     </nav>
   );
 };
