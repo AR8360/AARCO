@@ -58,15 +58,12 @@ const Navbar = ({ isLogin, admin }) => {
           >
             About
           </ScrollLink>
-          <ScrollLink
-            to="retired-carousel"
-            smooth={true}
-            duration={500}
-            offset={-70}
-            className="text-lg font-semibold hover:text-blue-600 transition duration-300 cursor-pointer"
-          >
-            Retirements
-          </ScrollLink>
+          <div
+    onClick={() => navigate("/retire")}
+    className="block py-2 px-4 font-semibold text-lg cursor-pointer"
+  >
+    Retirement
+  </div>
 
           <div
             onClick={handleCClick}
@@ -145,16 +142,12 @@ const Navbar = ({ isLogin, admin }) => {
   >
     About
   </ScrollLink>
-  <ScrollLink
-    to="retired-carousel"
-    smooth={true}
-    duration={500}
-    offset={-70}
+  <div
+    onClick={() => navigate("/retire")}
     className="block py-2 px-4 text-lg cursor-pointer"
-    onClick={handleMenuToggle}
   >
-    Retirements
-  </ScrollLink>
+    Retirement
+  </div>
   <div
     onClick={handleCClick}
     className="block py-2 px-4 text-lg cursor-pointer"

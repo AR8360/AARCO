@@ -155,7 +155,7 @@ const AddRetirement = () => {
             type="number"
             id="contact"
             value={contact}
-            onChange={(e) => setOrder(e.target.value)}
+            onChange={(e) => setContact(e.target.value)}
             className="w-full p-2 border rounded"
             placeholder="Enter Contact number"
           />
@@ -171,7 +171,7 @@ const AddRetirement = () => {
             type="number"
             id="date"
             value={date}
-            onChange={(e) => setOrder(e.target.value)}
+            onChange={(e) => setDate(e.target.value)}
             className="w-full p-2 border rounded"
             placeholder="dd/mm/yyyy- dd/mm/yyyy"
           />
