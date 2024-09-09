@@ -7,6 +7,7 @@ import AddRetirment from "../component/addRetirment";
 import AddAdmin from "../component/addAdmin";
 import AddCommitteMember from "../component/addCommitte.jsx";
 import AddGalary from "../component/addGalary";
+import AddPdf from "../component/addPdf.jsx";
 const admin = ({ admin, isLogin }) => {
   const navigate = useNavigate();
 
@@ -43,6 +44,9 @@ const admin = ({ admin, isLogin }) => {
       </div>
       <div className="pt-6">
         <AddGalary />
+      </div>
+      <div className="pt-6">
+        <AddPdf />
       </div>
     </div>
   );

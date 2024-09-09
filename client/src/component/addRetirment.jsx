@@ -168,7 +168,7 @@ const AddRetirement = () => {
             Date of Working
           </label>
           <input
-            type="number"
+            type="text"
             id="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}

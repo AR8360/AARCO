@@ -60,7 +60,11 @@ const MemberList = ({ isadmin }) => {
       </div>
 
       {/* Member Cards */}
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-center">
+      <div
+        className={`container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-8 text-center ${
+          members1.length === 0 ? `pb-72` : `pb-14`
+        }`}
+      >
         {members1.length > 0 ? (
           members1.map((member1) => (
             <div

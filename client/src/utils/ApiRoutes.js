@@ -5,6 +5,7 @@ export const verify = `${host}/api/verify`;
 export const verifyotp = `${host}/user/verify-otp`;
 export const loginorSinupRoute = `${host}/user/loginorsignup`;
 export const setAdmin = `${host}/user/change-status`;
+export const logoutRoute = `${host}/user/logout`;
 
 // news routes
 export const addNewsRoute = `${host}/news/create-news`;
@@ -27,5 +28,9 @@ export const createCommitteeRoute = `${host}/committee/createcommittee`;
 export const deleteCommitteeRoute = `${host}/committee/deletecommittee`;
 
 //gallery routes
-
 export const gallery = `${host}/gallery`;
+
+//pdf routes
+export const addPdfRoute = `${host}/pdf`;
+export const getPdfRoute = `${host}/pdf`;
+export const deletePdfRoute = `${host}/pdf`;

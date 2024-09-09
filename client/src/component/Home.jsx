@@ -11,11 +11,16 @@ import Footer from "./footer";
 import RetiredCarousel from "./retried";
 import HomeImage from "./homeimage";
 
-const Home = ({ admin, isLogin }) => {
+const Home = ({ admin, isLogin, setadmin, setIsLogin }) => {
   return (
     <div className="font-sans text-gray-900">
       {/* Navbar */}
-      <Navbar admin={admin} isLogin={isLogin} />
+      <Navbar
+        admin={admin}
+        isLogin={isLogin}
+        setadmin={setadmin}
+        setIsLogin={setIsLogin}
+      />
 
       <Header />
       <Marquee />

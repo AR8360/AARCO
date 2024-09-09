@@ -105,4 +105,14 @@ const changeMemberStatusToAdmin = async (req, res) => {
   }
 };
 
-export { loginorSinup, verifyOTP, changeMemberStatusToAdmin };
+const logout = async (req, res) => {
+  try {
+    res.clearCookie("token");
+    return res.json({ msg: "Logged out successfully", status: true });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.json({ msg: "Internal server error", status: false });
+  }
+};
+
+export { loginorSinup, verifyOTP, changeMemberStatusToAdmin, logout };

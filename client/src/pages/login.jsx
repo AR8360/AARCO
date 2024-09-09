@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { loginorSinupRoute } from "../utils/ApiRoutes";
 import { verifyotp } from "../utils/ApiRoutes";
+import { verify } from "../utils/ApiRoutes.js";
 import axios from "axios";
 const Login = ({ isLogin, setAdmin, setIsLogin }) => {
-  const [isMember, setIsMember] = useState(true);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
+  const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Renamed for clarity
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
@@ -28,17 +29,37 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
       return;
     }
     setErrors({});
+    setLoading(true);
     try {
       const response = await axios.post(loginorSinupRoute, { email });
       if (response.data.status) {
         setIsLoggedIn(true);
         setMessage(response.data.msg);
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
       } else {
         setErrors({ login: response.data.message });
       }
     } catch (error) {
       console.error("Error during login:", error);
       setErrors({ general: "An error occurred. Please try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyAdmin = async () => {
+    try {
+      const response = await axios.get(verify, { withCredentials: true });
+
+      if (response.data.success) {
+        if (response.data.decoded.status === "admin") {
+          setAdmin(true);
+        }
+      }
+    } catch (error) {
+      console.error("Error during admin verification:", error);
     }
   };
 
@@ -58,10 +79,10 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
         { email, otp },
         { withCredentials: true }
       );
-      console.log(response.data);
 
       if (response.data.status) {
         setMessage("Login successful!");
+        verifyAdmin();
         setIsLogin(true);
         navigate("/");
         // navigate("/dashboard"); // Redirect after successful login
@@ -78,6 +99,7 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     if (isLoggedIn) {
       handleLogin(event);
     } else {
@@ -173,12 +195,21 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
             )}
 
             {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-blue-900 text-xl text-white py-3 rounded-lg hover:bg-blue-800 transition duration-300"
-            >
-              {isLoggedIn ? "Login/SignUp" : "Generate OTP"}
-            </button>
+            {!loading ? (
+              <button
+                type="submit"
+                className="w-full bg-blue-900 text-xl text-white py-3 rounded-lg hover:bg-blue-800 transition duration-300"
+              >
+                {isLoggedIn ? "Login/SignUp" : "Generate OTP"}
+              </button>
+            ) : (
+              <button
+                className="w-full bg-slate-500 text-xl text-white py-3 rounded-lg"
+                disabled
+              >
+                Generating OTP...
+              </button>
+            )}
           </form>
         </div>
       </div>
