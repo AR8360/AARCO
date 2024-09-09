@@ -3,36 +3,15 @@ import Navbar from "./Navbar";
 import Header from "./header";
 import Goals from "./Goals";
 import AboutAARCO from "./aarco";
-import MemberCarousel from "./member";
-import NewsUpdates from "./update";
-import Marquee from "./marqueue"; // Import Marquee component
-import { verify } from "../utils/ApiRoutes";
-import axios from "axios";
+import Marquee from "./marqueue";
+
 // Import the Navbar component
 import PresidentMessage from "./presidentMessage";
 import Footer from "./footer";
 import RetiredCarousel from "./retried";
 import HomeImage from "./homeimage";
 
-const Home = ({ admin, isLogin, setadmin, setIsLogin }) => {
-  const handleadminvrification = async () => {
-    try {
-      const response = await axios.get(verify, { withCredentials: true });
-      console.log("admin verification response:", response.data.decoded.status);
-
-      if (response.data.success) {
-        if (response.data.decoded.status === "admin") {
-          setadmin(true);
-        }
-        setIsLogin(true);
-      }
-    } catch (error) {
-      console.error("Error during admin verification:", error);
-    }
-  };
-  useEffect(() => {
-    handleadminvrification();
-  }, []);
+const Home = ({ admin, isLogin }) => {
   return (
     <div className="font-sans text-gray-900">
       {/* Navbar */}
@@ -47,7 +26,6 @@ const Home = ({ admin, isLogin, setadmin, setIsLogin }) => {
         <PresidentMessage id="president-message" />
         <Goals id="goals" />
         <AboutAARCO id="about-aarco" />
-        <MemberCarousel id="member-carousel" />
         <RetiredCarousel id="retired-carousel" />
         <HomeImage />
         {/* About Section */}

@@ -1,4 +1,4 @@
-import Pdf from "../model/pdf.model";
+import Pdf from "../model/pdf.model.js";
 
 const getPdf = async (req, res) => {
   try {

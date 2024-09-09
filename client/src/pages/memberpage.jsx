@@ -7,64 +7,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Footer from "../component/footer";
 
-const members = [
-  {
-    name: "John Doe",
-    role: "Software Engineer",
-    description:
-      "John is a seasoned software engineer with over a decade of experience in the tech industry.",
-    image: defaultImg,
-  },
-  {
-    name: "Jane Smith",
-    role: "UX Designer",
-    description:
-      "Jane is a talented UX designer focused on creating intuitive and user-friendly interfaces.",
-    image: defaultImg,
-  },
-  {
-    name: "Mike Johnson",
-    role: "Project Manager",
-    description:
-      "Mike excels at managing complex projects and leading cross-functional teams.",
-    image: defaultImg,
-  },
-  {
-    name: "Emily Brown",
-    role: "Data Scientist",
-    description:
-      "Emily specializes in data analysis and machine learning to drive business insights.",
-    image: defaultImg,
-  },
-  {
-    name: "Chris Lee",
-    role: "Marketing Specialist",
-    description: "Chris is an expert in digital marketing and brand strategy.",
-    image: defaultImg,
-  },
-  {
-    name: "Sarah Wilson",
-    role: "HR Manager",
-    description:
-      "Sarah manages employee relations and ensures a positive workplace culture.",
-    image: defaultImg,
-  },
-  {
-    name: "David Chen",
-    role: "Financial Analyst",
-    description:
-      "David provides financial insights and analysis to guide strategic decisions.",
-    image: defaultImg,
-  },
-  {
-    name: "Lisa Taylor",
-    role: "Product Owner",
-    description:
-      "Lisa oversees product development and ensures alignment with market needs.",
-    image: defaultImg,
-  },
-];
-
 const MemberList = ({ isadmin }) => {
   const navigate = useNavigate();
   const handleBackClick = () => {
@@ -119,7 +61,7 @@ const MemberList = ({ isadmin }) => {
 
       {/* Member Cards */}
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-center">
-        {members1.length > 0 &&
+        {members1.length > 0 ? (
           members1.map((member1) => (
             <div
               key={member1._id}
@@ -150,7 +92,12 @@ const MemberList = ({ isadmin }) => {
                 <h4 className="text-xl text-gray-600 mb-4">{member1.email}</h4>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <div className="text-center text-3xl font-bold text-red-500">
+            No members available
+          </div>
+        )}
       </div>
 
       {/* Footer */}

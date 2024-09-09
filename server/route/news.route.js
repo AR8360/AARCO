@@ -13,7 +13,6 @@ const router = express.Router();
 
 router.get("/getAllNews", getNews);
 router.post("/create-news", verifyAdmin, createNews);
-router.put("/update-news/:id", verifyAdmin, updateNews);
-router.delete("/delete-news/:id", verifyAdmin, deleteNews);
+router.delete("/delete-news", verifyAdmin, deleteNews);
 
 export default router;

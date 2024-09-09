@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./component/Home";
 import MemberList from "./pages/memberpage";
@@ -9,26 +9,36 @@ import Admin from "./pages/admin";
 import Downloads from "./pages/downloads";
 import Commitee from "./pages/commitee";
 import Gallery from "./pages/gallery";
+import { verify } from "./utils/ApiRoutes.js";
+import axios from "axios";
 
 const App = () => {
   const [isadmin, setadmin] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+
+  const handleadminvrification = async () => {
+    try {
+      const response = await axios.get(verify, { withCredentials: true });
+
+      if (response.data.success) {
+        if (response.data.decoded.status === "admin") {
+          setadmin(true);
+        }
+        setIsLogin(true);
+      }
+    } catch (error) {
+      console.error("Error during admin verification:", error);
+    }
+  };
+  useEffect(() => {
+    handleadminvrification();
+  }, []);
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              admin={isadmin}
-              isLogin={isLogin}
-              setadmin={setadmin}
-              setIsLogin={setIsLogin}
-            />
-          }
-        />
+        <Route path="/" element={<Home admin={isadmin} isLogin={isLogin} />} />
         <Route path="/members" element={<MemberList isadmin={isadmin} />} />
-        <Route path="/news" element={<News />} />
+        <Route path="/news" element={<News isadmin={isadmin} />} />
         <Route path="/retire" element={<RetireList />} />
         <Route
           path="/login"

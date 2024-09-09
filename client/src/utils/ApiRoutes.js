@@ -8,7 +8,7 @@ export const setAdmin = `${host}/user/change-status`;
 
 // news routes
 export const addNewsRoute = `${host}/news/create-news`;
-export const DeleteNewsRoute = `${host}/api/message/getmsg`;
+export const DeleteNewsRoute = `${host}/news/delete-news`;
 export const getNewsRoute = `${host}/news/getAllNews`;
 
 // member routes

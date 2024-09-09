@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa"; // Ensure you have this import
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { MdDelete } from "react-icons/md";
 import Footer from "../component/footer"; // Adjust the path as needed
-import { getNewsRoute } from "../utils/ApiRoutes";
+import { getNewsRoute, DeleteNewsRoute } from "../utils/ApiRoutes";
 
-const NewsUpdates = () => {
+const NewsUpdates = ({ isadmin }) => {
   const [newsItem, setNewsItem] = useState([]);
   const navigate = useNavigate();
   const handleBackClick = () => {
@@ -19,13 +20,23 @@ const NewsUpdates = () => {
     try {
       const response = await axios.get(getNewsRoute);
       const data = response.data.news;
-      console.log(data);
       setNewsItem(data);
     } catch (error) {
       console.error("Failed to fetch news:", error);
     }
   };
-  console.log(newsItem);
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(DeleteNewsRoute, {
+        data: { _id: id },
+        withCredentials: true,
+      });
+      getAllNews();
+    } catch (error) {
+      console.error("Failed to delete news:", error);
+    }
+  };
 
   useEffect(() => {
     getAllNews();
@@ -57,8 +68,14 @@ const NewsUpdates = () => {
           newsItem.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
+              className="bg-white relative rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
             >
+              {isadmin && (
+                <MdDelete
+                  className="text-red-800 absolute text-xl top-4 right-4 cursor-pointer"
+                  onClick={() => handleDelete(item._id)}
+                />
+              )}
               <div className="p-6">
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-sm text-gray-500">

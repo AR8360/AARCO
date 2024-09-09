@@ -58,7 +58,7 @@ const Navbar = ({ isLogin, admin }) => {
             About
           </ScrollLink>
           <ScrollLink
-            to="member-carousel"
+            to="retired-carousel"
             smooth={true}
             duration={500}
             offset={-70}
@@ -93,6 +93,7 @@ const Navbar = ({ isLogin, admin }) => {
               Login
             </div>
           )}
+
           {admin && (
             <div
               onClick={() => navigate("/admin")}
@@ -101,6 +102,7 @@ const Navbar = ({ isLogin, admin }) => {
               admin
             </div>
           )}
+          {isLogin && <div className="text-xl  cursor-pointer">Logout</div>}
         </div>
         {/* Mobile Menu Toggle */}
         <div className="lg:hidden flex items-center">

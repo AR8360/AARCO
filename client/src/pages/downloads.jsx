@@ -1,11 +1,10 @@
-import React from 'react';
-import Navbar from '../component/Navbar';
-import a from "../assets/ec.pdf"
+import React from "react";
+import a from "../assets/ec.pdf";
 const Downloads = () => {
   const pdfFiles = [
-    { label: 'Retiring Members', url: a },
-    { label: 'Elected Members', url: '.' },
-    { label: 'Important Notices', url: '' },
+    { label: "Retiring Members", url: a },
+    { label: "Elected Members", url: "." },
+    { label: "Important Notices", url: "" },
   ];
 
   return (

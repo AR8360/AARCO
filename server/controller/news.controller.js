@@ -85,20 +85,18 @@ const updateNews = async (req, res) => {
 
 const deleteNews = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { _id } = req.body;
 
     // Find the news by ID and delete it
-    await News.findByIdAndDelete(id);
+    await News.findByIdAndDelete(_id);
 
     // Return a success status with a success message
-    return res.status(200).json({ msg: "News deleted successfully" });
+    return res.json({ msg: "News deleted successfully", status: true });
   } catch (error) {
     console.error(`Delete news error: ${error.message}`);
 
     // Return a server error status with an error message
-    return res
-      .status(500)
-      .json({ msg: "Internal server error", status: false });
+    return res.json({ msg: "Internal server error", status: false });
   }
 };
 
