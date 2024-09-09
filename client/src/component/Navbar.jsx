@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link as ScrollLink } from "react-scroll";
 import { useNavigate } from "react-router-dom";
-import { Menu, X } from 'lucide-react'; // Optional for menu icons
+import { Menu, X } from "lucide-react"; // Optional for menu icons
 
 const Navbar = ({ isLogin, admin }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -83,7 +83,7 @@ const Navbar = ({ isLogin, admin }) => {
 
           <div
             onClick={handleDownloadClick}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+            className="bg-blue-500 text-white cursor-pointer px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
           >
             Downloads
           </div>
@@ -107,7 +107,12 @@ const Navbar = ({ isLogin, admin }) => {
           )}
 
           {isLogin && (
-            <div className="text-lg cursor-pointer" onClick={() => {/* Add logout logic */}}>
+            <div
+              className="text-lg cursor-pointer"
+              onClick={() => {
+                /* Add logout logic */
+              }}
+            >
               Logout
             </div>
           )}
@@ -116,92 +121,100 @@ const Navbar = ({ isLogin, admin }) => {
         {/* Mobile Menu Toggle */}
         <div className="lg:hidden flex items-center">
           <button onClick={handleMenuToggle} className="text-2xl">
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      <div className={`lg:hidden ${isMenuOpen ? "block" : "hidden"} bg-gray-100`}>
-  <button
-    className="block py-2 px-4 text-lg cursor-pointer"
-    onClick={handleNewsClick}
-  >
-    News & Updates
-  </button>
-  <div
-    className="block py-2 px-4 text-lg cursor-pointer"
-    onClick={() => navigate("/members")}
-  >
-    Members
-  </div>
-  <ScrollLink
-    to="about-aarco"
-    smooth={true}
-    duration={500}
-    offset={-70}
-    className="block py-2 px-4 text-lg cursor-pointer"
-    onClick={handleMenuToggle}
-  >
-    About
-  </ScrollLink>
-  <ScrollLink
-    to="retired-carousel"
-    smooth={true}
-    duration={500}
-    offset={-70}
-    className="block py-2 px-4 text-lg cursor-pointer"
-    onClick={handleMenuToggle}
-  >
-    Retirements
-  </ScrollLink>
-  <div
-    onClick={handleCClick}
-    className="block py-2 px-4 text-lg cursor-pointer"
-  >
-    Committee
-  </div>
-  <div
-    onClick={() => navigate("/gallery")}
-    className="block py-2 px-4 text-lg cursor-pointer"
-  >
-    Gallery
-  </div>
-  <div
-    onClick={handleDownloadClick}
-    className="block py-2 px-4 bg-blue-500 text-white w-full"
-  >
-    Downloads
-  </div>
+      <div
+        className={`lg:hidden ${isMenuOpen ? "block" : "hidden"} bg-gray-100`}
+      >
+        <button
+          className="block py-2 px-4 text-lg cursor-pointer"
+          onClick={handleNewsClick}
+        >
+          News & Updates
+        </button>
+        <div
+          className="block py-2 px-4 text-lg cursor-pointer"
+          onClick={() => navigate("/members")}
+        >
+          Members
+        </div>
+        <ScrollLink
+          to="about-aarco"
+          smooth={true}
+          duration={500}
+          offset={-70}
+          className="block py-2 px-4 text-lg cursor-pointer"
+          onClick={handleMenuToggle}
+        >
+          About
+        </ScrollLink>
+        <ScrollLink
+          to="retired-carousel"
+          smooth={true}
+          duration={500}
+          offset={-70}
+          className="block py-2 px-4 text-lg cursor-pointer"
+          onClick={handleMenuToggle}
+        >
+          Retirements
+        </ScrollLink>
+        <div
+          onClick={handleCClick}
+          className="block py-2 px-4 text-lg cursor-pointer"
+        >
+          Committee
+        </div>
+        <div
+          onClick={() => navigate("/gallery")}
+          className="block py-2 px-4 text-lg cursor-pointer"
+        >
+          Gallery
+        </div>
+        <div
+          onClick={handleDownloadClick}
+          className="block py-2 px-4 cursor-pointer bg-blue-500 text-white w-full"
+        >
+          Downloads
+        </div>
 
-  {/* Conditionally render Login for mobile */}
-  {!isLogin && !admin && (
-    <div
-      onClick={handleLoginClick}
-      className="block py-2 px-4 bg-blue-500 text-white w-full"
-    >
-      Login
-    </div>
-  )}
+        {/* Conditionally render Login for mobile */}
+        {!isLogin && !admin && (
+          <div
+            onClick={handleLoginClick}
+            className="block py-2 px-4 bg-blue-500 text-white w-full"
+          >
+            Login
+          </div>
+        )}
 
-  {admin && (
-    <div
-      onClick={() => navigate("/admin")}
-      className="block py-2 px-4 text-lg font-semibold underline cursor-pointer"
-    >
-      Admin
-    </div>
-  )}
+        {admin && (
+          <div
+            onClick={() => navigate("/admin")}
+            className="block py-2 px-4 text-lg font-semibold underline cursor-pointer"
+          >
+            Admin
+          </div>
+        )}
 
-  {isLogin && (
-    <div
-      className="block py-2 px-4 text-lg cursor-pointer"
-      onClick={() => {/* Add logout logic */}}
-    >
-      Logout
-    </div>
-  )}
-</div>
+        {isLogin && (
+          <div
+            className="block py-2 px-4 text-lg cursor-pointer"
+            onClick={() => {
+              /* Add logout logic */
+            }}
+          >
+            Logout
+          </div>
+        )}
+      </div>
     </nav>
   );
 };

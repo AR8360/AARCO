@@ -27,5 +27,9 @@ export const createCommitteeRoute = `${host}/committee/createcommittee`;
 export const deleteCommitteeRoute = `${host}/committee/deletecommittee`;
 
 //gallery routes
-
 export const gallery = `${host}/gallery`;
+
+//pdf routes
+export const addPdfRoute = `${host}/pdf`;
+export const getPdfRoute = `${host}/pdf`;
+export const deletePdfRoute = `${host}/pdf`;
