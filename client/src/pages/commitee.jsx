@@ -1,75 +1,63 @@
-import React, { useState } from "react";
-import defaultImg from "../images/default.jpeg"; // Update the path as needed
-import { FaArrowLeft } from "react-icons/fa"; // Ensure you have this import
-import { MdDelete } from "react-icons/md";
+import React, { useEffect, useState } from "react";
+import defaultImg from "../images/default.jpeg"; // Default image for committee members
+import { FaArrowLeft } from "react-icons/fa"; // Back icon
+import { MdDelete } from "react-icons/md"; // Delete icon
+import { getCommitteeRoute, deleteCommitteeRoute } from "../utils/ApiRoutes"; // API routes
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 import Footer from "../component/footer";
 
-const members = [
-  {
-    name: "John Doe",
-    role: "Software Engineer",
-    description:
-      "John is a seasoned software engineer with over a decade of experience in the tech industry.",
-    image: defaultImg,
-  },
-  {
-    name: "Jane Smith",
-    role: "UX Designer",
-    description:
-      "Jane is a talented UX designer focused on creating intuitive and user-friendly interfaces.",
-    image: defaultImg,
-  },
-  {
-    name: "Mike Johnson",
-    role: "Project Manager",
-    description:
-      "Mike excels at managing complex projects and leading cross-functional teams.",
-    image: defaultImg,
-  },
-  {
-    name: "Emily Brown",
-    role: "Data Scientist",
-    description:
-      "Emily specializes in data analysis and machine learning to drive business insights.",
-    image: defaultImg,
-  },
-  {
-    name: "Chris Lee",
-    role: "Marketing Specialist",
-    description: "Chris is an expert in digital marketing and brand strategy.",
-    image: defaultImg,
-  },
-  {
-    name: "Sarah Wilson",
-    role: "HR Manager",
-    description:
-      "Sarah manages employee relations and ensures a positive workplace culture.",
-    image: defaultImg,
-  },
-  {
-    name: "David Chen",
-    role: "Financial Analyst",
-    description:
-      "David provides financial insights and analysis to guide strategic decisions.",
-    image: defaultImg,
-  },
-  {
-    name: "Lisa Taylor",
-    role: "Product Owner",
-    description:
-      "Lisa oversees product development and ensures alignment with market needs.",
-    image: defaultImg,
-  },
-];
-
-const Commitee = () => {
+const CommitteeList = ({ isAdmin }) => {
   const navigate = useNavigate();
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchMembers = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(getCommitteeRoute, { withCredentials: true });
+      if(response.data.status)
+      {
+        setMembers(response.data.committee)
+      }
+    
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching committee members:", error);
+      setError("An error occurred while fetching the committee members.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (_id) => {
+    try {
+      await axios.delete(deleteCommitteeRoute, {
+        data: { _id },
+        withCredentials: true,
+      });
+      fetchMembers(); // Refresh members list after deletion
+    } catch (error) {
+      console.error("Error deleting member:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
+
   const handleBackClick = () => {
     navigate("/");
   };
-  const [admin, setAdmin] = useState(false);
+
+  if (loading) {
+    return <div className="text-center mt-10 text-2xl">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500 mt-10 text-2xl">{error}</div>;
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -88,34 +76,56 @@ const Commitee = () => {
           className="text-5xl font-bold text-center text-blue-900"
           style={{ fontFamily: "Playfair Display, serif" }}
         >
-          Our Commitee Members
+          Our Committee Members
         </h2>
       </div>
 
       {/* Member Cards */}
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-        {members.map((member, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
-          >
-            
-            <div className="w-full h-48 overflow-hidden flex items-center justify-center">
-              <img
-                src={member.image}
-                alt={member.name}
-                className="w-24 h-24 rounded-full object-cover"
-              />
+      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-center">
+        {members.length > 0 ? (
+          members.map((member) => (
+            <div
+              key={member._id}
+              className="bg-white relative rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
+            >
+              {isAdmin && (
+                <>
+                  <div
+                    className="absolute top-4 left-4 bg-blue-900 text-white px-2 py-1 rounded-full z-10"
+                    style={{ zIndex: 10 }}
+                  >
+                    {member.order || 10}
+                  </div>
+                  <MdDelete
+                    className="text-red-800 absolute text-xl top-4 right-4 cursor-pointer z-10"
+                    onClick={() => handleDelete(member._id)}
+                    style={{ zIndex: 10 }}
+                  />
+                </>
+              )}
+              <div className="w-full h-48 overflow-hidden flex items-center justify-center">
+                <img
+                  src={member.image || defaultImg}
+                  alt={member.name}
+                  className="w-40 h-40 rounded-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-2xl font-semibold mb-2 text-gray-800">
+                  {member.name}
+                </h3>
+                <h4 className="text-xl text-gray-600 mb-4">{member.email}</h4>
+                {member.contact && (
+                  <p className="text-gray-600 mb-2">Contact: {member.contact}</p>
+                )}
+              </div>
             </div>
-            <div className="p-6">
-              <h3 className="text-4xl font-semibold mb-2 text-gray-800">
-                {member.name}
-              </h3>
-              <h4 className="text-2xl text-gray-600 mb-4">{member.role}</h4>
-              <p className="text-gray-600">{member.description}</p>
-            </div>
+          ))
+        ) : (
+          <div className="text-center text-3xl font-bold text-red-500">
+            No members available
           </div>
-        ))}
+        )}
       </div>
 
       {/* Footer */}
@@ -124,4 +134,4 @@ const Commitee = () => {
   );
 };
 
-export default Commitee;
+export default CommitteeList;

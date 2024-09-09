@@ -56,7 +56,7 @@ const App = () => {
           element={<Admin admin={isadmin} isLogin={isLogin} />}
         />
         <Route path="/downloads" element={<Downloads />} />
-        <Route path="/commitee" element={<Commitee />} />
+        <Route path="/committee" element={<Commitee />} />
         <Route path="/gallery" element={<Gallery isadmin={isadmin} />} />
       </Routes>
     </Router>
