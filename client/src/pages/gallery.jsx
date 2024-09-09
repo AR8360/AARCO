@@ -1,25 +1,46 @@
-import React from "react";
-import ig1 from "../images/gallery/1.jpg";
-import ig2 from "../images/gallery/2.jpg";
-import ig3 from "../images/gallery/3.jpg";
-import ig4 from "../images/gallery/4.jpg";
-import ig5 from "../images/gallery/5.jpg";
-import ig6 from "../images/gallery/6.jpg";
+import React, { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { MdDelete } from "react-icons/md";
+import axios from "axios";
 
-// List of images
-const images = [
-  { src: ig1, alt: "Gallery Image 1" },
-  { src: ig2, alt: "Gallery Image 2" },
-  { src: ig3, alt: "Gallery Image 3" },
-  { src: ig4, alt: "Gallery Image 4" },
-  { src: ig5, alt: "Gallery Image 5" },
-  { src: ig6, alt: "Gallery Image 6" },
-];
-
-const Gallery = () => {
+import { gallery } from "../utils/ApiRoutes.js";
+import Footer from "../component/footer.jsx";
+const Gallery = ({ isadmin }) => {
   const navigate = useNavigate();
+
+  const [images, setImages] = useState([]);
+
+  const handlegetImages = async () => {
+    try {
+      const response = await axios.get(gallery);
+
+      if (response.data.status) {
+        setImages(response.data.gallery);
+      }
+    } catch (error) {
+      console.error("Error fetching images:", error);
+    }
+  };
+
+  const handleDeleteImage = async (_id) => {
+    try {
+      const response = await axios.delete(gallery, {
+        data: { _id },
+        withCredentials: true,
+      });
+
+      if (response.data.status) {
+        handlegetImages();
+      }
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  };
+  useEffect(() => {
+    handlegetImages();
+  }, []);
+
   return (
     <>
       <div
@@ -34,20 +55,29 @@ const Gallery = () => {
           Gallery
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {images.map((image, index) => (
-            <div
-              key={index}
-              className="relative overflow-hidden rounded-lg border border-gray-300 shadow-md transition-transform transform hover:scale-105"
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-80 object-cover"
-              />
+          {images.length > 0 ? (
+            images.map((image) => (
+              <div
+                key={image._id}
+                className="relative overflow-hidden rounded-lg border border-gray-300 shadow-md transition-transform transform hover:scale-105"
+              >
+                {isadmin && (
+                  <MdDelete
+                    className="text-red-600 absolute text-xl top-4 right-4 cursor-pointer"
+                    onClick={() => handleDeleteImage(image._id)}
+                  />
+                )}
+                <img src={image.image} className="w-full h-80 object-cover" />
+              </div>
+            ))
+          ) : (
+            <div className="text-2xl text-center font-bold text-red-500 mt-6 mb-48">
+              No images available
             </div>
-          ))}
+          )}
         </div>
       </div>
+      <Footer />
     </>
   );
 };

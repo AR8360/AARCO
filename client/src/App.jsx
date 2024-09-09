@@ -57,7 +57,7 @@ const App = () => {
         />
         <Route path="/downloads" element={<Downloads />} />
         <Route path="/commitee" element={<Commitee />} />
-        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/gallery" element={<Gallery isadmin={isadmin} />} />
       </Routes>
     </Router>
   );

@@ -3,12 +3,10 @@ import Gallery from "../model/gallery.model.js";
 export const getGallery = async (req, res) => {
   try {
     const gallery = await Gallery.find();
-    res.json(gallery, {
-      message: "Gallery fetched successfully",
-      status: true,
-    });
+
+    res.json({ gallery: gallery, status: true });
   } catch (error) {
-    res.json({ message: error.message, status: false });
+    res.json({ message: "Server Error", status: false });
   }
 };
 
@@ -24,9 +22,13 @@ export const addGallery = async (req, res) => {
 };
 
 export const deleteGallery = async (req, res) => {
-  const { id } = req.params;
+  const { _id } = req.body;
+
   try {
-    await Gallery.findByIdAndDelete(id);
+    if (!_id) {
+      return res.json({ message: "Gallery not found", status: false });
+    }
+    await Gallery.findByIdAndDelete(_id);
     res.json({ message: "Gallery deleted successfully", status: true });
   } catch (error) {
     res.json({ message: error.message, status: false });
