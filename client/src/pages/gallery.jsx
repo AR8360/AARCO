@@ -71,13 +71,15 @@ const Gallery = ({ isadmin }) => {
               </div>
             ))
           ) : (
-            <div className="text-2xl text-center font-bold text-red-500 mt-6 mb-48">
+            <div className="text-2xl text-center font-bold text-red-500 mt-6 mb-80">
               No images available
             </div>
           )}
         </div>
       </div>
-      <Footer />
+      <div className="pt-6">
+        <Footer />
+      </div>
     </>
   );
 };

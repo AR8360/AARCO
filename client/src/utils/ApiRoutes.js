@@ -21,6 +21,11 @@ export const addRetrimentRoute = `${host}/committee/addretirment`;
 export const getRetrimentRoute = `${host}/committee/getretirments`;
 export const deleteRetrimentRoute = `${host}/committee/deleteretirment`;
 
+// committee routes
+export const getCommitteeRoute = `${host}/committee/getcommittee`;
+export const createCommitteeRoute = `${host}/committee/createcommittee`;
+export const deleteCommitteeRoute = `${host}/committee/deletecommittee`;
+
 //gallery routes
 
 export const gallery = `${host}/gallery`;

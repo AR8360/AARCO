@@ -13,7 +13,6 @@ const createPdf = async (req, res) => {
   const pdf = new Pdf({
     name: req.body.name,
     link: req.body.link,
-    order: req.body.order,
   });
 
   try {

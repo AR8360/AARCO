@@ -9,10 +9,6 @@ const pdfSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  order: {
-    type: Number,
-    default: 0,
-  },
 });
 
 const Pdf = mongoose.model("Pdf", pdfSchema);

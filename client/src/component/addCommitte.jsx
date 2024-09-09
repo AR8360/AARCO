@@ -6,11 +6,12 @@ const cloudinaryUploadUrl =
   "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
 const cloudinaryUploadPreset = "aarcodev";
 
-const AddMembers = () => {
+const AddCommitteMember = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [order, setOrder] = useState("");
   const [image, setImage] = useState(null);
+  const [contact, setContact] = useState("");
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
   const [errormsg, setErrormsg] = useState("");
@@ -104,7 +105,7 @@ const AddMembers = () => {
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-5">Add Member</h2>
+      <h2 className="text-2xl font-bold mb-5">Add Committee Member</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="name" className="block mb-1">
@@ -155,6 +156,22 @@ const AddMembers = () => {
             <p className="text-red-500 text-sm mt-1">{errors.email}</p>
           )}
         </div>
+        <div>
+          <label htmlFor="email" className="block mb-1">
+            Contact
+          </label>
+          <input
+            type="text"
+            id="contact"
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
+            className="w-full p-2 border rounded"
+            placeholder="Enter contact number seperated by comma."
+          />
+          {errors.contact && (
+            <p className="text-red-500 text-sm mt-1">{errors.contact}</p>
+          )}
+        </div>
 
         <div>
           <label htmlFor="order" className="block mb-1">
@@ -186,4 +203,4 @@ const AddMembers = () => {
   );
 };
 
-export default AddMembers;
+export default AddCommitteMember;

@@ -48,10 +48,10 @@ const addNews = () => {
 
   return (
     <>
-      <div className="p-6 max-w-xl mx-auto bg-white shadow-lg rounded-lg">
+      <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
         {" "}
         {/* Increased max-width to 3xl */}
-        <h2 className="text-3xl font-bold mb-6">Add News</h2>
+        <h2 className="text-2xl font-bold mb-5">Add News</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
