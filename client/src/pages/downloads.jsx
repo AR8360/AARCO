@@ -10,14 +10,11 @@ import Footer from "../component/footer.jsx";
 const Downloads = ({ isadmin }) => {
   const navigate = useNavigate();
   const [pdfFiles, setPdfFiles] = useState([]);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const fetchPdfFiles = async () => {
     try {
       const response = await axios.get(getPdfRoute);
       const data = response.data.pdf;
-      console.log("Pdf Files:", data);
       setPdfFiles(data);
     } catch (error) {
       console.error("Error fetching Pdf Files:", error);
@@ -67,7 +64,9 @@ const Downloads = ({ isadmin }) => {
                 </a>
                 {isadmin && (
                   <MdDelete
-                    className="text-red-600 absolute text-xl top-1 left-1 cursor-pointer"
+                    className={`text-red-600 absolute text-xl top-1 left-1 cursor-pointer ${
+                      isadmin ? `left-1` : ``
+                    }`}
                     onClick={() => deletePdfFile(file._id)}
                   />
                 )}

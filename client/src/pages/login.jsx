@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { loginorSinupRoute } from "../utils/ApiRoutes";
 import { verifyotp } from "../utils/ApiRoutes";
+import { verify } from "../utils/ApiRoutes.js";
 import axios from "axios";
 const Login = ({ isLogin, setAdmin, setIsLogin }) => {
   const [isMember, setIsMember] = useState(true);
@@ -42,6 +43,20 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
     }
   };
 
+  const verifyAdmin = async () => {
+    try {
+      const response = await axios.get(verify, { withCredentials: true });
+
+      if (response.data.success) {
+        if (response.data.decoded.status === "admin") {
+          setAdmin(true);
+        }
+      }
+    } catch (error) {
+      console.error("Error during admin verification:", error);
+    }
+  };
+
   const handleLogin = async () => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
@@ -58,10 +73,10 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
         { email, otp },
         { withCredentials: true }
       );
-      console.log(response.data);
 
       if (response.data.status) {
         setMessage("Login successful!");
+        verifyAdmin();
         setIsLogin(true);
         navigate("/");
         // navigate("/dashboard"); // Redirect after successful login

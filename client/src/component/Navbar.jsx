@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Link as ScrollLink } from "react-scroll";
 import { useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react"; // Optional for menu icons
+import { logoutRoute } from "../utils/ApiRoutes.js";
+import axios from "axios";
 
-const Navbar = ({ isLogin, admin }) => {
+const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -22,6 +24,23 @@ const Navbar = ({ isLogin, admin }) => {
   };
   const handleCClick = () => {
     navigate("/committee");
+  };
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(
+        logoutRoute,
+        {},
+        { withCredentials: true }
+      );
+
+      if (response.data.status) {
+        setIsLogin(false);
+        setadmin(false);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("Error during logout:", error);
+    }
   };
 
   return (
@@ -109,9 +128,7 @@ const Navbar = ({ isLogin, admin }) => {
           {isLogin && (
             <div
               className="text-lg cursor-pointer"
-              onClick={() => {
-                /* Add logout logic */
-              }}
+              onClick={() => handleLogout()}
             >
               Logout
             </div>
@@ -207,9 +224,7 @@ const Navbar = ({ isLogin, admin }) => {
         {isLogin && (
           <div
             className="block py-2 px-4 text-lg cursor-pointer"
-            onClick={() => {
-              /* Add logout logic */
-            }}
+            onClick={() => handleLogout()}
           >
             Logout
           </div>

@@ -16,12 +16,13 @@ const CommitteeList = ({ isAdmin }) => {
   const fetchMembers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(getCommitteeRoute, { withCredentials: true });
-      if(response.data.status)
-      {
-        setMembers(response.data.committee)
+      const response = await axios.get(getCommitteeRoute, {
+        withCredentials: true,
+      });
+      if (response.data.status) {
+        setMembers(response.data.committee);
       }
-    
+
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching committee members:", error);
@@ -56,7 +57,9 @@ const CommitteeList = ({ isAdmin }) => {
   }
 
   if (error) {
-    return <div className="text-center text-red-500 mt-10 text-2xl">{error}</div>;
+    return (
+      <div className="text-center text-red-500 mt-10 text-2xl">{error}</div>
+    );
   }
 
   return (
@@ -99,7 +102,6 @@ const CommitteeList = ({ isAdmin }) => {
                   <MdDelete
                     className="text-red-800 absolute text-xl top-4 right-4 cursor-pointer z-10"
                     onClick={() => handleDelete(member._id)}
-                    style={{ zIndex: 10 }}
                   />
                 </>
               )}
@@ -116,7 +118,9 @@ const CommitteeList = ({ isAdmin }) => {
                 </h3>
                 <h4 className="text-xl text-gray-600 mb-4">{member.email}</h4>
                 {member.contact && (
-                  <p className="text-gray-600 mb-2">Contact: {member.contact}</p>
+                  <p className="text-gray-600 mb-2">
+                    Contact: {member.contact}
+                  </p>
                 )}
               </div>
             </div>
