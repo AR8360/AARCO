@@ -29,9 +29,9 @@ const AddAdmin = () => {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center  bg-gray-100">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-lg shadow-lg p-5">
+    <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
+     
+      
           <div className="mb-4">
             <h1 className="text-center font-bold text-2xl">Add Admin</h1>
           </div>
@@ -67,8 +67,8 @@ const AddAdmin = () => {
               Add Admin
             </button>
           </div>
-        </div>
-      </div>
+    
+     
     </div>
   );
 };
