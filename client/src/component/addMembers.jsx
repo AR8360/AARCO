@@ -72,7 +72,6 @@ const AddMembers = () => {
         const response = await axios.post(addMemberRoute, memberData, {
           withCredentials: true,
         });
-        console.log("response", response.data);
 
         if (response.data.status === true) {
           setName("");

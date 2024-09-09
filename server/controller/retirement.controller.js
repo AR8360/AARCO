@@ -5,7 +5,7 @@ const addRetirment = async (req, res) => {
     const { name, image, date, email, content, order, contact } = req.body;
 
     if (!name) {
-      return res.status(400).json({ msg: "Name is required" });
+      return res.json({ msg: "Name is required", status: false });
     }
 
     const retirment = new Retirment({
@@ -20,7 +20,7 @@ const addRetirment = async (req, res) => {
 
     await retirment.save();
 
-    return res.json({ msg: "Retirment added successfully" });
+    return res.json({ msg: "Retirment added successfully", status: true });
   } catch (error) {
     console.error(`Add retirment error: ${error.message}`);
 

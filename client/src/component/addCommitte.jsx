@@ -47,16 +47,6 @@ const AddCommitteMember = () => {
       isValid = false;
     }
 
-    if (!order || isNaN(order)) {
-      tempErrors.order = "Order must be a valid number.";
-      isValid = false;
-    }
-
-    if (!contact) {
-      tempErrors.contact = "Contact is required.";
-      isValid = false;
-    }
-
     setErrors(tempErrors);
     return isValid;
   };
@@ -86,7 +76,7 @@ const AddCommitteMember = () => {
         const memberData = {
           name,
           email,
-          order: parseInt(order),
+          order: order || 10,
           image: imageUrl || "",
           contact,
         };
@@ -112,7 +102,7 @@ const AddCommitteMember = () => {
         setErrormsg("An error occurred. Please try again.");
       }
 
-    //  Clear messages after 2 seconds
+      //  Clear messages after 2 seconds
       setTimeout(() => {
         setMessage("");
         setErrormsg("");

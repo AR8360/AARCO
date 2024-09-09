@@ -77,9 +77,9 @@ const AddRetirement = () => {
             setErrormsg("");
           }, 2000);
         } else if (response.data.status === true) {
-          setMessage("Member added successfully!");
+          setMessage("member added successfully!");
           setTimeout(() => {
-            setMessage("");
+            setMessage(""); // Clear the message after 2 seconds
           }, 2000);
           setName("");
           setImage("");
@@ -226,6 +226,8 @@ const AddRetirement = () => {
             <p className="text-red-500 text-sm">{errors.content}</p>
           )}
         </div>
+        {message && <p className="text-green-500 text-sm mt-1">{message}</p>}
+        {errormsg && <p className="text-red-500 text-sm mt-1">{errormsg}</p>}
 
         <button
           type="submit"
@@ -233,8 +235,6 @@ const AddRetirement = () => {
         >
           Submit
         </button>
-        {message && <p className="text-green-500 text-sm mt-2">{message}</p>}
-        {errormsg && <p className="text-red-500 text-sm mt-2">{errormsg}</p>}
       </form>
     </div>
   );
