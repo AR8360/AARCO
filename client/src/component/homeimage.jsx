@@ -1,43 +1,47 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ig1 from "../images/gallery/1.jpg";
 import ig2 from "../images/gallery/2.jpg";
-import ig3 from "../images/gallery/3.jpg";
 
 // List of images
 const images = [
   { src: ig1, alt: "Gallery Image 1" },
   { src: ig2, alt: "Gallery Image 2" },
- 
+  { src: ig1, alt: "Gallery Image 3" },
+  { src: ig2, alt: "Gallery Image 4" },
 ];
 
 const HomeImage = () => {
   const navigate = useNavigate();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleViewGallery = () => {
-    navigate('/gallery'); // Adjust the path to your actual gallery page route
+    navigate("/gallery"); // Adjust the path to your actual gallery page route
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 2000); // Change image every 2 seconds
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, []);
 
   return (
     <div className="w-full max-w-6xl mx-auto mt-10 px-4">
-      <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">Image Gallery</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className="relative overflow-hidden rounded-lg border border-gray-300 shadow-md transition-transform transform hover:scale-105"
-          >
-            <img
-              src={image.src}
-              alt={image.alt}
-              className="w-full h-64 object-cover"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 transition-opacity hover:opacity-100">
-              <p className="text-white text-lg font-semibold">View</p>
-            </div>
-          </div>
-        ))}
+      <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">
+        Image Gallery
+      </h2>
+
+      {/* Carousel */}
+      <div className="relative w-[600px] h-[400px] mx-auto overflow-hidden rounded-lg border border-gray-300 shadow-md">
+        <img
+          src={images[currentIndex].src}
+          alt={images[currentIndex].alt}
+          className="w-full h-full object-contain transition-all duration-1000"
+        />
       </div>
+
       {/* View Gallery Button */}
       <div className="text-center mt-8">
         <button

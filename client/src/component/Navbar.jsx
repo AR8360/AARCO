@@ -107,7 +107,7 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
           {!isLogin && !admin && (
             <div
               onClick={handleLoginClick}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+              className="bg-blue-500 text-white cursor-pointer px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
             >
               Login
             </div>
@@ -190,7 +190,7 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
         </div>
         <div
           onClick={handleDownloadClick}
-          className="block mt-2 py-2 px-4 bg-blue-500 text-white w-full"
+          className="block mt-2 ml-2 mb-2 py-2 px-4 bg-blue-500 text-white  cursor-pointer w-fit rounded-md"
         >
           Downloads
         </div>
@@ -199,7 +199,7 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
         {!isLogin && !admin && (
           <div
             onClick={handleLoginClick}
-            className="block py-2 px-4 bg-blue-500 text-white w-full"
+            className="block py-2 ml-2 px-4 bg-blue-500 text-white w-fit cursor-pointer rounded-md"
           >
             Login
           </div>

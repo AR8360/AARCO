@@ -6,7 +6,7 @@ import axios from "axios";
 
 import { gallery } from "../utils/ApiRoutes.js";
 import Footer from "../component/footer.jsx";
-const Gallery = ({ isadmin }) => {
+const Gallery = ({ isadmin, isLogin }) => {
   const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
@@ -82,14 +82,14 @@ const Gallery = ({ isadmin }) => {
               </div>
             ))
           ) : (
-            <div className="text-2xl text-center font-bold text-red-500 mt-6 mb-80">
+            <div className="text-2xl text-center font-bold text-red-500 mt-6 -mb-72">
               No images available
             </div>
           )}
         </div>
       </div>
       <div className="pt-6">
-        <Footer />
+        <Footer isLogin={isLogin} />
       </div>
     </>
   );

@@ -6,10 +6,10 @@ import { MdDelete } from "react-icons/md";
 import Footer from "../component/footer"; // Adjust the path as needed
 import { getNewsRoute, DeleteNewsRoute } from "../utils/ApiRoutes";
 
-const NewsUpdates = ({ isadmin }) => {
+const NewsUpdates = ({ isadmin, isLogin }) => {
   const [newsItem, setNewsItem] = useState([]);
   const navigate = useNavigate();
-  
+
   const handleBackClick = () => {
     navigate("/");
   };
@@ -101,7 +101,7 @@ const NewsUpdates = ({ isadmin }) => {
       </div>
 
       {/* Footer */}
-      <Footer />
+      <Footer isLogin={isLogin} />
     </div>
   );
 };

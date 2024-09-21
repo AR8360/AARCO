@@ -7,7 +7,7 @@ import axios from "axios";
 import Footer from "../component/footer";
 import { getRetrimentRoute, deleteRetrimentRoute } from "../utils/ApiRoutes"; // Ensure correct path
 
-const RetireList = ({ isadmin }) => {
+const RetireList = ({ isadmin, isLogin }) => {
   const navigate = useNavigate();
   const [members, setMembers] = useState([]);
   const [error, setError] = useState("");
@@ -77,7 +77,11 @@ const RetireList = ({ isadmin }) => {
       </div>
 
       {/* Member List */}
-      <div className="container mx-auto px-4 mb-8">
+      <div
+        className={`container mx-auto px-4 mb-16 ${
+          members.length === 0 ? `pb-72` : `pb-14`
+        }`}
+      >
         {members.length > 0 ? (
           members.map((member) => (
             <div
@@ -139,7 +143,7 @@ const RetireList = ({ isadmin }) => {
       </div>
 
       {/* Footer */}
-      <Footer />
+      <Footer isLogin={isLogin} />
     </div>
   );
 };

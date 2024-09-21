@@ -32,7 +32,7 @@ const App = () => {
   };
   useEffect(() => {
     handleadminvrification();
-  }, []);
+  }, [isLogin]);
   return (
     <Router>
       <Routes>
@@ -47,9 +47,18 @@ const App = () => {
             />
           }
         />
-        <Route path="/members" element={<MemberList isadmin={isadmin} />} />
-        <Route path="/news" element={<News isadmin={isadmin} />} />
-        <Route path="/retire" element={<RetireList isadmin={isadmin} />} />
+        <Route
+          path="/members"
+          element={<MemberList isadmin={isadmin} isLogin={isLogin} />}
+        />
+        <Route
+          path="/news"
+          element={<News isadmin={isadmin} isLogin={isLogin} />}
+        />
+        <Route
+          path="/retire"
+          element={<RetireList isadmin={isadmin} isLogin={isLogin} />}
+        />
         <Route
           path="/login"
           element={
@@ -65,12 +74,18 @@ const App = () => {
           path="/admin"
           element={<Admin admin={isadmin} isLogin={isLogin} />}
         />
-        <Route path="/downloads" element={<Downloads isadmin={isadmin} />} />
+        <Route
+          path="/downloads"
+          element={<Downloads isadmin={isadmin} isLogin={isLogin} />}
+        />
         <Route
           path="/committee"
-          element={<CommitteeList isAdmin={isadmin} />}
+          element={<CommitteeList isAdmin={isadmin} isLogin={isLogin} />}
         />
-        <Route path="/gallery" element={<Gallery isadmin={isadmin} />} />
+        <Route
+          path="/gallery"
+          element={<Gallery isadmin={isadmin} isLogin={isLogin} />}
+        />
       </Routes>
     </Router>
   );

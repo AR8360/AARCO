@@ -38,7 +38,7 @@ const Home = ({ admin, isLogin, setadmin, setIsLogin }) => {
 
       {/* Footer */}
 
-      <Footer />
+      <Footer isLogin={isLogin} />
     </div>
   );
 };

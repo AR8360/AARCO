@@ -7,7 +7,7 @@ import { getPdfRoute, deletePdfRoute } from "../utils/ApiRoutes.js";
 import axios from "axios";
 import Footer from "../component/footer.jsx";
 
-const Downloads = ({ isadmin }) => {
+const Downloads = ({ isadmin, isLogin }) => {
   const navigate = useNavigate();
   const [pdfFiles, setPdfFiles] = useState([]);
 
@@ -80,7 +80,7 @@ const Downloads = ({ isadmin }) => {
         )}
       </div>
       <div>
-        <Footer />
+        <Footer isLogin={isLogin} />
       </div>
     </>
   );

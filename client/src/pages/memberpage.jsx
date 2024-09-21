@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Footer from "../component/footer";
 
-const MemberList = ({ isadmin }) => {
+const MemberList = ({ isadmin, isLogin }) => {
   const navigate = useNavigate();
   const handleBackClick = () => {
     navigate("/");
@@ -105,7 +105,7 @@ const MemberList = ({ isadmin }) => {
       </div>
 
       {/* Footer */}
-      <Footer />
+      <Footer isLogin={isLogin} />
     </div>
   );
 };

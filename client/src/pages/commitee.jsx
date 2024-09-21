@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Footer from "../component/footer";
 
-const CommitteeList = ({ isAdmin }) => {
+const CommitteeList = ({ isAdmin, isLogin }) => {
   const navigate = useNavigate();
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -84,58 +84,58 @@ const CommitteeList = ({ isAdmin }) => {
           members.length === 0 ? `pb-72` : `pb-14`
         }`}
       >
-        {!loading && members.length > 0 ? (
-          members.map((member) => (
-            <div
-              key={member._id}
-              className="bg-white relative rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
-            >
-              {/* Admin Controls */}
-              {isAdmin && (
-                <>
-                  <div className="absolute top-4 left-4 bg-blue-900 text-white px-2 py-1 rounded-full z-10">
-                    {member.order || 10}
-                  </div>
-                  <MdDelete
-                    className="text-red-800 absolute text-xl top-4 right-4 cursor-pointer z-10"
-                    onClick={() => handleDelete(member._id)}
-                    aria-label="Delete Member"
-                  />
-                </>
-              )}
-
-              {/* Member Image */}
-              <div className="w-full h-60 flex items-center justify-center bg-gray-100 overflow-hidden">
-                <img
-                  src={member.image || defaultImg}
-                  alt={member.name || "Member Image"}
-                  className="w-56 h-56 rounded-lg object-contain"
-                />
-              </div>
-
-              {/* Member Details */}
-              <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-2 text-gray-800">
-                  {member.name}
-                </h3>
-                <h4 className="text-xl text-gray-600 mb-4">{member.email}</h4>
-                {member.contact && (
-                  <p className="text-gray-600 mb-2">
-                    Contact: {member.contact}
-                  </p>
+        {!loading && members.length > 0
+          ? members.map((member) => (
+              <div
+                key={member._id}
+                className="bg-white relative rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
+              >
+                {/* Admin Controls */}
+                {isAdmin && (
+                  <>
+                    <div className="absolute top-4 left-4 bg-blue-900 text-white px-2 py-1 rounded-full z-10">
+                      {member.order || 10}
+                    </div>
+                    <MdDelete
+                      className="text-red-800 absolute text-xl top-4 right-4 cursor-pointer z-10"
+                      onClick={() => handleDelete(member._id)}
+                      aria-label="Delete Member"
+                    />
+                  </>
                 )}
+
+                {/* Member Image */}
+                <div className="w-full h-60 flex items-center justify-center bg-gray-100 overflow-hidden">
+                  <img
+                    src={member.image || defaultImg}
+                    alt={member.name || "Member Image"}
+                    className="w-56 h-56 rounded-lg object-contain"
+                  />
+                </div>
+
+                {/* Member Details */}
+                <div className="p-6">
+                  <h3 className="text-2xl font-semibold mb-2 text-gray-800">
+                    {member.name}
+                  </h3>
+                  <h4 className="text-xl text-gray-600 mb-4">{member.email}</h4>
+                  {member.contact && (
+                    <p className="text-gray-600 mb-2">
+                      Contact: {member.contact}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <div className="text-center text-3xl font-bold text-red-500">
-            No members available
-          </div>
-        )}
+            ))
+          : !loading && (
+              <div className="text-center text-3xl font-bold text-red-500">
+                No members available
+              </div>
+            )}
       </div>
 
       {/* Footer */}
-      <Footer />
+      <Footer isLogin={isLogin} />
     </div>
   );
 };
