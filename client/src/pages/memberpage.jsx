@@ -1,42 +1,15 @@
-import React, { useEffect, useState } from "react";
-import defaultImg from "../images/default.jpeg"; // Update the path as needed
-import { FaArrowLeft } from "react-icons/fa"; // Ensure you have this import
-import { MdDelete } from "react-icons/md";
-import { getMembersRoute, deleteMemberRoute } from "../utils/ApiRoutes";
+import React from "react";
+import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Footer from "../component/footer";
+import pdfFile from "../pdf/ec.pdf"; // Import the PDF file
 
-const MemberList = ({ isadmin, isLogin }) => {
+const MemberList = ({ isLogin }) => {
   const navigate = useNavigate();
+
   const handleBackClick = () => {
     navigate("/");
   };
-  const [members1, setMembers] = useState([]);
-  const getMembers = async () => {
-    try {
-      const response = await axios.get(getMembersRoute);
-      setMembers(response.data.members);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const handledelete = async (_id) => {
-    try {
-      const response = await axios.delete(deleteMemberRoute, {
-        data: { _id },
-        withCredentials: true,
-      });
-      console.log(response.data);
-      getMembers();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getMembers();
-  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -55,53 +28,36 @@ const MemberList = ({ isadmin, isLogin }) => {
           className="text-5xl font-bold text-center text-blue-900"
           style={{ fontFamily: "Playfair Display, serif" }}
         >
-          Our Members
+          Our Members PDF
         </h2>
       </div>
 
-      {/* Member Cards */}
-      <div
-        className={`container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-8 text-center ${
-          members1.length === 0 ? `pb-72` : `pb-14`
-        }`}
-      >
-        {members1.length > 0 ? (
-          members1.map((member1) => (
-            <div
-              key={member1._id}
-              className="bg-white relative rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
-            >
-              {isadmin && (
-                <div className="absolute top-4 left-4 bg-blue-900 text-white px-2 py-1 rounded-full">
-                  {member1.order || 10}
-                </div>
-              )}
-              {isadmin && (
-                <MdDelete
-                  className="text-red-800 absolute text-xl top-4 right-4 cursor-pointer"
-                  onClick={() => handledelete(member1._id)}
-                />
-              )}
-              <div className="w-full h-48 overflow-hidden flex items-center justify-center">
-                <img
-                  src={member1.image || defaultImg}
-                  alt={member1.name}
-                  className="w-40 h-40 rounded-full object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-2 text-gray-800">
-                  {member1.name}
-                </h3>
-                <h4 className="text-xl text-gray-600 mb-4">{member1.email}</h4>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="text-center text-3xl font-bold text-red-500">
-            No members available
-          </div>
-        )}
+      {/* PDF Display */}
+      <div className="container mx-auto px-4 mb-8 flex-grow">
+        {/* Make iframe responsive */}
+        <div className="relative w-full h-96 sm:h-[600px] overflow-hidden shadow-md rounded-lg">
+          <iframe
+            src={`${pdfFile}#toolbar=0&navpanes=0&scrollbar=0`}
+            className="absolute top-0 left-0 w-full h-full border-none"
+            title="Members PDF"
+            style={{ boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)" }}
+          ></iframe>
+        </div>
+
+        {/* PDF Fallback Link */}
+        <div className="text-center mt-4">
+        <p>If PDF is not available on  this browser. 
+             No worries, you can ,
+          <a
+            href={pdfFile}
+            download="Members.pdf"
+            className="text-blue-900 underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+              Click to Download PDF
+          </a></p>
+        </div>
       </div>
 
       {/* Footer */}
