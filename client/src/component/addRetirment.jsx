@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Add the axios import for API calls
-import { addRetrimentRoute } from "../utils/ApiRoutes";
+import axios from "axios"; // Import axios for making API calls
+import { addRetrimentRoute } from "../utils/ApiRoutes"; // Import the API route for adding retirement member
+
 const AddRetirement = () => {
+  // State variables for form inputs and validation errors
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [email, setEmail] = useState("");
@@ -13,50 +15,48 @@ const AddRetirement = () => {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
   const [errormsg, setErrormsg] = useState("");
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Navigation hook for redirecting after form submission
 
-  // Cloudinary configuration
-  const cloudinaryUploadUrl =
-    "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
+  // Cloudinary configuration for image upload
+  const cloudinaryUploadUrl = "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
   const cloudinaryUploadPreset = "aarcodev";
 
+  // Function to handle form validation
   const handleValidation = () => {
     let tempErrors = {};
     let isValid = true;
 
     if (!name) {
-      tempErrors.name = "Name is required.";
+      tempErrors.name = "Name is required."; // Name field validation
       isValid = false;
     }
 
     if (!email) {
-      tempErrors.email = "Email is required.";
+      tempErrors.email = "Email is required."; // Email field validation
       isValid = false;
     }
 
     setErrors(tempErrors);
-    return isValid;
+    return isValid; // Return whether the form is valid or not
   };
 
+  // Form submission handler
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submission
 
     if (handleValidation()) {
       try {
-        // Upload image to Cloudinary
         let imageUrl = "";
+        // If an image is selected, upload it to Cloudinary
         if (image) {
           const formData = new FormData();
           formData.append("file", image);
           formData.append("upload_preset", cloudinaryUploadPreset);
-          const cloudinaryResponse = await axios.post(
-            cloudinaryUploadUrl,
-            formData
-          );
-          imageUrl = cloudinaryResponse.data.secure_url;
+          const cloudinaryResponse = await axios.post(cloudinaryUploadUrl, formData);
+          imageUrl = cloudinaryResponse.data.secure_url; // Get the uploaded image URL
         }
 
-        // Data to be sent to backend
+        // Data object to be sent to the backend
         const memberData = {
           name,
           image: imageUrl || "",
@@ -67,22 +67,25 @@ const AddRetirement = () => {
           content,
         };
 
+        // API call to add the retirement member data
         const response = await axios.post(addRetrimentRoute, memberData, {
           withCredentials: true,
         });
 
+        // Handle response status
         if (response.data.status === false) {
-          setErrormsg("Error adding member.");
+          setErrormsg("Error adding member."); // Display error message on failure
           setTimeout(() => {
             setErrormsg("");
-          }, 2000);
+          }, 2000); // Clear the error message after 2 seconds
         } else if (response.data.status === true) {
-          setMessage("member added successfully!");
+          setMessage("Member added successfully!"); // Show success message
           setTimeout(() => {
-            setMessage(""); // Clear the message after 2 seconds
-          }, 2000);
+            setMessage("");
+          }, 2000); // Clear the success message after 2 seconds
+          // Clear form fields
           setName("");
-          setImage("");
+          setImage(null);
           setEmail("");
           setContact("");
           setDate("");
@@ -90,7 +93,7 @@ const AddRetirement = () => {
           setContent("");
         }
       } catch (error) {
-        setErrormsg("Error adding member.");
+        setErrormsg("Error adding member."); // Handle API call failure
         setTimeout(() => {
           setErrormsg("");
         }, 2000);
@@ -98,10 +101,11 @@ const AddRetirement = () => {
     }
   };
 
+  // Image change handler to capture the file
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(file);
+      setImage(file); // Set the selected image file
     }
   };
 
@@ -109,6 +113,7 @@ const AddRetirement = () => {
     <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Add Retired Member</h2>
       <form onSubmit={handleSubmit}>
+        {/* Name field */}
         <div className="mb-4">
           <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
             Name
@@ -124,6 +129,7 @@ const AddRetirement = () => {
           {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
         </div>
 
+        {/* Image upload field */}
         <div className="mb-4">
           <label htmlFor="image" className="block text-gray-700 font-bold mb-2">
             Upload Image
@@ -135,11 +141,9 @@ const AddRetirement = () => {
             onChange={handleImageChange}
             className="w-full p-2 border rounded"
           />
-          {errors.image && (
-            <p className="text-red-500 text-sm">{errors.image}</p>
-          )}
         </div>
 
+        {/* Email field */}
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
             Email
@@ -152,13 +156,12 @@ const AddRetirement = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter email"
           />
-          {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email}</p>
-          )}
+          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
         </div>
 
+        {/* Contact field */}
         <div className="mb-4">
-          <label htmlFor="order" className="block text-gray-700 font-bold mb-2">
+          <label htmlFor="contact" className="block text-gray-700 font-bold mb-2">
             Contact
           </label>
           <input
@@ -169,12 +172,11 @@ const AddRetirement = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter Contact number"
           />
-          {errors.order && (
-            <p className="text-red-500 text-sm">{errors.contact}</p>
-          )}
         </div>
+
+        {/* Date field */}
         <div className="mb-4">
-          <label htmlFor="order" className="block text-gray-700 font-bold mb-2">
+          <label htmlFor="date" className="block text-gray-700 font-bold mb-2">
             Date of Working
           </label>
           <input
@@ -183,13 +185,11 @@ const AddRetirement = () => {
             value={date}
             onChange={(e) => setDate(e.target.value)}
             className="w-full p-2 border rounded"
-            placeholder="dd/mm/yyyy- dd/mm/yyyy"
+            placeholder="dd/mm/yyyy - dd/mm/yyyy"
           />
-          {errors.order && (
-            <p className="text-red-500 text-sm">{errors.date}</p>
-          )}
         </div>
 
+        {/* Order field */}
         <div className="mb-4">
           <label htmlFor="order" className="block text-gray-700 font-bold mb-2">
             Order
@@ -202,16 +202,11 @@ const AddRetirement = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter order number"
           />
-          {errors.order && (
-            <p className="text-red-500 text-sm">{errors.order}</p>
-          )}
         </div>
 
+        {/* Content field */}
         <div className="mb-4">
-          <label
-            htmlFor="content"
-            className="block text-gray-700 font-bold mb-2"
-          >
+          <label htmlFor="content" className="block text-gray-700 font-bold mb-2">
             Content
           </label>
           <textarea
@@ -222,13 +217,13 @@ const AddRetirement = () => {
             rows="6"
             placeholder="Enter content"
           />
-          {errors.content && (
-            <p className="text-red-500 text-sm">{errors.content}</p>
-          )}
         </div>
+
+        {/* Success and error messages */}
         {message && <p className="text-green-500 text-sm mt-1">{message}</p>}
         {errormsg && <p className="text-red-500 text-sm mt-1">{errormsg}</p>}
 
+        {/* Submit button */}
         <button
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
