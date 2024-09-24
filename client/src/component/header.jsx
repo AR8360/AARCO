@@ -11,12 +11,9 @@ const Header = () => {
         {/* Text Section */}
         <div className="text-center lg:text-right mb-8 md:mb-12 lg:mb-0 lg:w-2/3">
           <div className="inline-block">
-            <h1 className="text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-bold mb-2 animate-slide-right">
-              AARCO
-            </h1>
-            <h2 className="text-base md:text-lg lg:text-xl xl:text-2xl font-light animate-slide-left whitespace-normal md:whitespace-nowrap md:overflow-hidden md:text-ellipsis">
+            <h1 className="text-2xl md:text-2xl lg:text-3xl xl:text-5xl font-bold mb-2 animate-slide-right">
               Association of Alumni Retirees of Our Community
-            </h2>
+            </h1>
           </div>
           <div className="flex flex-col md:flex-row items-center justify-center lg:justify-end space-y-6 md:space-y-0 md:space-x-8 text-base md:text-xl"></div>
         </div>

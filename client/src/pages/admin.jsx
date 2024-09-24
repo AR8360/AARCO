@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import AddNews from "../component/addNews";
-import AddMembers from "../component/addMembers";
 import AddRetirment from "../component/addRetirment";
 import AddAdmin from "../component/addAdmin";
 import AddCommitteMember from "../component/addCommitte.jsx";
@@ -30,13 +29,13 @@ const Admin = ({ admin, isLogin }) => {
         <FaArrowLeft className="text-white text-2xl" />
         <span className="ml-2 text-white text-lg hover:underline">Back</span>
       </div>
-      
+
       {/* Admin Dashboard Main Content */}
       <div className="container mx-auto px-4 py-6">
         <h2 className="text-3xl font-bold text-center text-blue-900 mb-6">
           Admin Dashboard
         </h2>
-        
+
         {/* Grid layout to display various admin components */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Each card contains a different form or functionality for the admin */}
@@ -45,9 +44,6 @@ const Admin = ({ admin, isLogin }) => {
           </div>
           <div className="bg-white p-4 rounded-lg shadow-lg">
             <AddNews /> {/* Form to add news content */}
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-lg">
-            <AddMembers /> {/* Form to add new members */}
           </div>
           <div className="bg-white p-4 rounded-lg shadow-lg">
             <AddCommitteMember /> {/* Form to add committee members */}
