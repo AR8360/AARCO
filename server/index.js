@@ -33,7 +33,7 @@ app.use(cors(corsOptions));
 app.options(
   "*",
   cors({
-    origin: "https://arrco-9204.netlify.app",
+    origin: process.env.CLIENT_URL,
     credentials: true, // To allow cookies
   })
 );
