@@ -32,7 +32,11 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
   // Logout function
   const handleLogout = async () => {
     try {
-      const response = await axios.post(logoutRoute, {}, { withCredentials: true }); // API request to log out
+      const response = await axios.post(
+        logoutRoute,
+        {},
+        { withCredentials: true }
+      ); // API request to log out
 
       if (response.data.status) {
         setIsLogin(false); // Update state to reflect logged-out status
@@ -106,7 +110,7 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
 
           <div
             onClick={handleDownloadClick}
-            className="bg-blue-500 text-white cursor-pointer px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+            className="text-lg font-semibold cursor-pointer"
           >
             Downloads
           </div>
@@ -131,10 +135,7 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
           )}
 
           {isLogin && (
-            <div
-              className="text-lg cursor-pointer"
-              onClick={handleLogout}
-            >
+            <div className="text-lg cursor-pointer" onClick={handleLogout}>
               Logout
             </div>
           )}
@@ -208,7 +209,7 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
 
         <div
           onClick={handleDownloadClick}
-          className="block mt-2 ml-2 mb-2 py-2 px-4 bg-blue-500 text-white cursor-pointer w-fit rounded-md"
+          className="block py-2 px-4 text-lg cursor-pointer"
         >
           Downloads
         </div>

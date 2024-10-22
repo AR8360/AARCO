@@ -9,7 +9,7 @@ const Footer = ({ isLogin }) => {
     { name: "Login", action: () => navigate("/login") },
     { name: "News & Update", action: () => navigate("/news") },
     { name: "Downloads", action: () => navigate("/downloads") },
-    { name: "members", action: () => navigate("/members") },
+    { name: "Members", action: () => navigate("/members") },
     { name: "Committee", action: () => navigate("/committee") },
     { name: "Gallery", action: () => navigate("/gallery") },
   ];
@@ -42,19 +42,20 @@ const Footer = ({ isLogin }) => {
             <h3 className="text-lg font-semibold mb-4 text-blue-800">
               Contact Information
             </h3>
-            <p className="text-blue-700 mb-1">Saurabh Swami</p>
-            <p className="text-blue-700 mb-1">
-              Regional P.F. Commissioner - I (NFSG)
-            </p>
-            <p className="text-blue-700 mb-1">Secretary General</p>
-            <p className="text-blue-700 mb-1">
-              Phone: 0161-2440559, 0161-2402206
-            </p>
+            {/* Mr. Ravi Islavath President 
+            RPG/IGCAR; 
+            Ph 26981/87302
+            ris@igcar.gov.in 
+            Mob: 9043624906 */}
+            <p className="text-blue-700 mb-1">Mr. Ravi Islavath </p>
+
+            <p className="text-blue-700 mb-1">President</p>
+            <p className="text-blue-700 mb-1">Mob: 9043624906</p>
             <a
               href="mailto:epfooa@gmail.com"
               className="text-blue-600 hover:text-blue-800 transition duration-300"
             >
-              epfooa@gmail.com
+              ris@igcar.gov.in
             </a>
           </div>
 
@@ -91,6 +92,7 @@ const Footer = ({ isLogin }) => {
         </div>
 
         {/* Copyright */}
+        {/* Inplace of {new Date().getFullYear()} write the year of establishment of AARCO */}
         <div className="mt-6 text-center text-blue-700">
           <p>&copy; {new Date().getFullYear()} AARCO. All rights reserved.</p>
         </div>
