@@ -24,12 +24,12 @@ app.use(bodyParser.json());
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: process.env.CLIENT_URL, // Your frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow these HTTP methods
+  credentials: true, // Allow cookies to be sent
+};
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.send("<h1>Server is running</h1>");

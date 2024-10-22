@@ -55,10 +55,10 @@ const verifyOTP = async (req, res) => {
 
     const token = generateJWT(user);
     res.cookie("token", token, {
-      httpOnly: true, // Helps prevent XSS attacks by not allowing JavaScript access to the cookie
-      secure: process.env.NODE_ENV === "production", // Send cookie only over HTTPS in production
-      sameSite: none, // Ensures the cookie is sent only for same-site requests
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 1 hour in milliseconds
+      httpOnly: true, // Helps prevent XSS attacks by making the cookie inaccessible via JavaScript
+      secure: true, // Ensures the cookie is only sent over HTTPS
+      sameSite: "none", // Allows the cookie to be sent in cross-site requests (Netlify frontend to Render backend)
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days (in milliseconds)
     });
 
     return res.json({
