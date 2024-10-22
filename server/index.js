@@ -30,7 +30,13 @@ const corsOptions = {
   credentials: true, // Allow cookies to be sent
 };
 app.use(cors(corsOptions));
-
+app.options(
+  "*",
+  cors({
+    origin: "https://arrco-9204.netlify.app",
+    credentials: true, // To allow cookies
+  })
+);
 app.get("/", (req, res) => {
   res.send("<h1>Server is running</h1>");
 });
