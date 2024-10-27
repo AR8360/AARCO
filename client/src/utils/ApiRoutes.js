@@ -1,5 +1,5 @@
-// export const host = "https://aarco.onrender.com";
-export const host = "http://localhost:3000";
+export const host = "https://aarco.onrender.com";
+// export const host = "http://localhost:3000";
 //user routes
 export const verify = `${host}/api/verify`;
 export const verifyotp = `${host}/user/verify-otp`;
