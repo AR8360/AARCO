@@ -5,7 +5,6 @@ export const verify = `${host}/api/verify`;
 export const verifyotp = `${host}/user/verify-otp`;
 export const loginorSinupRoute = `${host}/user/loginorsignup`;
 export const setAdmin = `${host}/user/change-status`;
-export const logoutRoute = `${host}/user/logout`;
 
 // news routes
 export const addNewsRoute = `${host}/news/create-news`;
