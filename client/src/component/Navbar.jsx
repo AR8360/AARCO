@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link as ScrollLink } from "react-scroll"; // Scroll link for smooth scrolling to sections
 import { useNavigate } from "react-router-dom"; // For navigation between routes
 import { Menu, X } from "lucide-react"; // Optional icons for mobile menu toggle (hamburger and close icons)
+import { logoutRoute } from "../utils/ApiRoutes.js"; // API route for logout
+import axios from "axios"; // HTTP client for making API requests
 
 // Navbar component
 const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
@@ -30,12 +32,13 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
   // Logout function
   const handleLogout = async () => {
     try {
-      deleteCookie("token"); // Remove the cookie from the frontend
-      setIsLogin(false); // Update state to reflect logged-out status
-      setadmin(false); // Update admin state
-      navigate("/"); // Redirect to the homepage
+      await axios.post(logoutRoute, {}, { withCredentials: true });
+      deleteCookie("token"); // Frontend fallback to ensure deletion
+      setIsLogin(false);
+      setadmin(false);
+      navigate("/");
     } catch (error) {
-      console.log("Error during logout:", error); // Log any errors
+      console.log("Error during logout:", error);
     }
   };
 
