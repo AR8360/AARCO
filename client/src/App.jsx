@@ -83,9 +83,8 @@ const App = () => {
           path="/login"
           element={
             <Login
-              admin={isadmin} // Pass the `isadmin` state to the Login component
               isLogin={isLogin} // Pass the `isLogin` state to the Login component
-              setadmin={setadmin} // Allow Login component to modify admin state
+              setAdmin={setadmin} // Allow Login component to modify admin state
               setIsLogin={setIsLogin} // Allow Login component to modify login state
             />
           }

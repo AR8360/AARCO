@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link as ScrollLink } from "react-scroll"; // Scroll link for smooth scrolling to sections
 import { useNavigate } from "react-router-dom"; // For navigation between routes
 import { Menu, X } from "lucide-react"; // Optional icons for mobile menu toggle (hamburger and close icons)
@@ -29,6 +29,9 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
     navigate("/committee"); // Navigates to the committee page
   };
 
+  const deleteCookie = (name) => {
+    document.cookie = `${name}=; Max-Age=0; path=/;`;
+  };
   // Logout function
   const handleLogout = async () => {
     try {
@@ -41,6 +44,8 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
       console.log("Error during logout:", error);
     }
   };
+
+  useEffect(() => {}, [setIsLogin]);
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white text-blue-900 py-3 shadow-md z-50">
