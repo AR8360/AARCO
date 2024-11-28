@@ -15,6 +15,8 @@ export const logoutRoute = `${host}/user/logout`;
 
 // new member routes
 export const addNewMemberRoute = `${host}/newuser/add`;
+export const getallNewMemberRoute = `${host}/newuser/all`;
+export const deleteNewMemberRoute = `${host}/newuser/delete`;
 
 // news routes
 export const addNewsRoute = `${host}/news/create-news`;

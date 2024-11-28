@@ -14,6 +14,8 @@ import axios from "axios"; // Axios is used for making HTTP requests
 import SignUp from "./pages/signup.jsx";
 import Forgotpassword from "./pages/forgotpassword.jsx";
 import Newuser from "./pages/newuser.jsx";
+import NewUserpage from "./pages/newUserpage.jsx";
+import UnregisterMemberPage from "./pages/unregistermember.jsx";
 
 const App = () => {
   // State to track if the user is an admin
@@ -117,6 +119,11 @@ const App = () => {
           element={<Gallery isadmin={isadmin} isLogin={isLogin} />}
         />
         <Route path="/new-user" element={<Newuser />} />
+        <Route path="/newuserpage" element={<NewUserpage admin={isadmin} />} />
+        <Route
+          path="/unregister"
+          element={<UnregisterMemberPage admin={isadmin} />}
+        />
       </Routes>
     </Router>
   );

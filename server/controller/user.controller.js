@@ -266,7 +266,8 @@ const allunregisterUser = async (req, res) => {
 
 const deleteUnregisterUser = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email } = req.query; // Read email from query parameters
+    console.log(email);
 
     // Validate if email is provided
     if (!email) {

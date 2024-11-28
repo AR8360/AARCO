@@ -35,6 +35,20 @@ const Admin = ({ admin, isLogin }) => {
         <h2 className="text-3xl font-bold text-center text-blue-900 mb-6">
           Admin Dashboard
         </h2>
+        <button
+          type="submit"
+          onClick={() => navigate("/newuserpage")}
+          className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-800 text-xl font-bold mb-4"
+        >
+          see new user
+        </button>
+        <button
+          type="submit"
+          onClick={() => navigate("/unregister")}
+          className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-800 text-xl font-bold mb-4 ml-4"
+        >
+          see All Un_Register Member
+        </button>
 
         {/* Grid layout to display various admin components */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

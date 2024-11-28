@@ -7,17 +7,16 @@ const addNewUser = async (req, res) => {
 
     // Validate required fields
     if (!name || !email || !contact || !address) {
-      return res
-        .status(400)
-        .json({ msg: "All fields are required", status: false });
+      return res.json({ msg: "All fields are required", status: false });
     }
 
     // Check if the email already exists
     const existingUser = await NewMember.findOne({ email });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ msg: "User with this email already apply", status: false });
+      return res.json({
+        msg: "User with this email already applied",
+        status: false,
+      });
     }
 
     // Create a new user
@@ -33,24 +32,22 @@ const addNewUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error adding new user:", error);
-    return res
-      .status(500)
-      .json({ msg: "Internal server error", status: false });
+    return res.json({ msg: "Internal server error", status: false });
   }
 };
 
-// Delete a single user by email
+// Delete a single user by ID
 const deleteNewUser = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { id } = req.params;
 
-    // Validate if email is provided
-    if (!email) {
-      return res.status(400).json({ msg: "Email is required", status: false });
+    // Validate if ID is provided
+    if (!id) {
+      return res.json({ msg: "User ID is required", status: false });
     }
 
-    // Find and delete the user based on the email
-    const deletedUser = await NewMember.findOneAndDelete({ email });
+    // Find and delete the user based on the ID
+    const deletedUser = await NewMember.findByIdAndDelete(id);
 
     if (!deletedUser) {
       return res.json({ msg: "User not found", status: false });
@@ -62,9 +59,7 @@ const deleteNewUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting user:", error);
-    return res
-      .status(500)
-      .json({ msg: "Internal server error", status: false });
+    return res.json({ msg: "Internal server error", status: false });
   }
 };
 
@@ -73,10 +68,16 @@ const getAllUsers = async (req, res) => {
   try {
     const users = await NewMember.find();
 
+    // Check if users exist
     if (!users.length) {
-      return res.json({ msg: "No users found", status: false });
+      return res.json({
+        msg: "No users found",
+        status: true,
+        users: [],
+      });
     }
 
+    // Respond with user data
     return res.json({
       msg: "All users retrieved successfully",
       status: true,
@@ -84,9 +85,12 @@ const getAllUsers = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching users:", error);
-    return res
-      .status(500)
-      .json({ msg: "Internal server error", status: false });
+
+    // Send error response
+    return res.json({
+      msg: "Internal server error",
+      status: false,
+    });
   }
 };
 
