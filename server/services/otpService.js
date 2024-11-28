@@ -33,4 +33,20 @@ const sendOTPEmail = async (email, otp) => {
   }
 };
 
-export { generateOTP, sendOTPEmail };
+const sendemailapprove = async (email) => {
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER, // Sender address
+      to: email, // Recipient's email
+      subject: "Your email has been verified.", // Subject line
+      text: `Your account has been approved`,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error("Error sending OTP email:", error);
+    throw new Error("Failed to send OTP. Please try again.");
+  }
+};
+
+export { generateOTP, sendOTPEmail, sendemailapprove };

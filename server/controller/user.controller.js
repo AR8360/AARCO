@@ -1,6 +1,10 @@
 import Member from "../model/member.model.js";
 import UnRegister from "../model/Unregister.model.js";
-import { generateOTP, sendOTPEmail } from "../services/otpService.js";
+import {
+  generateOTP,
+  sendOTPEmail,
+  sendemailapprove,
+} from "../services/otpService.js";
 import { isAfter } from "date-fns";
 import bcrypt from "bcryptjs";
 import { generateJWT } from "../utils/generatejwt.js";
@@ -235,6 +239,7 @@ const approveUser = async (req, res) => {
 
       // Save the new member to the Member model
       await newMember.save();
+      sendemailapprove(newMember.email);
 
       // Remove the user from UnRegister collection
       await UnRegister.deleteOne({ email });
