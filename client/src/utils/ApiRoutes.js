@@ -1,11 +1,20 @@
-export const host = "https://aarco.onrender.com";
-// export const host = "http://localhost:3000";
+// export const host = "https://aarco.onrender.com";
+export const host = "http://localhost:3000";
 //user routes
-export const verify = `${host}/api/verify`;
-export const verifyotp = `${host}/user/verify-otp`;
-export const loginorSinupRoute = `${host}/user/loginorsignup`;
+export const login = `${host}/user/login`;
+export const verify = `${host}/api/verify`; // verify if user is admin
+export const generateOtp = `${host}/user/generate-otp`; //generate otp for forgot password
+export const verifyOtp = `${host}/user/verify-otp`; //verify otp for forgot password
+export const register = `${host}/user/register`;
+export const getallUnregisterUser = `${host}/user/all-unregister-user`;
+export const verifyUnregisterEmail = `${host}/user/verify-unregister-email`;
+export const deleteUnregisterUser = `${host}/user/delete-unregister-user`;
+export const approverMember = `${host}/user/approve-user`;
 export const setAdmin = `${host}/user/change-status`;
 export const logoutRoute = `${host}/user/logout`;
+
+// new member routes
+export const addNewMemberRoute = `${host}/newuser/add`;
 
 // news routes
 export const addNewsRoute = `${host}/news/create-news`;

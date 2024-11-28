@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const memberSchema = new mongoose.Schema({
+const unregistermemberSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -21,12 +21,6 @@ const memberSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  status: {
-    type: String,
-    enum: ["member", "admin"], // Only allows "member" or "admin"
-    default: "member", // Sets default value to "member"
-    required: true,
-  },
   password: {
     type: String,
     required: true,
@@ -34,11 +28,15 @@ const memberSchema = new mongoose.Schema({
   otp: {
     type: String,
   },
+  verifiedemail: {
+    type: Boolean,
+    default: false,
+  },
   otpExpiry: {
     type: Date,
   },
 });
 
-const Member = mongoose.model("member", memberSchema);
+const UnRegister = mongoose.model("unregisterMember", unregistermemberSchema);
 
-export default Member; // Exporting the model Member
+export default UnRegister; // Exporting the model UnRegister

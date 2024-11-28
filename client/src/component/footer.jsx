@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail } from "lucide-react";
 
-const Footer = ({ isLogin }) => {
+const Footer = () => {
   const navigate = useNavigate();
 
   const quickLinks = [
@@ -64,30 +64,30 @@ const Footer = ({ isLogin }) => {
             <h3 className="text-lg font-semibold mb-4 text-blue-800">
               Get in Touch
             </h3>
-            {isLogin ? (
-              <div>
-                <p className="text-blue-700 mb-4">
-                  For inquiries or assistance, feel free to contact us:
-                </p>
+            <div>
+              <p className="text-blue-700 mb-4">
+                For inquiries or assistance, feel free to contact us:
+              </p>
 
-                <a
-                  href="mailto:epfooa@gmail.com"
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
-                >
-                  <Mail className="mr-2" size={20} />
-                  Contact via Email
-                </a>
-              </div>
-            ) : (
-              <div>
-                <p
-                  className="text-blue-700 text-xl mb-1 underline cursor-pointer"
-                  onClick={() => navigate("/login")}
-                >
-                  Please signUp/Login to get in touch
-                </p>
-              </div>
-            )}
+              <a
+                href="mailto:epfooa@gmail.com"
+                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
+              >
+                <Mail className="mr-2" size={20} />
+                Contact via Email
+              </a>
+            </div>
+            <div>
+              <p className="text-blue-700 mb-4 mt-4">
+                Apply here to become a member of AARCO:
+              </p>
+              <button
+                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
+                onClick={() => navigate("/new-user")}
+              >
+                APPLY HERE
+              </button>
+            </div>
           </div>
         </div>
 

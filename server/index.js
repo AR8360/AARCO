@@ -12,6 +12,7 @@ import newsRouter from "./route/news.route.js";
 import galleryRouter from "./route/gallery.route.js";
 import committeeRouter from "./route/commitee.route.js";
 import pdfRouter from "./route/pdf.route.js";
+import newuser from "./route/newuser.route.js";
 
 import { verifyToken } from "./utils/VerifyToken.js";
 dotenv.config();
@@ -45,6 +46,7 @@ app.use("/api/verify", verifyToken, (req, res) => {
 });
 app.use("/user", userRouter);
 app.use("/news", newsRouter);
+app.use("/newuser", newuser);
 app.use("/committee", committeeRouter);
 app.use("/gallery", galleryRouter);
 app.use("/pdf", pdfRouter);

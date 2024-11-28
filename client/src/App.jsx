@@ -11,11 +11,13 @@ import CommitteeList from "./pages/commitee";
 import Gallery from "./pages/gallery";
 import { verify } from "./utils/ApiRoutes.js"; // Importing the API route for verifying admin status
 import axios from "axios"; // Axios is used for making HTTP requests
+import SignUp from "./pages/signup.jsx";
+import Forgotpassword from "./pages/forgotpassword.jsx";
+import Newuser from "./pages/newuser.jsx";
 
 const App = () => {
   // State to track if the user is an admin
   const [isadmin, setadmin] = useState(false);
-
   // State to track if the user is logged in
   const [isLogin, setIsLogin] = useState(false);
 
@@ -89,6 +91,8 @@ const App = () => {
             />
           }
         />
+        <Route path="/signup" element={<SignUp isLogin={isLogin} />} />
+        <Route path="/forgotpassword" element={<Forgotpassword />} />
 
         {/* Admin dashboard route, accessible only if the user is logged in and an admin */}
         <Route
@@ -107,12 +111,12 @@ const App = () => {
           path="/committee"
           element={<CommitteeList isAdmin={isadmin} isLogin={isLogin} />}
         />
-
         {/* Gallery page route, accessible only if the user is logged in */}
         <Route
           path="/gallery"
           element={<Gallery isadmin={isadmin} isLogin={isLogin} />}
         />
+        <Route path="/new-user" element={<Newuser />} />
       </Routes>
     </Router>
   );

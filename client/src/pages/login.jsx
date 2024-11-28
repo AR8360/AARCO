@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-import { loginorSinupRoute, verifyotp, verify } from "../utils/ApiRoutes.js"; // Importing required API routes
+import { BiHide } from "react-icons/bi";
+import { BiShow } from "react-icons/bi";
+import { login, verify } from "../utils/ApiRoutes.js"; // Importing required API routes
 import axios from "axios"; // Importing Axios for making API calls
 
 // Login component handles the user authentication process (OTP generation and verification)
 const Login = ({ isLogin, setAdmin, setIsLogin }) => {
   // State variables for handling input, loading state, and form errors
   const [email, setEmail] = useState(""); // To store the user's email
-  const [otp, setOtp] = useState(""); // To store the OTP entered by the user
+  const [password, setPassword] = useState(""); // To store the user's password
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false); // To track loading state during API requests
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Tracks if the OTP was sent
   const [message, setMessage] = useState(""); // Displays success or error messages
   const [errors, setErrors] = useState({}); // Stores form validation errors
   const navigate = useNavigate(); // Hook to navigate between routes
@@ -21,11 +23,14 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
     if (!email) newErrors.email = "Email is required"; // Check if email is not empty
     if (email && !/\S+@\S+\.\S+/.test(email))
       newErrors.email = "Email format is invalid"; // Basic regex to check email format
+    if (!password) newErrors.password = "Password is required"; // Check if password is not empty
+    if (password.length < 6)
+      newErrors.password = "Password must be atleast 6 characters long"; // Check if password is atleast 6 characters long
     return newErrors; // Return errors object
   };
 
   // Function to request OTP by making a POST request to the server
-  const handleOtp = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     const formErrors = validateForm(); // Validate the form
     if (Object.keys(formErrors).length > 0) {
@@ -35,15 +40,18 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
     setErrors({}); // Clear any previous errors
     setLoading(true); // Set loading state
     try {
-      const response = await axios.post(loginorSinupRoute, { email }); // Send email to the server to request OTP
+      const response = await axios.post(
+        login,
+        { email, password },
+        { withCredentials: true }
+      ); // Send email to the server to request OTP
       if (response.data.status) {
-        setIsLoggedIn(true); // OTP request successful, set state to allow OTP entry
-        setMessage(response.data.msg); // Set success message
-        setTimeout(() => {
-          setMessage(""); // Clear message after 2 seconds
-        }, 2000);
+        setMessage("Login successful!"); // If successful, display message
+        await verifyAdmin(); // Verify if the user is an admin
+        setIsLogin(true); // Set login state to true
+        navigate("/"); // Redirect to the home page after login
       } else {
-        setErrors({ login: response.data.message }); // Handle failure to send OTP
+        setErrors({ general: response.data.msg }); // Handle failure to login
       }
     } catch (error) {
       console.error("Error during login:", error); // Log errors for debugging
@@ -59,53 +67,17 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
       const response = await axios.get(verify, { withCredentials: true }); // Send request to verify admin status
       if (response.data.success && response.data.decoded.status === "admin") {
         setAdmin(true); // Set admin status if verified
+        return;
       }
     } catch (error) {
       console.error("Error during admin verification:", error); // Log error if verification fails
     }
   };
 
-  // Function to handle OTP verification and login process
-  const handleLogin = async () => {
-    const formErrors = validateForm(); // Validate email again
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors); // Set errors if form validation fails
-      return;
-    }
-    if (!otp || otp.length < 6) {
-      setErrors({ otp: "OTP must be 6 digits long" }); // Ensure OTP length is correct
-      return;
-    }
-    try {
-      const response = await axios.post(
-        verifyotp, // Send OTP and email to the server for verification
-        { email, otp },
-        { withCredentials: true }
-      );
-      if (response.data.status) {
-        setMessage("Login successful!"); // If successful, display message
-        verifyAdmin(); // Verify if the user is an admin
-        setIsLogin(true); // Set login state to true
-        navigate("/"); // Redirect to the home page after login
-      } else {
-        setErrors({ otp: response.data.msg || "OTP verification failed" }); // Handle OTP verification failure
-      }
-    } catch (error) {
-      console.error("Error during OTP verification:", error); // Log error
-      setErrors({
-        general: "An error occurred while verifying OTP. Please try again.",
-      }); // Display general error message
-    }
-  };
-
   // Function to handle form submission, either OTP request or login
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (isLoggedIn) {
-      handleLogin(event); // If OTP is already sent, handle login
-    } else {
-      handleOtp(event); // Else, handle OTP request
-    }
+    handleLogin(event); // Call the handleLogin function
   };
 
   // Redirect to home if the user is already logged in
@@ -132,7 +104,7 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
           className="text-4xl font-bold mb-8 text-center text-gray-800"
           style={{ fontFamily: "Playfair Display, serif" }}
         >
-          Login/SignUp
+          Login
         </h2>
       </div>
 
@@ -164,29 +136,40 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
             </div>
 
             {/* OTP Field, shown only after email is verified */}
-            {isLoggedIn && (
-              <div className="mb-6">
-                <label
-                  className="block text-gray-700 text-xl font-bold mb-2"
-                  htmlFor="otp"
-                >
-                  OTP
-                </label>
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-xl font-bold mb-2"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <div className="relative">
                 <input
-                  type="text"
-                  id="otp"
-                  placeholder="Enter your OTP"
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder="Enter your password"
                   className={`w-full p-3 border ${
-                    errors.otp ? "border-red-500" : "border-gray-300"
+                    errors.password ? "border-red-500" : "border-gray-300"
                   } rounded-lg`}
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
-                {errors.otp && (
-                  <p className="text-red-500 text-sm mt-1">{errors.otp}</p>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                >
+                  {showPassword ? (
+                    <BiHide size={20} className="text-gray-600" />
+                  ) : (
+                    <BiShow size={20} className="text-gray-600" />
+                  )}
+                </button>
               </div>
-            )}
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              )}
+            </div>
 
             {/* Error and Success Messages */}
             {errors.general && (
@@ -197,21 +180,29 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
             )}
 
             {/* Submit Button */}
-            {!loading ? (
-              <button
-                type="submit"
-                className="w-full bg-blue-900 text-xl text-white py-3 rounded-lg hover:bg-blue-800 transition duration-300"
+
+            <button
+              type="submit"
+              className="w-full bg-blue-900 text-xl text-white py-3 rounded-lg hover:bg-blue-800 transition duration-300"
+            >
+              Log In
+            </button>
+
+            {/*for register link*/}
+            <div className="mt-4 text-center">
+              <a href="/signup" className="text-blue-900 hover:underline">
+                Don't have an account? Register
+              </a>
+            </div>
+            {/*for forget password*/}
+            <div className="mt-4 text-center">
+              <a
+                href="/forgetpassword"
+                className="text-blue-900 hover:underline"
               >
-                {isLoggedIn ? "Login/SignUp" : "Generate OTP"}
-              </button>
-            ) : (
-              <button
-                className="w-full bg-slate-500 text-xl text-white py-3 rounded-lg"
-                disabled
-              >
-                Generating OTP...
-              </button>
-            )}
+                Forget Password
+              </a>
+            </div>
           </form>
         </div>
       </div>
