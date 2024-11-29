@@ -49,7 +49,7 @@ const NewUserpage = ({ admin }) => {
   }, [admin, navigate]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100 w-full">
       <div
         className="bg-blue-900 inline-flex items-center p-4 cursor-pointer"
         onClick={() => navigate("/admin")}
@@ -62,49 +62,53 @@ const NewUserpage = ({ admin }) => {
         New Members
       </h1>
 
-      {newMembers.length > 0 ? (
-        <table className="table-auto w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border border-gray-300 px-4 py-2">Name</th>
-              <th className="border border-gray-300 px-4 py-2">Email</th>
-              <th className="border border-gray-300 px-4 py-2">Contact</th>
-              <th className="border border-gray-300 px-4 py-2">Address</th>
-              <th className="border border-gray-300 px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {newMembers.map((member) => (
-              <tr key={member._id} className="text-center">
-                <td className="border border-gray-300 px-4 py-2">
-                  {member.name}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {member.email}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {member.contact}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {member.address}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  <button
-                    onClick={() => deleteMember(member._id)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <MdDelete size={20} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <div className="text-2xl text-center font-bold text-red-500 mt-6 -mb-72">
-          No new user
-        </div>
-      )}
+      <div className="flex-1 px-4 py-6 bg-white shadow-lg rounded-md mx-4">
+        {newMembers.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="table-auto w-full border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border border-gray-300 px-4 py-2">Name</th>
+                  <th className="border border-gray-300 px-4 py-2">Email</th>
+                  <th className="border border-gray-300 px-4 py-2">Contact</th>
+                  <th className="border border-gray-300 px-4 py-2">Address</th>
+                  <th className="border border-gray-300 px-4 py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {newMembers.map((member) => (
+                  <tr key={member._id} className="text-center">
+                    <td className="border border-gray-300 px-4 py-2">
+                      {member.name}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {member.email}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {member.contact}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {member.address}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      <button
+                        onClick={() => deleteMember(member._id)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <MdDelete size={20} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="text-2xl text-center font-bold text-red-500 mt-6">
+            No new user
+          </div>
+        )}
+      </div>
     </div>
   );
 };

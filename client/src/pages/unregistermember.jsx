@@ -31,10 +31,9 @@ const UnregisterMemberPage = ({ admin }) => {
   // Delete a user by email
   const deleteMember = async (email) => {
     try {
-      const res = await axios.delete(`${deleteUnregisterUser}?email=${email}`, {
+      await axios.delete(`${deleteUnregisterUser}?email=${email}`, {
         withCredentials: true,
       });
-
       setUnregisterMembers((prev) =>
         prev.filter((member) => member.email !== email)
       );
@@ -76,10 +75,10 @@ const UnregisterMemberPage = ({ admin }) => {
       navigate("/login");
     }
     fetchUnregisterMembers();
-  }, []);
+  }, [admin, navigate]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100 w-full">
       <div
         className="bg-blue-900 inline-flex items-center p-4 cursor-pointer"
         onClick={() => navigate("/admin")}
@@ -93,52 +92,54 @@ const UnregisterMemberPage = ({ admin }) => {
       {error && <p className="text-red-500 text-center">{error}</p>}
 
       {unregisterMembers.length > 0 ? (
-        <div>
-          <table className="table-auto w-full border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border border-gray-300 px-4 py-2">Select</th>
-                <th className="border border-gray-300 px-4 py-2">Name</th>
-                <th className="border border-gray-300 px-4 py-2">Email</th>
-                <th className="border border-gray-300 px-4 py-2">Employee</th>
-                <th className="border border-gray-300 px-4 py-2">Unit</th>
-                <th className="border border-gray-300 px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {unregisterMembers.map((member) => (
-                <tr key={member.email} className="text-center">
-                  <td className="border border-gray-300 px-4 py-2">
-                    <input
-                      type="checkbox"
-                      checked={selectedEmails.includes(member.email)}
-                      onChange={() => toggleSelection(member.email)}
-                    />
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {member.name}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {member.email}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {member.Employee}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {member.Unit}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    <button
-                      onClick={() => deleteMember(member.email)}
-                      className="text-red-500 hover:text-red-700 mx-2"
-                    >
-                      <MdDelete size={20} />
-                    </button>
-                  </td>
+        <div className="flex-1 px-4 py-6 bg-white shadow-lg rounded-md mx-4">
+          <div className="overflow-x-auto">
+            <table className="table-auto w-full border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border border-gray-300 px-4 py-2">Select</th>
+                  <th className="border border-gray-300 px-4 py-2">Name</th>
+                  <th className="border border-gray-300 px-4 py-2">Email</th>
+                  <th className="border border-gray-300 px-4 py-2">Employee</th>
+                  <th className="border border-gray-300 px-4 py-2">Unit</th>
+                  <th className="border border-gray-300 px-4 py-2">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {unregisterMembers.map((member) => (
+                  <tr key={member.email} className="text-center">
+                    <td className="border border-gray-300 px-4 py-2">
+                      <input
+                        type="checkbox"
+                        checked={selectedEmails.includes(member.email)}
+                        onChange={() => toggleSelection(member.email)}
+                      />
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {member.name}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {member.email}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {member.Employee}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {member.Unit}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      <button
+                        onClick={() => deleteMember(member.email)}
+                        className="text-red-500 hover:text-red-700 mx-2"
+                      >
+                        <MdDelete size={20} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           <div className="mt-4 flex justify-center">
             <button
               onClick={approveMembers}

@@ -41,8 +41,10 @@ const Newuser = () => {
         address,
       }); // Send email to the server to request OTP
       if (response.data.status) {
-        setMessage("Login successful!"); // If successful, display message
-        navigate("/"); // Redirect to the home page after login
+        setMessage("Applied successful!"); // If successful, display message
+        setTimeout(() => {
+          navigate("/"); // Redirect to the home page after login
+        }, 2000);
       } else {
         setErrors({ general: response.data.msg }); // Handle failure to login
       }
