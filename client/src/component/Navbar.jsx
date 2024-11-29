@@ -215,7 +215,7 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
 
         <div
           className="block py-2 px-4 text-lg cursor-pointer"
-          onClick={() => navigate("/call_latter")}
+          onClick={() => navigate("/call_letter")}
         >
           Call-Letter
         </div>
