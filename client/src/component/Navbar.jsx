@@ -108,6 +108,13 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
           </div>
 
           <div
+            className="text-lg font-semibold cursor-pointer"
+            onClick={() => navigate("/call_letter")}
+          >
+            call-Letter
+          </div>
+
+          <div
             onClick={handleDownloadClick}
             className="text-lg font-semibold cursor-pointer"
           >
@@ -204,6 +211,13 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
           className="block py-2 px-4 text-lg cursor-pointer"
         >
           Gallery
+        </div>
+
+        <div
+          className="block py-2 px-4 text-lg cursor-pointer"
+          onClick={() => navigate("/call_latter")}
+        >
+          Call-Letter
         </div>
 
         <div
