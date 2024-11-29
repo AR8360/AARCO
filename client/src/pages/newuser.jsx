@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { addNewMemberRoute } from "../utils/ApiRoutes.js";
 import axios from "axios";
-
 const Newuser = () => {
   const navigate = useNavigate();
   const [name, setName] = React.useState("");
@@ -13,206 +12,182 @@ const Newuser = () => {
   const [message, setMessage] = React.useState("");
   const [error, setErrors] = React.useState("");
 
+  // Function to validate email format and ensure fields are filled
   const validateForm = () => {
-    const newErrors = {};
-    if (!email) newErrors.email = "Email is required";
+    const newErrors = {}; // Object to hold validation errors
+    if (!email) newErrors.email = "Email is required"; // Check if email is not empty
     if (email && !/\S+@\S+\.\S+/.test(email))
-      newErrors.email = "Email format is invalid";
+      newErrors.email = "Email format is invalid"; // Basic regex to check email format
     if (!name) newErrors.name = "Name is required";
     if (!contact) newErrors.contact = "Contact is required";
     if (!address) newErrors.address = "Address is required";
-    return newErrors;
+    return newErrors; // Return errors object
   };
 
+  // Function to request OTP by making a POST request to the server
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formErrors = validateForm();
+    const formErrors = validateForm(); // Validate the form
     if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
+      setErrors(formErrors); // Set validation errors if found
       return;
     }
-    setErrors({});
+    setErrors({}); // Clear any previous errors
     try {
       const response = await axios.post(addNewMemberRoute, {
         name,
         email,
         contact,
         address,
-      });
+      }); // Send email to the server to request OTP
       if (response.data.status) {
-        setMessage("Login successful!");
-        navigate("/");
+        setMessage("Login successful!"); // If successful, display message
+        navigate("/"); // Redirect to the home page after login
       } else {
-        setErrors({ general: response.data.msg });
+        setErrors({ general: response.data.msg }); // Handle failure to login
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      setErrors({ general: "An error occurred. Please try again." });
+      console.error("Error during login:", error); // Log errors for debugging
+      setErrors({ general: "An error occurred. Please try again." }); // General error message
     }
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      {/* Header */}
       <div
-        className="bg-blue-900 inline-flex items-center justify-between p-4 cursor-pointer"
+        className="bg-blue-900 inline-flex items-center p-4 cursor-pointer"
         onClick={() => navigate("/")}
       >
-        <div className="flex items-center">
-          <FaArrowLeft className="text-white text-xl sm:text-2xl" />
-          <span className="ml-2 text-white text-base sm:text-lg hover:underline">Back</span>
-        </div>
-        
-        {/* Toggle View Button for Small Screens */}
-        <button 
-          className="md:hidden text-white"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsCompactView(!isCompactView);
-          }}
-        >
-          <FaBars className="text-2xl" />
-        </button>
+        {/* Back Arrow Icon */}
+        <FaArrowLeft className="text-white text-2xl" />
+        <span className="ml-2 text-white text-lg hover:underline">Back</span>
       </div>
 
-      {/* Title */}
-      <div className="container mx-auto px-4 mt-6 sm:mt-8 mb-6 sm:mb-8">
+      <div className="container mx-auto px-4 mt-8 mb-8">
         <h2
-          className="text-3xl sm:text-4xl font-bold text-center text-gray-800"
+          className="text-4xl font-bold mb-8 text-center text-gray-800"
           style={{ fontFamily: "Playfair Display, serif" }}
         >
           New Member
         </h2>
       </div>
 
-      {/* Form Container */}
+      {/* Login Form */}
       <div className="container mx-auto px-4 flex justify-center items-center flex-grow">
-        <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-6 sm:p-8">
+        <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
           <form onSubmit={handleSubmit}>
-            <div className={`
-              grid 
-              ${isCompactView ? 'grid-cols-1' : 'grid-cols-2'}
-              md:grid-cols-2 
-              gap-4 sm:gap-6
-            `}>
-              {/* Name Field */}
-              <div className="col-span-2 md:col-span-1">
-                <label
-                  className="block text-gray-700 text-base sm:text-lg font-bold mb-2"
-                  htmlFor="name"
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  placeholder="Enter your name"
-                  className={`w-full p-2 sm:p-3 border ${
-                    error.name ? "border-red-500" : "border-gray-300"
-                  } rounded-lg text-sm sm:text-base`}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-                {error.name && (
-                  <p className="text-red-500 text-xs sm:text-sm mt-1">{error.name}</p>
-                )}
-              </div>
-
-              {/* Email Field */}
-              <div className="col-span-2 md:col-span-1">
-                <label
-                  className="block text-gray-700 text-base sm:text-lg font-bold mb-2"
-                  htmlFor="email"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  placeholder="Enter your email"
-                  className={`w-full p-2 sm:p-3 border ${
-                    error.email ? "border-red-500" : "border-gray-300"
-                  } rounded-lg text-sm sm:text-base`}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                {error.email && (
-                  <p className="text-red-500 text-xs sm:text-sm mt-1">{error.email}</p>
-                )}
-              </div>
-
-              {/* Contact Field */}
-              <div className="col-span-2 md:col-span-1">
-                <label
-                  className="block text-gray-700 text-base sm:text-lg font-bold mb-2"
-                  htmlFor="contact"
-                >
-                  Contact
-                </label>
-                <input
-                  type="text"
-                  id="contact"
-                  placeholder="Enter your contact"
-                  className={`w-full p-2 sm:p-3 border ${
-                    error.contact ? "border-red-500" : "border-gray-300"
-                  } rounded-lg text-sm sm:text-base`}
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value)}
-                />
-                {error.contact && (
-                  <p className="text-red-500 text-xs sm:text-sm mt-1">{error.contact}</p>
-                )}
-              </div>
-
-              {/* Address Field */}
-              <div className="col-span-2 md:col-span-1">
-                <label
-                  className="block text-gray-700 text-base sm:text-lg font-bold mb-2"
-                  htmlFor="address"
-                >
-                  Address
-                </label>
-                <input
-                  type="text"
-                  id="address"
-                  placeholder="Enter your address"
-                  className={`w-full p-2 sm:p-3 border ${
-                    error.address ? "border-red-500" : "border-gray-300"
-                  } rounded-lg text-sm sm:text-base`}
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-                {error.address && (
-                  <p className="text-red-500 text-xs sm:text-sm mt-1">{error.address}</p>
-                )}
-              </div>
-
-              {/* General Errors and Messages */}
-              <div className="col-span-2">
-                {error.general && (
-                  <p className="text-red-500 text-xs sm:text-sm">{error.general}</p>
-                )}
-                {message && (
-                  <p className="text-green-500 text-xs sm:text-sm">{message}</p>
-                )}
-              </div>
-
-              {/* Submit Button */}
-              <div className="col-span-2">
-                <button
-                  type="submit"
-                  className="w-full bg-blue-900 text-base sm:text-xl text-white py-2 sm:py-3 rounded-lg hover:bg-blue-800 transition duration-300"
-                >
-                  Submit
-                </button>
-              </div>
+            {/* Name Field */}
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-xl font-bold mb-2"
+                htmlFor="name"
+              >
+                name
+              </label>
+              <input
+                type="name"
+                id="name"
+                placeholder="Enter your name"
+                className={`w-full p-3 border ${
+                  error.name ? "border-red-500" : "border-gray-300"
+                } rounded-lg`}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              {error.name && (
+                <p className="text-red-500 text-sm mt-1">{error.name}</p>
+              )}
             </div>
+            {/* Email Field */}
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-xl font-bold mb-2"
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                className={`w-full p-3 border ${
+                  error.email ? "border-red-500" : "border-gray-300"
+                } rounded-lg`}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {error.email && (
+                <p className="text-red-500 text-sm mt-1">{error.email}</p>
+              )}
+            </div>
+            {/* Email Field */}
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-xl font-bold mb-2"
+                htmlFor="contact"
+              >
+                Contact
+              </label>
+              <input
+                type="contact"
+                id="contact"
+                placeholder="Enter your contact"
+                className={`w-full p-3 border ${
+                  error.contact ? "border-red-500" : "border-gray-300"
+                } rounded-lg`}
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+              />
+              {error.contact && (
+                <p className="text-red-500 text-sm mt-1">{error.contact}</p>
+              )}
+            </div>
+
+            {/* Address Field */}
+            {/* Email Field */}
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-xl font-bold mb-2"
+                htmlFor="address"
+              >
+                Address
+              </label>
+              <input
+                type="address"
+                id="address"
+                placeholder="Enter your address"
+                className={`w-full p-3 border ${
+                  error.address ? "border-red-500" : "border-gray-300"
+                } rounded-lg`}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+              {error.address && (
+                <p className="text-red-500 text-sm mt-1">{error.address}</p>
+              )}
+            </div>
+
+            {/* Error and Success Messages */}
+            {error.general && (
+              <p className="text-red-500 text-sm mb-4">{error.general}</p>
+            )}
+            {message && (
+              <p className="text-green-500 text-sm mb-4">{message}</p>
+            )}
+
+            {/* Submit Button */}
+
+            <button
+              type="submit"
+              className="w-full bg-blue-900 text-xl text-white py-3 rounded-lg hover:bg-blue-800 transition duration-300"
+            >
+              Click here
+            </button>
           </form>
         </div>
       </div>
     </div>
   );
-}
-
+};
 
 export default Newuser;
