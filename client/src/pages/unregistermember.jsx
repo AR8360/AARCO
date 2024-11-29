@@ -24,7 +24,9 @@ const UnregisterMemberPage = ({ admin }) => {
       setUnregisterMembers(response.data.unregister);
     } catch (err) {
       console.error("Error fetching unregistered users:", err);
-      setError("Failed to fetch unregistered members. Please try again later.");
+      setError(
+        "Failed to fetch unregistered members. Please try again later or try relogin."
+      );
     }
   };
 

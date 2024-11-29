@@ -58,12 +58,20 @@ const register = async (req, res) => {
       return res.json({ msg: "All fields are required", status: false });
     }
 
+    let user = await Member.findOne({ email });
+    if (user) {
+      return res.json({
+        msg: "Email already exists. Please login.",
+        status: false,
+      });
+    }
+
     // Check if the email is already registered as a member
     let existingUser = await UnRegister.findOne({ email });
     if (existingUser) {
       if (otp.length > 0 && existingUser.otp === otp) {
         if (isAfter(new Date(), existingUser.otpExpiry)) {
-          UnRegister.deleteOne({ email });
+          await UnRegister.deleteOne({ email });
           return res.json({
             msg: "OTP expired.Re-Register yourself.",
             status: false,
@@ -77,15 +85,16 @@ const register = async (req, res) => {
         await existingUser.save();
 
         return res.json({
-          msg: "OTP verified successfully.Admin will notify you upon acceptance.",
+          msg: "OTP verified successfully.Admin will notify you upon acceptance through mail.",
           status: true,
         });
       } else if (otp.length > 0 && existingUser.otp !== otp) {
         return res.json({ msg: "Invalid OTP", status: false });
       }
+      await UnRegister.findOneAndDelete({ email });
       return res.json({
-        msg: "Email already exists. Please Verify it.",
-        status: false,
+        msg: "Email already exists.Please Re-register yourself to verify it.",
+        status: true,
       });
     }
 
@@ -258,7 +267,7 @@ const approveUser = async (req, res) => {
 const allunregisterUser = async (req, res) => {
   try {
     // Find all unregistered users but exclude password, otp, otpExpiry, and status
-    const unregister = await UnRegister.find().select(
+    const unregister = await UnRegister.find({ verifiedemail: true }).select(
       "-password -otp -otpExpiry -status"
     ); // Excluding specified fields
 

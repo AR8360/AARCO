@@ -67,6 +67,7 @@ const RegisterPage = () => {
       if (response.data.status) {
         setVerifyOtp(true);
         setMessage(response.data.msg);
+
         return;
       }
       setErrors({ general: response.data.msg });
