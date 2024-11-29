@@ -16,6 +16,7 @@ import Forgotpassword from "./pages/forgotpassword.jsx";
 import Newuser from "./pages/newuser.jsx";
 import NewUserpage from "./pages/newUserpage.jsx";
 import UnregisterMemberPage from "./pages/unregistermember.jsx";
+import CallLetter from "./pages/callLetter.jsx";
 
 const App = () => {
   // State to track if the user is an admin
@@ -124,6 +125,7 @@ const App = () => {
           path="/unregister"
           element={<UnregisterMemberPage admin={isadmin} />}
         />
+        <Route path="/call_letter" element={<CallLetter isLogin={isLogin} />} />
       </Routes>
     </Router>
   );

@@ -2,11 +2,11 @@ import React from "react"; // Importing React to define and use components
 import { FaArrowLeft } from "react-icons/fa"; // Importing 'FaArrowLeft' icon for back navigation
 import { useNavigate } from "react-router-dom"; // Hook to navigate between different routes
 import Footer from "../component/footer"; // Importing Footer component
-import pdfFile from "../pdf/ec.pdf"; // Importing the PDF file to display
+import pdfFile from "../public/pdf/ec.pdf"; // Importing the PDF file to display
 
 const MemberList = ({ isLogin }) => {
   // Define the MemberList component with isLogin prop (to pass login status to Footer)
-  
+
   const navigate = useNavigate(); // Initialize navigate function to handle routing
 
   // Function to handle the back button click, which navigates to the home page
@@ -22,9 +22,11 @@ const MemberList = ({ isLogin }) => {
         onClick={handleBackClick} // Handle back navigation on click
       >
         <FaArrowLeft className="text-white text-2xl" /> {/* Back icon */}
-        <span className="ml-2 text-white text-lg hover:underline">Back</span> {/* Back text with hover effect */}
+        <span className="ml-2 text-white text-lg hover:underline">
+          Back
+        </span>{" "}
+        {/* Back text with hover effect */}
       </div>
-
       {/* Title section */}
       <div className="container mx-auto px-4 mt-8 mb-8">
         <h2
@@ -34,7 +36,6 @@ const MemberList = ({ isLogin }) => {
           Our Members PDF {/* Heading text */}
         </h2>
       </div>
-
       {/* PDF Display section */}
       <div className="container mx-auto px-4 mb-8 flex-grow">
         {/* Responsive iframe container for embedding the PDF */}
@@ -49,7 +50,8 @@ const MemberList = ({ isLogin }) => {
 
         {/* Fallback download link for browsers that don't support inline PDF viewing */}
         <div className="text-center mt-4">
-          <p>If PDF is not available on this browser. No worries, you can,</p> {/* Fallback message */}
+          <p>If PDF is not available on this browser. No worries, you can,</p>{" "}
+          {/* Fallback message */}
           <a
             href={pdfFile} // Link to the PDF file
             download="Members.pdf" // Set the downloaded file name
@@ -61,9 +63,9 @@ const MemberList = ({ isLogin }) => {
           </a>
         </div>
       </div>
-
       {/* Footer section */}
-      <Footer isLogin={isLogin} /> {/* Render Footer component and pass isLogin prop */}
+      <Footer isLogin={isLogin} />{" "}
+      {/* Render Footer component and pass isLogin prop */}
     </div>
   );
 };
