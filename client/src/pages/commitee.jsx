@@ -6,6 +6,7 @@ import { getCommitteeRoute, deleteCommitteeRoute } from "../utils/ApiRoutes"; //
 import { useNavigate } from "react-router-dom"; // React router for navigation
 import axios from "axios"; // Axios for making HTTP requests
 import Footer from "../component/footer"; // Footer component
+import Loading from "../component/loading";
 
 const CommitteeList = ({ isAdmin, isLogin }) => {
   // Hooks for managing component state
@@ -88,7 +89,7 @@ const CommitteeList = ({ isAdmin, isLogin }) => {
       </div>
 
       {/* Loading indicator while the data is being fetched */}
-      {loading && <div className="text-center text-2xl">Loading...</div>}
+      {loading && <Loading />}
 
       {/* Member cards */}
       <div

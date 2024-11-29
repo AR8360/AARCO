@@ -197,7 +197,7 @@ const Login = ({ isLogin, setAdmin, setIsLogin }) => {
             {/*for forget password*/}
             <div className="mt-4 text-center">
               <a
-                href="/forgetpassword"
+                href="/forgotpassword"
                 className="text-blue-900 hover:underline"
               >
                 Forget Password

@@ -6,6 +6,7 @@ export const verify = `${host}/api/verify`; // verify if user is admin
 export const generateOtp = `${host}/user/generate-otp`; //generate otp for forgot password
 export const newPassword = `${host}/user/verify-otp`; //verify otp for forgot password
 export const register = `${host}/user/register`;
+export const allMembers = `${host}/user/all-members`;
 export const getallUnregisterUser = `${host}/user/all-unregister-user`;
 export const verifyUnregisterEmail = `${host}/user/verify-unregister-email`;
 export const deleteUnregisterUser = `${host}/user/delete-unregister-user`;

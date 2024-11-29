@@ -6,10 +6,11 @@ import axios from "axios"; // Axios library for making API requests
 
 import { gallery } from "../utils/ApiRoutes.js"; // Importing the API route for gallery data
 import Footer from "../component/footer.jsx"; // Importing Footer component
+import Loading from "../component/loading.jsx";
 
 const Gallery = ({ isadmin, isLogin }) => {
   // Component props: isadmin (to check if the user is an admin) and isLogin (to pass login status to Footer)
-  
+
   const navigate = useNavigate(); // Initialize navigate function for routing
 
   // Define state variables
@@ -66,49 +67,54 @@ const Gallery = ({ isadmin, isLogin }) => {
         onClick={() => navigate("/")} // Navigate back to the home route on click
       >
         <FaArrowLeft className="text-white text-2xl" /> {/* Back icon */}
-        <span className="ml-2 text-white text-lg hover:underline">Back</span> {/* Back text with hover effect */}
+        <span className="ml-2 text-white text-lg hover:underline">
+          Back
+        </span>{" "}
+        {/* Back text with hover effect */}
       </div>
 
       {/* Main gallery content */}
       <div className="w-full max-w-6xl mx-auto mt-12 px-4 ">
         <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">
           Gallery
-        </h2> {/* Title for the gallery */}
-
+        </h2>{" "}
+        {/* Title for the gallery */}
         {/* Grid layout to display images */}
         <div
           className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ${
             images.length === 0 ? `pb-80` : `pb-20` // Adjust padding based on whether there are images or not
           }`}
         >
-          {images.length > 0 ? (
-            // If there are images, map through them and display each one
-            images.map((image) => (
-              <div
-                key={image._id} // Unique key for each image
-                className="relative overflow-hidden rounded-lg border border-gray-300 shadow-md transition-transform transform hover:scale-105"
-              >
-                {/* If the user is an admin, show the delete icon */}
-                {isadmin && (
-                  <MdDelete
-                    className="text-red-600 absolute text-xl top-4 right-4 cursor-pointer bg-white rounded-full"
-                    onClick={() => handleDeleteImage(image._id)} // Delete image on click
-                  />
-                )}
+          {loading && <Loading />}{" "}
+          {/* Show loading component while fetching images */}
+          {images.length > 0
+            ? // If there are images, map through them and display each one
+              images.map((image) => (
+                <div
+                  key={image._id} // Unique key for each image
+                  className="relative overflow-hidden rounded-lg border border-gray-300 shadow-md transition-transform transform hover:scale-105"
+                >
+                  {/* If the user is an admin, show the delete icon */}
+                  {isadmin && (
+                    <MdDelete
+                      className="text-red-600 absolute text-xl top-4 right-4 cursor-pointer bg-white rounded-full"
+                      onClick={() => handleDeleteImage(image._id)} // Delete image on click
+                    />
+                  )}
 
-                {/* Display the image */}
-                <img
-                  src={image.image} // Image source from the API
-                  className="w-full h-full object-cover rounded-lg" // Style the image
-                />
-              </div>
-            ))
-          ) : (
-            // If there are no images, display a "No images available" message
-            <div className="text-2xl text-center font-bold text-red-500 mt-6 -mb-72">
-              No images available
-            </div>
-          )}
+                  {/* Display the image */}
+                  <img
+                    src={image.image} // Image source from the API
+                    className="w-full h-full object-cover rounded-lg" // Style the image
+                  />
+                </div>
+              ))
+            : !loading && (
+                // If there are no images, display a "No images available" message
+                <div className="text-2xl text-center font-bold text-red-500 mt-6 -mb-72">
+                  No images available
+                </div>
+              )}
         </div>
       </div>
 

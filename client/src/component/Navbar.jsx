@@ -48,7 +48,7 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
   useEffect(() => {}, [setIsLogin]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white text-blue-900 py-3 shadow-md z-50">
+    <nav className="fixed w-screen top-0 left-0 right-0 bg-white text-blue-900 py-3 shadow-md z-50">
       {/* Navbar container */}
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo and Title */}
@@ -105,13 +105,6 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
             className="text-lg font-semibold hover:text-blue-600 transition duration-300 cursor-pointer"
           >
             Gallery
-          </div>
-
-          <div
-            className="text-lg font-semibold cursor-pointer"
-            onClick={() => navigate("/call_letter")}
-          >
-            call-Letter
           </div>
 
           <div
@@ -211,13 +204,6 @@ const Navbar = ({ isLogin, admin, setadmin, setIsLogin }) => {
           className="block py-2 px-4 text-lg cursor-pointer"
         >
           Gallery
-        </div>
-
-        <div
-          className="block py-2 px-4 text-lg cursor-pointer"
-          onClick={() => navigate("/call_letter")}
-        >
-          Call-Letter
         </div>
 
         <div

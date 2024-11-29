@@ -8,15 +8,18 @@ import {
   deleteUnregisterUser,
   approverMember,
 } from "../utils/ApiRoutes";
+import Loading from "../component/loading";
 
 const UnregisterMemberPage = ({ admin }) => {
   const navigate = useNavigate();
   const [unregisterMembers, setUnregisterMembers] = useState([]);
   const [selectedEmails, setSelectedEmails] = useState([]); // To store selected users for approval
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   // Fetch all unregistered members
   const fetchUnregisterMembers = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(getallUnregisterUser, {
         withCredentials: true,
@@ -27,6 +30,8 @@ const UnregisterMemberPage = ({ admin }) => {
       setError(
         "Failed to fetch unregistered members. Please try again later or try relogin."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,8 +98,11 @@ const UnregisterMemberPage = ({ admin }) => {
       </h1>
       {error && <p className="text-red-500 text-center">{error}</p>}
 
-      {unregisterMembers.length > 0 ? (
+      {loading ? (
+        <Loading />
+      ) : unregisterMembers.length > 0 ? (
         <div className="flex-1 px-4 py-6 bg-white shadow-lg rounded-md mx-4">
+          {/* Table rendering logic remains the same */}
           <div className="overflow-x-auto">
             <table className="table-auto w-full border-collapse border border-gray-300">
               <thead>

@@ -3,7 +3,7 @@ import News from "../model/news.model.js";
 const getNews = async (req, res) => {
   try {
     // Fetch all news from the database
-    const news = await News.find();
+    const news = await News.find().sort({ createdAt: -1 });
 
     // Return the news data with a success status
     return res.status(200).json({ news, status: true });

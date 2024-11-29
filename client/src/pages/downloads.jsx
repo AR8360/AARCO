@@ -1,65 +1,43 @@
 import React, { useEffect, useState } from "react";
-// Importing necessary libraries and hooks from React, axios for API calls, 
-// and icon components from react-icons for UI elements.
-
 import { FaArrowLeft } from "react-icons/fa"; // Left arrow icon for the back button
 import { useNavigate } from "react-router-dom"; // Hook for navigation
 import { MdDelete } from "react-icons/md"; // Delete icon for admin functionality
-
-import { getPdfRoute, deletePdfRoute } from "../utils/ApiRoutes.js"; 
-// Importing API routes for fetching and deleting PDF files
-
+import { getPdfRoute, deletePdfRoute } from "../utils/ApiRoutes.js"; // API routes for fetching and deleting PDF files
 import axios from "axios"; // For making HTTP requests
 import Footer from "../component/footer.jsx"; // Footer component
+import Loading from "../component/loading.jsx";
 
 const Downloads = ({ isadmin, isLogin }) => {
-  // The `Downloads` component accepts two props: 
-  // `isadmin` to check if the user is an admin and 
-  // `isLogin` to check if the user is logged in.
-
-  const navigate = useNavigate(); 
-  // The `useNavigate` hook is used to navigate programmatically between routes.
-
-  const [pdfFiles, setPdfFiles] = useState([]); 
-  // A state variable to store the list of PDF files.
+  const navigate = useNavigate();
+  const [pdfFiles, setPdfFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchPdfFiles = async () => {
-    // Function to fetch PDF files from the server
     try {
+      setLoading(true);
       const response = await axios.get(getPdfRoute);
-      // Making a GET request to fetch PDFs
-
-      const data = response.data.pdf;
-      // Extracting the PDF data from the response
-
-      setPdfFiles(data);
-      // Setting the fetched PDF files in the state
+      setPdfFiles(response.data.pdf);
     } catch (error) {
       console.error("Error fetching Pdf Files:", error);
-      // Logging errors in case the fetch request fails
+    } finally {
+      setLoading(false);
     }
   };
 
   const deletePdfFile = async (_id) => {
-    // Function to delete a PDF file by its ID
     try {
-      const response = await axios.delete(deletePdfRoute, {
+      await axios.delete(deletePdfRoute, {
         data: { _id },
         withCredentials: true,
-        // Sending the file ID (_id) and ensuring credentials are included in the request
       });
-
-      fetchPdfFiles(); 
-      // Re-fetching the PDF files after deletion to update the UI
+      fetchPdfFiles();
     } catch (error) {
       console.error("Error deleting Pdf File:", error);
-      // Logging errors in case the delete request fails
     }
   };
 
   useEffect(() => {
-    fetchPdfFiles(); 
-    // Fetch the PDF files when the component is mounted
+    fetchPdfFiles();
   }, []);
 
   return (
@@ -69,7 +47,6 @@ const Downloads = ({ isadmin, isLogin }) => {
         className="bg-blue-900 inline-flex w-full items-center p-4 cursor-pointer"
         onClick={() => navigate("/")}
       >
-        {/* On click, the user is navigated back to the home page */}
         <FaArrowLeft className="text-white text-2xl" />
         <span className="ml-2 text-white text-lg hover:underline">Back</span>
       </div>
@@ -77,48 +54,65 @@ const Downloads = ({ isadmin, isLogin }) => {
       {/* PDF Download Section */}
       <div className="container mx-auto p-6 pb-80">
         <h1 className="text-3xl font-bold mb-6">Download PDF Notices</h1>
-
+        {loading && <Loading />}
         {pdfFiles.length > 0 ? (
-          // If there are PDF files available, display them in a list
-          <ul className="list-disc pl-5 space-y-4">
-            {pdfFiles.map((file) => (
-              <li key={file._id} className="text-lg relative">
-                {/* Each PDF file is rendered with a link to download */}
-                <a
-                  href={file.link}
-                  download
-                  className={`text-blue-500 hover:underline absolute ${
-                    isadmin ? `left-8` : ``
-                  }`}
-                >
-                  {file.title}
-                </a>
-
-                {isadmin && (
-                  // If the user is an admin, display a delete icon
-                  <MdDelete
-                    className={`text-red-600 absolute text-xl top-1 left-1 cursor-pointer ${
-                      isadmin ? `left-1` : ``
-                    }`}
-                    onClick={() => deletePdfFile(file._id)}
-                    // On clicking the delete icon, the corresponding PDF is deleted
-                  />
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          // If there are no PDFs available, display a message
-          <div className="text-2xl text-center font-bold text-red-500 mt-6 mb-80">
-            No PDFs available
+          // Display the PDF files in a table
+          <div className="overflow-x-auto">
+            <table className="table-auto w-full border-collapse border border-gray-400">
+              <thead className="bg-gray-200">
+                <tr>
+                  <th className="border border-gray-400 px-4 py-2">No.</th>
+                  <th className="border border-gray-400 px-4 py-2">Name</th>
+                  <th className="border border-gray-400 px-4 py-2">Download</th>
+                  {isadmin && (
+                    <th className="border border-gray-400 px-4 py-2">Action</th>
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {pdfFiles.map((file, index) => (
+                  <tr key={file._id} className="text-center">
+                    <td className="border border-gray-400 px-4 py-2">
+                      {index + 1}
+                    </td>
+                    <td className="border border-gray-400 px-4 py-2">
+                      {file.title}
+                    </td>
+                    <td className="border border-gray-400 px-4 py-2">
+                      <a
+                        href={file.link}
+                        download
+                        target="_blank"
+                        className="text-blue-500 hover:underline"
+                      >
+                        Download
+                      </a>
+                    </td>
+                    {isadmin && (
+                      <td className="border border-gray-400 px-4 py-2">
+                        <MdDelete
+                          className="text-red-600 text-xl cursor-pointer"
+                          onClick={() => deletePdfFile(file._id)}
+                        />
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
+        ) : (
+          !loading && (
+            <div className="text-2xl text-center font-bold text-red-500 mt-6 mb-80">
+              No PDFs available
+            </div>
+          )
         )}
       </div>
 
       {/* Footer */}
       <div>
         <Footer isLogin={isLogin} />
-        {/* Passing `isLogin` prop to the Footer component */}
       </div>
     </>
   );

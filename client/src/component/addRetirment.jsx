@@ -18,7 +18,8 @@ const AddRetirement = () => {
   const navigate = useNavigate(); // Navigation hook for redirecting after form submission
 
   // Cloudinary configuration for image upload
-  const cloudinaryUploadUrl = "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
+  const cloudinaryUploadUrl =
+    "https://api.cloudinary.com/v1_1/dloh7csm6/image/upload";
   const cloudinaryUploadPreset = "aarcodev";
 
   // Function to handle form validation
@@ -52,7 +53,10 @@ const AddRetirement = () => {
           const formData = new FormData();
           formData.append("file", image);
           formData.append("upload_preset", cloudinaryUploadPreset);
-          const cloudinaryResponse = await axios.post(cloudinaryUploadUrl, formData);
+          const cloudinaryResponse = await axios.post(
+            cloudinaryUploadUrl,
+            formData
+          );
           imageUrl = cloudinaryResponse.data.secure_url; // Get the uploaded image URL
         }
 
@@ -73,6 +77,8 @@ const AddRetirement = () => {
         });
 
         // Handle response status
+        console.log(response);
+
         if (response.data.status === false) {
           setErrormsg("Error adding member."); // Display error message on failure
           setTimeout(() => {
@@ -156,12 +162,17 @@ const AddRetirement = () => {
             className="w-full p-2 border rounded"
             placeholder="Enter email"
           />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
         </div>
 
         {/* Contact field */}
         <div className="mb-4">
-          <label htmlFor="contact" className="block text-gray-700 font-bold mb-2">
+          <label
+            htmlFor="contact"
+            className="block text-gray-700 font-bold mb-2"
+          >
             Contact
           </label>
           <input
@@ -206,7 +217,10 @@ const AddRetirement = () => {
 
         {/* Content field */}
         <div className="mb-4">
-          <label htmlFor="content" className="block text-gray-700 font-bold mb-2">
+          <label
+            htmlFor="content"
+            className="block text-gray-700 font-bold mb-2"
+          >
             Content
           </label>
           <textarea

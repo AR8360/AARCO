@@ -1,73 +1,106 @@
-import React from "react"; // Importing React to define and use components
+import React, { useEffect, useState } from "react"; // Importing React to define and use components
 import { FaArrowLeft } from "react-icons/fa"; // Importing 'FaArrowLeft' icon for back navigation
 import { useNavigate } from "react-router-dom"; // Hook to navigate between different routes
 import Footer from "../component/footer"; // Importing Footer component
-import pdfFile from "../public/pdf/ec.pdf"; // Importing the PDF file to display
+import axios from "axios";
+import { allMembers } from "../utils/ApiRoutes.js";
+import Loading from "../component/loading.jsx"; // Importing Loading component for better UX
 
 const MemberList = ({ isLogin }) => {
-  // Define the MemberList component with isLogin prop (to pass login status to Footer)
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); // Initialize navigate function to handle routing
+  const [data, setData] = useState([]); // State for storing member data
+  const [loading, setLoading] = useState(true); // State for managing loading state
+  const [error, setError] = useState(""); // State for error messages
 
-  // Function to handle the back button click, which navigates to the home page
   const handleBackClick = () => {
-    navigate("/"); // Navigating to the homepage
+    navigate("/"); // Navigate to the homepage
   };
+
+  // Function to fetch member data
+  const getData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(allMembers, {
+        withCredentials: true,
+      });
+      setData(response.data.members); // Assuming `members` is returned in the response
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError("Unable to fetch member data.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      {/* Back button section */}
+      {/* Back button */}
       <div
         className="bg-blue-900 inline-flex items-center p-4 cursor-pointer"
-        onClick={handleBackClick} // Handle back navigation on click
+        onClick={handleBackClick}
       >
-        <FaArrowLeft className="text-white text-2xl" /> {/* Back icon */}
-        <span className="ml-2 text-white text-lg hover:underline">
-          Back
-        </span>{" "}
-        {/* Back text with hover effect */}
+        <FaArrowLeft className="text-white text-2xl" />
+        <span className="ml-2 text-white text-lg hover:underline">Back</span>
       </div>
-      {/* Title section */}
-      <div className="container mx-auto px-4 mt-8 mb-8">
-        <h2
-          className="text-5xl font-bold text-center text-blue-900"
-          style={{ fontFamily: "Playfair Display, serif" }} // Apply custom font family
-        >
-          Our Members PDF {/* Heading text */}
-        </h2>
-      </div>
-      {/* PDF Display section */}
-      <div className="container mx-auto px-4 mb-8 flex-grow">
-        {/* Responsive iframe container for embedding the PDF */}
-        <div className="relative w-full h-96 sm:h-[600px] overflow-hidden shadow-md rounded-lg">
-          <iframe
-            src={`${pdfFile}#toolbar=0&navpanes=0&scrollbar=0`} // Embedding the PDF file in the iframe, disabling unnecessary tools
-            className="absolute top-0 left-0 w-full h-full border-none" // Full-screen iframe with no border
-            title="Members PDF" // Title for the iframe
-            style={{ boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)" }} // Add subtle box-shadow for better appearance
-          ></iframe>
-        </div>
 
-        {/* Fallback download link for browsers that don't support inline PDF viewing */}
-        <div className="text-center mt-4">
-          <p>If PDF is not available on this browser. No worries, you can,</p>{" "}
-          {/* Fallback message */}
-          <a
-            href={pdfFile} // Link to the PDF file
-            download="Members.pdf" // Set the downloaded file name
-            className="text-blue-900 underline" // Styling the download link
-            target="_blank" // Open the link in a new tab
-            rel="noopener noreferrer" // Ensures security by preventing the new page from accessing the window object
-          >
-            Click to Download PDF {/* Download link text */}
-          </a>
-        </div>
+      {/* Member list section */}
+      <div className="flex-grow container mx-auto p-4">
+        {loading ? (
+          <Loading /> // Show loading spinner
+        ) : error ? (
+          <div className="text-red-500 text-center">{error}</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="table-auto w-full bg-white shadow-md rounded-lg">
+              <thead className="bg-blue-900 text-white">
+                <tr>
+                  <th className="px-4 py-2">Name</th>
+                  <th className="px-4 py-2">Employee ID</th>
+                  <th className="px-4 py-2">Unit</th>
+                  <th className="px-4 py-2">Email</th>
+                  <th className="px-4 py-2">Office Intercom</th>
+                  <th className="px-4 py-2">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((member, index) => (
+                  <tr
+                    key={index}
+                    className={`border-b ${
+                      index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                    }`}
+                  >
+                    <td className="px-4 py-2">{member.name}</td>
+                    <td className="px-4 py-2">{member.Employee}</td>
+                    <td className="px-4 py-2">{member.Unit}</td>
+                    <td className="px-4 py-2">{member.email}</td>
+                    <td className="px-4 py-2">{member.OfficeIntercom}</td>
+                    <td
+                      className={`px-4 py-2 font-semibold ${
+                        member.status === "admin"
+                          ? "text-green-600"
+                          : "text-blue-600"
+                      }`}
+                    >
+                      {member.status}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
-      {/* Footer section */}
-      <Footer isLogin={isLogin} />{" "}
-      {/* Render Footer component and pass isLogin prop */}
+
+      {/* Footer */}
+      <Footer isLogin={isLogin} />
     </div>
   );
 };
 
-export default MemberList; // Export the MemberList component for use in other parts of the app
+export default MemberList;

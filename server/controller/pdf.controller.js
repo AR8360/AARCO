@@ -2,7 +2,7 @@ import Pdf from "../model/pdf.model.js";
 
 const getPdf = async (req, res) => {
   try {
-    const pdf = await Pdf.find();
+    const pdf = await Pdf.find().sort({ createdAt: -1 });
     res.json({ pdf: pdf, status: true });
   } catch (error) {
     res.status(500).json({ message: error.message, status: false });

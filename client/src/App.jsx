@@ -125,7 +125,6 @@ const App = () => {
           path="/unregister"
           element={<UnregisterMemberPage admin={isadmin} />}
         />
-        <Route path="/call_letter" element={<CallLetter isLogin={isLogin} />} />
       </Routes>
     </Router>
   );

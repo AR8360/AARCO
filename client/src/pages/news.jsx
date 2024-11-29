@@ -5,9 +5,11 @@ import axios from "axios"; // HTTP client for making requests to the API
 import { MdDelete } from "react-icons/md"; // Icon for delete functionality
 import Footer from "../component/footer"; // Footer component, adjust import path as needed
 import { getNewsRoute, DeleteNewsRoute } from "../utils/ApiRoutes"; // API routes for fetching and deleting news
+import Loading from "../component/loading";
 
 const NewsUpdates = ({ isadmin, isLogin }) => {
   const [newsItem, setNewsItem] = useState([]); // State to hold news items
+  const [loading, setLoading] = useState(true); // State to track loading status
   const navigate = useNavigate(); // Used to navigate between routes
 
   // Handle the back button click to navigate to the home page
@@ -24,11 +26,14 @@ const NewsUpdates = ({ isadmin, isLogin }) => {
   // Fetch all news from the API
   const getAllNews = async () => {
     try {
+      setLoading(true); // Set loading to true while fetching data
       const response = await axios.get(getNewsRoute); // Fetch news from the API
       const data = response.data.news; // Extract the news data from the response
       setNewsItem(data); // Update the state with the fetched news
     } catch (error) {
       console.error("Failed to fetch news:", error); // Log any errors during the fetch
+    } finally {
+      setLoading(false); // Set loading to false after fetching data
     }
   };
 
@@ -60,7 +65,6 @@ const NewsUpdates = ({ isadmin, isLogin }) => {
         <FaArrowLeft className="text-white text-2xl" /> {/* Back icon */}
         <span className="ml-2 text-white text-lg hover:underline">Back</span>
       </div>
-
       {/* Main Content */}
       <div className="container mx-auto px-4 mt-8 mb-8 flex-grow">
         <h2
@@ -72,39 +76,42 @@ const NewsUpdates = ({ isadmin, isLogin }) => {
 
         {/* News Items */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-16">
-          {newsItem.length > 0 ? ( // Check if there are any news items
-            newsItem.map((item) => (
-              <div
-                key={item._id} // Use the unique ID of each news item
-                className="bg-white relative rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
-              >
-                {isadmin && ( // Show delete icon if user is an admin
-                  <MdDelete
-                    className="text-red-800 absolute text-xl top-4 right-4 cursor-pointer"
-                    onClick={() => handleDelete(item._id)} // Call handleDelete on click
-                  />
-                )}
-                <div className="p-6">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-sm text-gray-500">
-                      {formatDate(item.date)} {/* Display formatted date */}
-                    </span>
+          {/* Check if loading is true, show loading message */}
+          {loading && <Loading />}
+          {newsItem.length > 0 // Check if there are any news items
+            ? newsItem.map((item) => (
+                <div
+                  key={item._id} // Use the unique ID of each news item
+                  className="bg-white relative rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
+                >
+                  {isadmin && ( // Show delete icon if user is an admin
+                    <MdDelete
+                      className="text-red-800 absolute text-xl top-4 right-4 cursor-pointer"
+                      onClick={() => handleDelete(item._id)} // Call handleDelete on click
+                    />
+                  )}
+                  <div className="p-6">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-sm text-gray-500">
+                        {formatDate(item.date)} {/* Display formatted date */}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                      {item.title} {/* News item title */}
+                    </h3>
+                    <p className="text-gray-600">{item.content}</p>{" "}
+                    {/* News content */}
                   </div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-800">
-                    {item.title} {/* News item title */}
-                  </h3>
-                  <p className="text-gray-600">{item.content}</p> {/* News content */}
                 </div>
-              </div>
-            ))
-          ) : (
-            <div className="text-center text-3xl font-bold text-red-500">
-              No news available {/* Message when no news items are available */}
-            </div>
-          )}
+              ))
+            : !loading && (
+                <div className="text-center text-3xl font-bold text-red-500">
+                  No news available{" "}
+                  {/* Message when no news items are available */}
+                </div>
+              )}
         </div>
       </div>
-
       {/* Footer */}
       <Footer isLogin={isLogin} /> {/* Render Footer component */}
     </div>

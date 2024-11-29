@@ -28,25 +28,26 @@ const HomeImage = () => {
   }, []);
 
   return (
-    <div className="w-full max-w-6xl mx-auto mt-10 px-4">
-      <h2 className="text-4xl font-bold text-center text-blue-900 mb-8">
+    <div className="w-full max-w-7xl mx-auto mt-10 px-4 sm:px-6 lg:px-8">
+      {/* Heading */}
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-blue-900 mb-6 lg:mb-8">
         Image Gallery
       </h2>
 
       {/* Carousel */}
-      <div className="relative w-[600px] h-[400px] mx-auto overflow-hidden rounded-lg border border-gray-300 shadow-md">
+      <div className="relative w-full max-w-[90%] sm:max-w-lg lg:max-w-2xl mx-auto aspect-video overflow-hidden rounded-lg border border-gray-300 shadow-md">
         <img
           src={images[currentIndex].src}
           alt={images[currentIndex].alt}
-          className="w-full h-full object-contain transition-all duration-1000"
+          className="w-full h-full object-cover transition-transform duration-1000"
         />
       </div>
 
       {/* View Gallery Button */}
-      <div className="text-center mt-8">
+      <div className="text-center mt-6 sm:mt-8">
         <button
           onClick={handleViewGallery}
-          className="w-full max-w-md mx-auto bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
+          className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md transition-transform transform hover:scale-105"
         >
           View Gallery
         </button>

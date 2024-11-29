@@ -35,7 +35,7 @@ const login = async (req, res) => {
       httpOnly: true, // Helps prevent XSS attacks by making the cookie inaccessible via JavaScript
       secure: true, // Ensures the cookie is only sent over HTTPS
       sameSite: "none", // Allows the cookie to be sent in cross-site requests (Netlify frontend to Render backend)
-      maxAge: 15 * 60 * 1000, // 30 days (in milliseconds)
+      maxAge: 3 * 60 * 60 * 1000, // 3 hrs (in milliseconds)
     });
 
     return res.json({
@@ -45,6 +45,26 @@ const login = async (req, res) => {
   } catch (error) {
     console.error(`Login error: ${error.message}`);
     return res.json({ msg: "Internal server error", status: false });
+  }
+};
+const getAllMembers = async (req, res) => {
+  try {
+    const members = await Member.find().select(
+      "name Employee Unit email OfficeIntercom status"
+    );
+
+    // Sort using a custom priority mapping
+    const priorityMap = { admin: 1, member: 0 };
+    members.sort((a, b) => {
+      const statusDifference = priorityMap[b.status] - priorityMap[a.status];
+      return statusDifference !== 0
+        ? statusDifference
+        : a.name.localeCompare(b.name);
+    });
+
+    return res.json({ status: true, members });
+  } catch (error) {
+    res.status(500).json({ status: false, message: error.message });
   }
 };
 
@@ -359,6 +379,7 @@ export {
   register,
   generateMemberOTP,
   verifyMemberOTP,
+  getAllMembers,
   allunregisterUser,
   deleteUnregisterUser,
   approveUser,

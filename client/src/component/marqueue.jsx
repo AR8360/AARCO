@@ -8,7 +8,7 @@ const Marquee = () => {
       <div className="overflow-hidden whitespace-nowrap">
         {/* Apply overflow hidden to ensure the content doesn't break out of the container, 
             and whitespace-nowrap ensures that the text stays on a single line */}
-        <p className="inline-block animate-scroll text-black font-semibold text-lg">
+        <p className="inline-block animate-slow-scroll text-black font-semibold text-lg">
           {/* The scrolling text content, styled as bold, black, and slightly larger */}
           Important Announcement: Event on 25th September | New Updates Released
           | Welcome New Members to AARCO
