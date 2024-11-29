@@ -38,7 +38,7 @@ const Admin = ({ admin, isLogin }) => {
         <button
           type="submit"
           onClick={() => navigate("/newuserpage")}
-          className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-800 text-xl font-bold mb-4"
+          className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-800 text-xl font-bold mb-4 ml-4"
         >
           see new user
         </button>
