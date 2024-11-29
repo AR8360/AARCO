@@ -10,7 +10,7 @@ const AddRetirement = () => {
   const [email, setEmail] = useState("");
   const [contact, setContact] = useState("");
   const [date, setDate] = useState("");
-  const [order, setOrder] = useState("");
+  const [order, setOrder] = useState("10");
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");

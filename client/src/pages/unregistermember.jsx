@@ -14,6 +14,7 @@ const UnregisterMemberPage = ({ admin }) => {
   const navigate = useNavigate();
   const [unregisterMembers, setUnregisterMembers] = useState([]);
   const [selectedEmails, setSelectedEmails] = useState([]); // To store selected users for approval
+  const [selectAll, setSelectAll] = useState(false); // Track "Select All" state
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -70,11 +71,28 @@ const UnregisterMemberPage = ({ admin }) => {
 
   // Handle checkbox selection
   const toggleSelection = (email) => {
-    setSelectedEmails((prev) =>
-      prev.includes(email)
-        ? prev.filter((selected) => selected !== email)
-        : [...prev, email]
-    );
+    const updatedSelection = selectedEmails.includes(email)
+      ? selectedEmails.filter((selected) => selected !== email)
+      : [...selectedEmails, email];
+
+    setSelectedEmails(updatedSelection);
+
+    // Update selectAll state based on the selection
+    if (updatedSelection.length === unregisterMembers.length) {
+      setSelectAll(true); // All items are selected
+    } else {
+      setSelectAll(false); // Not all items are selected
+    }
+  };
+
+  // Handle "Select All" checkbox toggle
+  const toggleSelectAll = () => {
+    if (selectAll) {
+      setSelectedEmails([]); // Deselect all
+    } else {
+      setSelectedEmails(unregisterMembers.map((member) => member.email)); // Select all
+    }
+    setSelectAll(!selectAll);
   };
 
   useEffect(() => {
@@ -107,7 +125,13 @@ const UnregisterMemberPage = ({ admin }) => {
             <table className="table-auto w-full border-collapse border border-gray-300">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="border border-gray-300 px-4 py-2">Select</th>
+                  <th className="border border-gray-300 px-4 py-2">
+                    <input
+                      type="checkbox"
+                      checked={selectAll}
+                      onChange={toggleSelectAll}
+                    />
+                  </th>
                   <th className="border border-gray-300 px-4 py-2">Name</th>
                   <th className="border border-gray-300 px-4 py-2">Email</th>
                   <th className="border border-gray-300 px-4 py-2">Employee</th>
