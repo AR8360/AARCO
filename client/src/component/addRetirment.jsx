@@ -67,7 +67,7 @@ const AddRetirement = () => {
           email,
           date,
           contact,
-          order,
+          order: order || 10,
           content,
         };
 
